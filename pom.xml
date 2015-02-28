@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>spark-scala-maven-project</groupId>
-	<artifactId>spark-scala-maven-project</artifactId>
+	<groupId>org.mysql</groupId>
+	<artifactId>spark-employee</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
-	<description>This is a boilerplate maven project to start using Spark in Scala</description>
-	<inceptionYear>2010</inceptionYear>
+	<description>Answers questions about the mysql employee database</description>
+	<inceptionYear>2016</inceptionYear>
 
 	<properties>
 		<maven.compiler.source>1.6</maven.compiler.source>
@@ -16,14 +16,6 @@
 		<!-- Put the Scala version of the cluster -->
 		<scala.version>2.10.4</scala.version>
 	</properties>
-	
-	<!-- repository to add org.apache.spark -->
-	<repositories>
-		<repository>
-			<id>cloudera-repo-releases</id>
-			<url>https://repository.cloudera.com/artifactory/repo/</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<sourceDirectory>src/main/scala</sourceDirectory>
@@ -51,19 +43,30 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.13</version>
-				<configuration>
-					<useFile>false</useFile>
-					<disableXmlReport>true</disableXmlReport>
-					<!-- If you have classpath issue like NoDefClassError,... -->
-					<!-- useManifestOnlyJar>false</useManifestOnlyJar -->
-					<includes>
-						<include>**/*Test.*</include>
-						<include>**/*Suite.*</include>
-					</includes>
-				</configuration>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-surefire-plugin</artifactId>
+			  <version>2.7</version>
+			  <configuration>
+			    <skipTests>true</skipTests>
+			  </configuration>
+			</plugin>
+			<plugin>
+			  <groupId>org.scalatest</groupId>
+			  <artifactId>scalatest-maven-plugin</artifactId>
+			  <version>1.0</version>
+			  <configuration>
+			    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+			    <junitxml>.</junitxml>
+			    <filereports>WDF TestSuite.txt</filereports>
+			  </configuration>
+			  <executions>
+			    <execution>
+			      <id>test</id>
+			      <goals>
+			        <goal>test</goal>
+			      </goals>
+			    </execution>
+			  </executions>
 			</plugin>
 
 			<!-- "package" command plugin -->
@@ -97,10 +100,31 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-core_2.10</artifactId>
-			<version>1.2.0-cdh5.3.1</version>
+			<artifactId>spark-sql_2.10</artifactId>
+			<version>1.5.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_2.10</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<!-- Utils -->
+		<dependency>
+		    <groupId>com.github.scala-incubator.io</groupId>
+		    <artifactId>scala-io-file_2.10</artifactId>
+		    <version>0.4.2</version>
+		</dependency>
+		<!-- Tests -->
+		<dependency>
+		  <groupId>org.scalatest</groupId>
+		  <artifactId>scalatest_2.10</artifactId>
+		  <version>2.2.6</version>
+		  <scope>test</scope>
+		</dependency>
+		<dependency>
+		  <groupId>com.holdenkarau</groupId>
+		  <artifactId>spark-testing-base_2.10</artifactId>
+		  <version>1.6.1_0.3.3</version>
+		</dependency>
 	</dependencies>
 </project>
-
