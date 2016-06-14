@@ -48,9 +48,8 @@ object Main {
   }
 
   def parseEmployees(file: RDD[String]): RDD[Employee] = {
-    val cleanRows = file.map(_.trim.replaceAll("INSERT INTO `[\\w]*` VALUES \\(","").replaceAll(",$","").replaceAll("'", ""))
+    val cleanRows = file.map(_.trim.replaceAll("(INSERT INTO `employees` VALUES \\()|\\(|'|\\),|\\)", ""))
     val employeeArrays = cleanRows.map(_.split(","))
-    employeeArrays.foreach({x => println(x.mkString(","))})
     val result = employeeArrays.map { array => Employee.fromArray(array) }
     result
   }

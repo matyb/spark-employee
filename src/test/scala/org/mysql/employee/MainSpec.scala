@@ -15,8 +15,22 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
   
   describe("Constructing Employees RDD") {
 
-    it("reads an employee if line starts with INSERT") ({
+    it("reads an employee if line starts with 'INSERT'") ({
       def records = List("INSERT INTO `employees` VALUES (10001,'1953-09-02','Georgie','Facello','M','1986-06-26'),")
+      val employeesRdd = Main.parseEmployees(sc.parallelize(records)).collect().toList
+      val expectedRdd = List(Employee(10001, sdf.parse("1953-09-02"), "Georgie", "Facello", Gender.withName("M"), sdf.parse("1986-06-26")))
+      employeesRdd should equal (expectedRdd)
+    })
+    
+    it("reads an employee if line starts with '('") ({
+      def records = List("(10001,'1953-09-02','Georgie','Facello','M','1986-06-26'),")
+      val employeesRdd = Main.parseEmployees(sc.parallelize(records)).collect().toList
+      val expectedRdd = List(Employee(10001, sdf.parse("1953-09-02"), "Georgie", "Facello", Gender.withName("M"), sdf.parse("1986-06-26")))
+      employeesRdd should equal (expectedRdd)
+    })
+    
+    it("reads an employee if line ends with ');' instead of '),'") ({
+      def records = List("(10001,'1953-09-02','Georgie','Facello','M','1986-06-26');")
       val employeesRdd = Main.parseEmployees(sc.parallelize(records)).collect().toList
       val expectedRdd = List(Employee(10001, sdf.parse("1953-09-02"), "Georgie", "Facello", Gender.withName("M"), sdf.parse("1986-06-26")))
       employeesRdd should equal (expectedRdd)
