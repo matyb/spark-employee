@@ -10,11 +10,13 @@ import org.apache.spark.rdd.RDD
 import org.mysql.employee.domain.Employee
 import org.mysql.employee.enums.Gender
 import org.mysql.employee.utils.FileUtils.rmFolder
+import org.mysql.employee.domain.Department
 
 object Main {
 
+  val logger = Logger.getLogger(this.getClass())
+  
   def main(arg: Array[String]) {
-    var logger = Logger.getLogger(this.getClass())
 
     validateArgs(logger, arg)
 
@@ -26,18 +28,20 @@ object Main {
 
     rmFolder(outputPath)
 
-    logger.info("=> jobName \"" + jobName + "\"")
-    logger.info("=> pathToFiles \"" + pathToFiles + "\"")
+    logger.info(s"=> jobName  $jobName ")
+    logger.info(s"=> pathToFiles $pathToFiles ")
 
     val employees = parseEmployees(sc.textFile(s"$pathToFiles/load_employees.dump"))
+    val departments = parseDepartments(sc.textFile(s"$pathToFiles/load_departments.dump"))
 
-    employees.saveAsTextFile(outputPath)
+    employees.saveAsTextFile(s"$outputPath/employees")
+    departments.saveAsTextFile(s"$outputPath/departments")
   }
 
   def validateArgs(logger: Logger, arg: Array[String]) = {
     if (arg.length < 2) {
       logger.error("=> wrong parameters number")
-      System.err.println("Usage: MainExample <path-to-files> <output-path>")
+      System.err.println("Usage: Main <path-to-files> <output-path>")
       System.exit(1)
     }
   }
@@ -48,10 +52,15 @@ object Main {
   }
 
   def parseEmployees(file: RDD[String]): RDD[Employee] = {
-    val cleanRows = file.map(_.trim.replaceAll("(INSERT INTO `employees` VALUES \\()|\\(|'|\\),|\\)", ""))
-    val employeeArrays = cleanRows.map(_.split(","))
-    val result = employeeArrays.map { array => Employee.fromArray(array) }
-    result
+    cleanAndSplit(file).map { array => Employee.fromArray(array) }
+  }
+  
+  def parseDepartments(file: RDD[String]): RDD[Department] = {
+    cleanAndSplit(file).map { array => Department.fromArray(array) }
+  }
+  
+  def cleanAndSplit(rdd: RDD[String]) = {
+    rdd.map(_.trim.replaceAll("(INSERT INTO `.*` VALUES\\s*)|\\(|'|\\),|\\)|;", "")).filter(!_.isEmpty).map(_.split(","))
   }
   
 }

@@ -4,7 +4,7 @@ import java.util.Date
 import org.mysql.employee.enums.Gender
 import java.text.SimpleDateFormat
 
-case class Employee(id: Long, dob: Date, firstName: String, lastName: String, gender: Gender.Value, hireDate: Date)
+case class Employee(id: Long, dob: Date, firstName: String, lastName: String, gender: Gender.Value, hireDate: Date) 
 
 object Employee {
   
