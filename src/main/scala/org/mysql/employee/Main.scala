@@ -1,16 +1,15 @@
 package org.mysql.employee
 
-import java.text.SimpleDateFormat
-import java.util.Date
+import scala.reflect.ClassTag
 
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.mysql.employee.domain.Employee
-import org.mysql.employee.enums.Gender
-import org.mysql.employee.utils.FileUtils.rmFolder
 import org.mysql.employee.domain.Department
+import org.mysql.employee.domain.Employee
+import org.mysql.employee.utils.Converter
+import org.mysql.employee.utils.FileUtils.rmFolder
 
 object Main {
 
@@ -31,8 +30,8 @@ object Main {
     logger.info(s"=> jobName  $jobName ")
     logger.info(s"=> pathToFiles $pathToFiles ")
 
-    val employees = parseEmployees(sc.textFile(s"$pathToFiles/load_employees.dump"))
-    val departments = parseDepartments(sc.textFile(s"$pathToFiles/load_departments.dump"))
+    val employees = parse(sc.textFile(s"$pathToFiles/load_employees.dump"), Employee)
+    val departments = parse(sc.textFile(s"$pathToFiles/load_departments.dump"), Department)
 
     employees.saveAsTextFile(s"$outputPath/employees")
     departments.saveAsTextFile(s"$outputPath/departments")
@@ -51,16 +50,10 @@ object Main {
     new SparkContext(conf)
   }
 
-  def parseEmployees(file: RDD[String]): RDD[Employee] = {
-    cleanAndSplit(file).map { array => Employee.fromArray(array) }
-  }
-  
-  def parseDepartments(file: RDD[String]): RDD[Department] = {
-    cleanAndSplit(file).map { array => Department.fromArray(array) }
-  }
-  
-  def cleanAndSplit(rdd: RDD[String]) = {
-    rdd.map(_.trim.replaceAll("(INSERT INTO `.*` VALUES\\s*)|\\(|'|\\),|\\)|;", "")).filter(!_.isEmpty).map(_.split(","))
+  def parse[T:ClassTag](rdd: RDD[String], converter: Converter[Array[String],T]): RDD[T] = {
+    val convert = converter.convert(_)
+    rdd.map(_.trim.replaceAll("(INSERT INTO `.*` VALUES\\s*)|\\(|'|\\),|\\)|;", ""))
+       .filter(!_.isEmpty).map { array => convert(array.split(","))}
   }
   
 }

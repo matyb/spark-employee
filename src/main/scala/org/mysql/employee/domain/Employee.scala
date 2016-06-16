@@ -1,14 +1,16 @@
 package org.mysql.employee.domain
 
-import java.util.Date
-import org.mysql.employee.enums.Gender
 import java.text.SimpleDateFormat
+import java.util.Date
+
+import org.mysql.employee.enums.Gender
+import org.mysql.employee.utils.Converter
 
 case class Employee(id: Long, dob: Date, firstName: String, lastName: String, gender: Gender.Value, hireDate: Date) 
 
-object Employee {
+object Employee extends Converter[Array[String],Employee] {
   
-  def fromArray(array: Array[String]): Employee = {
+  def convert(array: Array[String]): Employee = {
     Employee(array(0).toLong,
              new SimpleDateFormat("yyyy-MM-dd").parse(array(1).replace("'","")), 
              array(2), 
