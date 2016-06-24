@@ -1,16 +1,19 @@
 package org.mysql.employee.domain
 
-import org.mysql.employee.utils.Converter
 import java.text.SimpleDateFormat
 import java.util.Date
 
-case class DepartmentManager(employee: DepartmentEmployee, managerOf: Department, starting: Date, ending: Date)
+import org.mysql.employee.constants.DateConstants
+import org.mysql.employee.utils.Converter
+import org.mysql.util.Range
 
-object DepartmentManager extends Converter[(DepartmentEmployee,Department,String,String), DepartmentManager] {
+case class DepartmentManager(employeeId: String, managedDepartmentId: String, start: Date, end: Date) extends EmployeeId with Range[Date]
+
+object DepartmentManager extends Converter[Array[String],DepartmentManager] {
   
-  def convert(args: (DepartmentEmployee,Department,String,String)): DepartmentManager = {
-    val sdf = new SimpleDateFormat("yyyy-MM-dd")
-    DepartmentManager(args._1, args._2, sdf.parse(args._3), sdf.parse(args._4))
+  def convert(args: Array[String]): DepartmentManager = {
+    val sdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
+    DepartmentManager(args(0), args(1), sdf.parse(args(2)), sdf.parse(args(3)))
   }
   
 } 

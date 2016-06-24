@@ -5,14 +5,15 @@ import java.util.Date
 
 import org.mysql.employee.enums.Gender
 import org.mysql.employee.utils.Converter
+import org.mysql.employee.constants.DateConstants
 
-case class EmployeeDemographic(id: Long, dob: Date, firstName: String, lastName: String, gender: Gender.Value, hireDate: Date) 
+case class EmployeeDemographic (employeeId: String, dob: Date, firstName: String, lastName: String, gender: Gender.Value, hireDate: Date) extends EmployeeId  
 
 object EmployeeDemographic extends Converter[Array[String],EmployeeDemographic] {
   
   def convert(array: Array[String]): EmployeeDemographic = {
-    val sdf = new SimpleDateFormat("yyyy-MM-dd")
-    EmployeeDemographic(array(0).toLong,
+    val sdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
+    EmployeeDemographic(array(0),
              sdf.parse(array(1).replace("'","")), 
              array(2), 
              array(3), 
