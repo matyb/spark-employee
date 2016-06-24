@@ -7,7 +7,7 @@ import org.scalatest.FlatSpec
 
 class FileUtilsSpec extends FlatSpec with BeforeAndAfterEach {
 
-  val tmpFolder = if (System.getProperty("tmp.folder") == null) System.getProperty("tmp.folder") else "/tmp/spark-employee"
+  val tmpFolder = if (System.getProperty("tmp.folder") != null) System.getProperty("tmp.folder") else "/tmp/spark-employee"
 
   override def beforeEach() {
     new File(tmpFolder).delete()
