@@ -8,18 +8,19 @@ import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.mysql.employee.constants.DateConstants
 import org.mysql.employee.domain.Department
-import org.mysql.employee.domain.EmployeeTitle
+import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.DepartmentEmployee
 import org.mysql.employee.domain.DepartmentManager
 import org.mysql.employee.domain.EmployeeDemographic
+import org.mysql.employee.domain.EmployeeSalary
+import org.mysql.employee.domain.EmployeeTitle
+import org.mysql.employee.domain.EmployeeTitle
+import org.mysql.employee.enums.Gender
 import org.mysql.employee.utils.Converter
 import org.scalatest.FunSpec
 import org.scalatest.Matchers
 
 import com.holdenkarau.spark.testing.SharedSparkContext
-import org.mysql.employee.enums.Gender
-import org.mysql.employee.domain.EmployeeTitle
-import org.mysql.employee.domain.EmployeeSalary
 
 class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
@@ -142,6 +143,43 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
   }
 
+  describe("Creates employees") {
+    
+    it("creates an employee") {
+    	val oneDepartment  = Array(Department("d000", "Department1"))
+    	val oneDepartmentEmployee = Array(DepartmentEmployee("10001", "d000", sdf.parse("1953-09-02"), sdf.parse("1993-03-03")))
+    	val oneDemographic = Array(EmployeeDemographic("10001", sdf.parse("1953-09-02"), "Georgie", "Facello", Gender withName "M", sdf.parse("1986-06-26")))
+      val oneEmployeeSalary = Array(EmployeeSalary("10001", 99999999, sdf.parse("1953-09-02"), sdf.parse("1986-06-26")))
+      val oneTitle = Array(EmployeeTitle("10001","Title",sdf.parse("1900-02-02"), sdf.parse("1901-02-02")))
+      
+      val employee = Main.join(sc.parallelize(oneDepartment), sc.parallelize(oneDepartmentEmployee), 
+          sc.parallelize(Seq()), sc.parallelize(oneDemographic), sc.parallelize(oneTitle), 
+          sc.parallelize(oneEmployeeSalary)).collect()
+      val expectedEmployee = Employee("10001", List((oneDepartmentEmployee(0),oneDepartment(0))), List(), 
+                                      List(oneDemographic(0)), List(oneTitle(0)), List(oneEmployeeSalary(0)))
+      employee should equal (List(expectedEmployee))    
+    }
+    
+    it("creates a manager") {
+    	val oneDepartment  = Array(Department("d000", "Department1"))
+    	val twoDepartment  = Array(Department("d001", "Department2"))
+    	val oneDepartmentEmployee = Array(DepartmentEmployee("10001", "d000", sdf.parse("1953-09-02"), sdf.parse("1993-03-03")))
+    	val oneDepartmentManager = Seq(DepartmentManager("10001", "d001", sdf.parse("1900-01-01"), sdf.parse("1920-02-02")))
+    	val oneDemographic = Array(EmployeeDemographic("10001", sdf.parse("1953-09-02"), "Georgie", "Facello", Gender withName "M", sdf.parse("1986-06-26")))
+      val oneEmployeeSalary = Array(EmployeeSalary("10001", 99999999, sdf.parse("1953-09-02"), sdf.parse("1986-06-26")))
+      val oneTitle = Array(EmployeeTitle("10001","Title",sdf.parse("1900-02-02"), sdf.parse("1901-02-02")))
+      
+      val employee = Main.join(sc.parallelize(oneDepartment), sc.parallelize(oneDepartmentEmployee), 
+          sc.parallelize(oneDepartmentManager), sc.parallelize(oneDemographic), sc.parallelize(oneTitle), 
+          sc.parallelize(oneEmployeeSalary)).collect()
+      val expectedEmployee : Employee = Employee("10001", List((oneDepartmentEmployee(0),oneDepartment(0))), 
+                                      List((twoDepartment(0),oneDepartmentManager(0))), List(oneDemographic(0)), 
+                                      List(oneTitle(0)), List(oneEmployeeSalary(0)))
+      employee should equal (Array(expectedEmployee))    
+    }
+    
+  }
+  
   def readRecords(fileName: String) = {
     val source = scala.io.Source.fromInputStream(getClass.getResourceAsStream(s"/$fileName"))
     val text = try source.mkString finally source.close()
