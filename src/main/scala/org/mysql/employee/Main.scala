@@ -10,9 +10,10 @@ import org.mysql.employee.domain.Department
 import org.mysql.employee.domain.DepartmentEmployee
 import org.mysql.employee.domain.DepartmentManager
 import org.mysql.employee.domain.EmployeeDemographic
+import org.mysql.employee.domain.EmployeeSalary
+import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.utils.Converter
 import org.mysql.employee.utils.FileUtils.rmFolder
-import org.mysql.employee.domain.EmployeeTitle
 
 object Main {
 
@@ -33,17 +34,21 @@ object Main {
     logger.info(s"=> jobName  $jobName ")
     logger.info(s"=> pathToFiles $pathToFiles ")
 
-    val employees = parse(sc.textFile(s"$pathToFiles/load_employees.dump"), EmployeeDemographic)
+    val employeeDemographics = parse(sc.textFile(s"$pathToFiles/load_employees.dump"), EmployeeDemographic)
     val departments = parse(sc.textFile(s"$pathToFiles/load_departments.dump"), Department)
     val departmentEmployees = parse(sc.textFile(s"$pathToFiles/load_dept_emp.dump"), DepartmentEmployee)
     val departmentManagers = parse(sc.textFile(s"$pathToFiles/load_dept_manager.dump"), DepartmentManager)
     val employeeTitles = parse(sc.textFile(s"$pathToFiles/load_titles.dump"), EmployeeTitle)
+    val employeeSalaries = parse(sc.textFile(s"$pathToFiles/load_salaries1.dump"), EmployeeSalary).union(
+                           parse(sc.textFile(s"$pathToFiles/load_salaries2.dump"), EmployeeSalary).union(
+                           parse(sc.textFile(s"$pathToFiles/load_salaries3.dump"), EmployeeSalary)))                           
 
-    employees.saveAsTextFile(s"$outputPath/employees")
+    employeeDemographics.saveAsTextFile(s"$outputPath/employee_demographics")
     departments.saveAsTextFile(s"$outputPath/departments")
     departmentEmployees.saveAsTextFile(s"$outputPath/department_employees")
     departmentManagers.saveAsTextFile(s"$outputPath/department_managers")
     employeeTitles.saveAsTextFile(s"$outputPath/employee_titles")
+    employeeSalaries.saveAsTextFile(s"$outputPath/employee_salaries")
   }
 
   def validateArgs(logger: Logger, arg: Array[String]) = {

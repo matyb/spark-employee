@@ -19,6 +19,7 @@ import org.scalatest.Matchers
 import com.holdenkarau.spark.testing.SharedSparkContext
 import org.mysql.employee.enums.Gender
 import org.mysql.employee.domain.EmployeeTitle
+import org.mysql.employee.domain.EmployeeSalary
 
 class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
@@ -118,6 +119,25 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
     it("reads an employee title if line ends with ');'") {
       becomes(Array("(10001,'Senior Engineer','1986-06-26','9999-01-01');"), EmployeeTitle,
         Array(EmployeeTitle("10001", "Senior Engineer", sdf.parse("1986-06-26"), sdf.parse("9999-01-01"))))
+    }
+
+  }
+  
+  describe("Constructing Employee Salary RDD") {
+
+    it("reads an employee salary if line starts with 'INSERT'") {
+      becomes(Array("INSERT INTO `salaries` VALUES (10001,60117,'1986-06-26','1987-06-26'),"), EmployeeSalary,
+        Array(EmployeeSalary("10001", 60117, sdf.parse("1986-06-26"), sdf.parse("1987-06-26"))))
+    }
+
+    it("reads an employee salary if line starts with '('") {
+      becomes(Array("(10001,60117,'1986-06-26','1987-06-26'),"), EmployeeSalary,
+        Array(EmployeeSalary("10001", 60117, sdf.parse("1986-06-26"), sdf.parse("1987-06-26"))))
+    }
+
+    it("reads an employee salary if line ends with ');'") {
+      becomes(Array("(10001,60117,'1986-06-26','1987-06-26');"), EmployeeSalary,
+        Array(EmployeeSalary("10001", 60117, sdf.parse("1986-06-26"), sdf.parse("1987-06-26"))))
     }
 
   }
