@@ -1,7 +1,2 @@
-<<<<<<< HEAD
 language: java
 script: mkdir /tmp/spark-employee && mvn clean test -Dtmp.folder=\tmp\spark-employee -Dintegration=true
-=======
-language: java
-script: mkdir /tmp/spark-employee && mvn clean test -Dtmp.folder=\tmp\spark-employee
->>>>>>> branch 'master' of https://github.com/matyb/spark-employee.git
