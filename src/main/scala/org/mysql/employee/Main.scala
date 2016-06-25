@@ -35,28 +35,30 @@ object Main {
 
     logger.info(s"=> jobName  $jobName ")
     logger.info(s"=> pathToFiles $pathToFiles ")
-
-    val employeeDemographics = parse(sc.textFile(s"$pathToFiles/load_employees.dump"), EmployeeDemographic).cache()
-    val departments = parse(sc.textFile(s"$pathToFiles/load_departments.dump"), Department).cache()
-    val departmentEmployees = parse(sc.textFile(s"$pathToFiles/load_dept_emp.dump"), DepartmentEmployee).cache()
-    val departmentManagers = parse(sc.textFile(s"$pathToFiles/load_dept_manager.dump"), DepartmentManager).cache()
-    val employeeTitles = parse(sc.textFile(s"$pathToFiles/load_titles.dump"), EmployeeTitle).cache()
-    val employeeSalaries = parse(sc.textFile(s"$pathToFiles/load_salaries1.dump"), EmployeeSalary).union(
-                           parse(sc.textFile(s"$pathToFiles/load_salaries2.dump"), EmployeeSalary).union(
-                           parse(sc.textFile(s"$pathToFiles/load_salaries3.dump"), EmployeeSalary))).cache()                           
+    
+    class Parser(sc: SparkContext, pathToFiles: String) {
+      def apply[T:ClassTag](fileName: String, converter: Converter[Array[String],T]) : RDD[T] = {
+        parse(sc.textFile(s"$pathToFiles/$fileName"), converter) 
+      }
+    }
+    
+    def parseFile = new Parser(sc, pathToFiles)
+    
+    val employeeDemographics = parseFile("load_employees.dump",    EmployeeDemographic)
+    val departments =          parseFile("load_departments.dump",  Department)
+    val departmentEmployees =  parseFile("load_dept_emp.dump",     DepartmentEmployee)
+    val departmentManagers =   parseFile("load_dept_manager.dump", DepartmentManager)
+    val employeeTitles =       parseFile("load_titles.dump",       EmployeeTitle)
+    val employeeSalaries =     parseFile("load_salaries1.dump",    EmployeeSalary).union(
+                               parseFile("load_salaries2.dump",    EmployeeSalary).union(
+                               parseFile("load_salaries3.dump",    EmployeeSalary)))                           
 
     val employees = join(departments, departmentEmployees, departmentManagers, 
-                         employeeDemographics, employeeTitles, employeeSalaries).cache()                           
-                           
-    employeeDemographics.saveAsTextFile(s"$outputPath/employee_demographics")
-    departments.saveAsTextFile(s"$outputPath/departments")
-    departmentEmployees.saveAsTextFile(s"$outputPath/department_employees")
-    departmentManagers.saveAsTextFile(s"$outputPath/department_managers")
-    employeeTitles.saveAsTextFile(s"$outputPath/employee_titles")
-    employeeSalaries.saveAsTextFile(s"$outputPath/employee_salaries")
+                         employeeDemographics, employeeTitles, employeeSalaries).cache()
+                         
     employees.saveAsTextFile(s"$outputPath/employees")
   }
-
+  
   def validateArgs(logger: Logger, arg: Array[String]) = {
     if (arg.length < 2) {
       logger.error("=> wrong parameters number")
@@ -73,7 +75,7 @@ object Main {
   def parse(lines: RDD[String]) = {
     lines.map(_.trim.replaceAll("(INSERT INTO `.*` VALUES\\s*)|\\(|'|\\),|\\)|;", "")).filter(!_.isEmpty)
   }
-
+  
   def parse[T: ClassTag](rdd: RDD[String], converter: Converter[Array[String], T]): RDD[T] = {
     val convert = converter.convert(_)
     parse(rdd).map { line => convert(line.split(",")) }
@@ -81,17 +83,14 @@ object Main {
 
   def join(departments: RDD[Department], departmentEmployees: RDD[DepartmentEmployee], departmentManagers: RDD[DepartmentManager], employeeDemographics: RDD[EmployeeDemographic], employeeTitles: RDD[EmployeeTitle], employeeSalaries: RDD[EmployeeSalary]) = {
     val departmentsRdd = departments.map { row => (row.id, row) }
-    val departmentEmployeesDepRdd = departmentsRdd.join(departmentEmployees.map { row => (row.departmentId, row) })
-    val departmentEmployeesEmpRdd = departmentEmployeesDepRdd.map { row => (row._2._2.employeeId, row._2) }
+    val departmentEmployeesDepKeyRdd = departmentsRdd.join(departmentEmployees.map { row => (row.departmentId, row) })
+    val departmentEmployeesEmpKeyRdd = departmentEmployeesDepKeyRdd.map { row => (row._2._2.employeeId, row._2) }
     val departmentManagerDepRdd = departmentsRdd.join(departmentManagers.map { row => (row.managedDepartmentId, row) })
                                                 .map{ row => (row._2._2.employeeId, (row._2._1, row._2._2)) }
     val employeeDemographicsRdd = employeeDemographics.map { row => (row.employeeId, row )}
                                                       .leftOuterJoin(departmentManagerDepRdd)
     
-    println(s"departmentManagers:${departmentManagers.collect()}")
-    println(s"departmentManagerDepRdd:${departmentManagerDepRdd.collect()}")
-    
-    val grouped = departmentEmployeesEmpRdd
+    val grouped = departmentEmployeesEmpKeyRdd
                     .join(employeeDemographicsRdd
                         .join(employeeSalaries.map { row => (row.employeeId, row) })
                         .join(employeeTitles.map { row => (row.employeeId, row) } )).groupBy { row => row._1 }

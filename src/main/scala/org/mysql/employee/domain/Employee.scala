@@ -6,7 +6,3 @@ case class Employee(id: String,
           employeeDemographics: List[EmployeeDemographic],
           employeeTitles: List[EmployeeTitle], 
           employeeSalaries: List[EmployeeSalary]) 
-
-object Employee {
-  
-}
