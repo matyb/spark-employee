@@ -169,13 +169,13 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
       val oneEmployeeSalary = Array(EmployeeSalary("10001", 99999999, sdf.parse("1953-09-02"), sdf.parse("1986-06-26")))
       val oneTitle = Array(EmployeeTitle("10001","Title",sdf.parse("1900-02-02"), sdf.parse("1901-02-02")))
       
-      val employee = Main.join(sc.parallelize(oneDepartment), sc.parallelize(oneDepartmentEmployee), 
+      val employee = Main.join(sc.parallelize(List(oneDepartment(0), twoDepartment(0))), sc.parallelize(oneDepartmentEmployee), 
           sc.parallelize(oneDepartmentManager), sc.parallelize(oneDemographic), sc.parallelize(oneTitle), 
           sc.parallelize(oneEmployeeSalary)).collect()
       val expectedEmployee : Employee = Employee("10001", List((oneDepartmentEmployee(0),oneDepartment(0))), 
                                       List((twoDepartment(0),oneDepartmentManager(0))), List(oneDemographic(0)), 
                                       List(oneTitle(0)), List(oneEmployeeSalary(0)))
-      // TODO employee should equal (Array(expectedEmployee))    
+      employee should equal (Array(expectedEmployee))    
     }
     
   }
@@ -186,7 +186,7 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
     text.split("\\r?\\n")
   }
 
-  if (!"true".equals(System.getProperty("integration"))) {
+  if (!"true".equals(System.getProperty("skip.integration.tests"))) {
     describe("Can construct RDDs from actual MySQL files") {
 
       def loadEmployees(): (Array[String], RDD[EmployeeDemographic], List[EmployeeDemographic]) = {
