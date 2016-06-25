@@ -128,7 +128,6 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
     text.split("\\r?\\n")
   }
 
-  System.setProperty("integration", "true")
   if (!"true".equals(System.getProperty("integration"))) {
     describe("Can construct RDDs from actual MySQL files") {
 
