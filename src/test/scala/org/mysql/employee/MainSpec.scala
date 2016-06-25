@@ -1,9 +1,7 @@
 package org.mysql.employee
 
 import java.text.SimpleDateFormat
-
 import scala.reflect.ClassTag
-
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.mysql.employee.constants.DateConstants
@@ -19,8 +17,9 @@ import org.mysql.employee.enums.Gender
 import org.mysql.employee.utils.Converter
 import org.scalatest.FunSpec
 import org.scalatest.Matchers
-
 import com.holdenkarau.spark.testing.SharedSparkContext
+import java.util.Properties
+import java.util.Enumeration
 
 class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 

@@ -1,2 +1,4 @@
 language: java
-script: mkdir /tmp/spark-employee && mvn clean test -Dtmp.folder=\tmp\spark-employee -Dintegration=true
+script: 
+  - mkdir -p /tmp/spark-employee
+  - mvn clean test
