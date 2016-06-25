@@ -1,5 +1,2 @@
 language: java
-env:
-  global:
-    - MAVEN_OPTS="-XX:MaxPermSize=512m -Xmx4g -Dintegration=true"
-script: mkdir /tmp/spark-employee && mvn clean test
+script: mkdir /tmp/spark-employee && mvn clean test -Dtmp.folder=\tmp\spark-employee
