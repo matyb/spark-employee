@@ -16,6 +16,8 @@ import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.utils.Converter
 import org.mysql.employee.utils.FileUtils.rmFolder
+import java.text.SimpleDateFormat
+import org.mysql.employee.constants.DateConstants
 
 object Main {
 
@@ -37,7 +39,7 @@ object Main {
     logger.info(s"=> pathToFiles $pathToFiles ")
     
     class Parser(sc: SparkContext, pathToFiles: String) {
-      def apply[T:ClassTag](fileName: String, converter: Converter[Array[String],T]) : RDD[T] = {
+      def apply[T:ClassTag](fileName: String, converter: Converter[(Array[String],SimpleDateFormat),T]) : RDD[T] = {
         parse(sc.textFile(s"$pathToFiles/$fileName"), converter) 
       }
     }
@@ -45,11 +47,11 @@ object Main {
     def parseFile = new Parser(sc, pathToFiles)
     
     val employeeDemographics = parseFile("load_employees.dump",    EmployeeDemographic)
-    val departments =          parseFile("load_departments.dump",  Department)
-    val departmentEmployees =  parseFile("load_dept_emp.dump",     DepartmentEmployee)
-    val departmentManagers =   parseFile("load_dept_manager.dump", DepartmentManager)
-    val employeeTitles =       parseFile("load_titles.dump",       EmployeeTitle)
-    val employeeSalaries =     parseFile("load_salaries1.dump",    EmployeeSalary).union(
+    val departments          = parseFile("load_departments.dump",  Department)
+    val departmentEmployees  = parseFile("load_dept_emp.dump",     DepartmentEmployee)
+    val departmentManagers   = parseFile("load_dept_manager.dump", DepartmentManager)
+    val employeeTitles       = parseFile("load_titles.dump",       EmployeeTitle)
+    val employeeSalaries     = parseFile("load_salaries1.dump",    EmployeeSalary).union(
                                parseFile("load_salaries2.dump",    EmployeeSalary).union(
                                parseFile("load_salaries3.dump",    EmployeeSalary)))                           
 
@@ -76,9 +78,8 @@ object Main {
     lines.map(_.trim.replaceAll("(INSERT INTO `.*` VALUES\\s*)|\\(|'|\\),|\\)|;", "")).filter(!_.isEmpty)
   }
   
-  def parse[T: ClassTag](rdd: RDD[String], converter: Converter[Array[String], T]): RDD[T] = {
-    val convert = converter.convert(_)
-    parse(rdd).map { line => convert(line.split(",")) }
+  def parse[T: ClassTag](rdd: RDD[String], converter: Converter[(Array[String],SimpleDateFormat), T]): RDD[T] = {
+    parse(rdd).map { line => converter((line.split(","), new SimpleDateFormat(DateConstants.ingestionDateFormat))) }
   }
 
   def join(departments: RDD[Department], departmentEmployees: RDD[DepartmentEmployee], departmentManagers: RDD[DepartmentManager], employeeDemographics: RDD[EmployeeDemographic], employeeTitles: RDD[EmployeeTitle], employeeSalaries: RDD[EmployeeSalary]) = {

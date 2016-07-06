@@ -15,39 +15,53 @@ import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.enums.Gender
 import org.mysql.employee.utils.Converter
+import org.mysql.employee.utils.Companion._
 import org.scalatest.FunSpec
 import org.scalatest.Matchers
 import com.holdenkarau.spark.testing.SharedSparkContext
 import java.util.Properties
 import java.util.Enumeration
+import scala.reflect.Manifest
+import org.scalatest.matchers.Matcher
+import org.scalatest.matchers.MatchResult
 
 class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
   val sdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
-
-  def parse[T: ClassTag](records: Array[String], entity: Converter[Array[String], T], sc: SparkContext = sc): RDD[T] = {
+  
+  def parse[T: ClassTag](records: Array[String], entity: Converter[(Array[String], SimpleDateFormat), T], sc: SparkContext = sc): RDD[T] = {
     Main.parse(sc.parallelize(records), entity)
   }
 
-  def becomes[T: ClassTag](records: Array[String], entity: Converter[Array[String], T], expected: Array[T]) = {
-    val results = parse(records, entity).collect().toList
-    results should equal(expected)
+  class ShouldBecomeMatcher[T](expected: Array[T]) (implicit m : Manifest[T])  extends Matcher[Array[String]] {
+    
+    def apply(records: Array[String]) = {
+      val results = parse(records, companion(m)).collect().toList
+      MatchResult(
+        results.sameElements(expected),
+        s"""Records $records did not equal "$results"""",
+        s"""Records $records did equal "$results""""
+      )
+    }
+    
   }
-
+  
+  def become[T: ClassTag](expected: Array[T]) (implicit m : Manifest[T]) = new ShouldBecomeMatcher(expected)
+  
   describe("Constructing Employees RDD") {
-
+    
     it("reads an employee if line starts with 'INSERT'") {
-      becomes(Array("INSERT INTO `employees` VALUES (10001,'1953-09-02','Georgie','Facello','M','1986-06-26'),"), EmployeeDemographic,
+      Array("INSERT INTO `employees` VALUES (10001,'1953-09-02','Georgie','Facello','M','1986-06-26'),") should become(
         Array(EmployeeDemographic("10001", sdf.parse("1953-09-02"), "Georgie", "Facello", Gender withName "M", sdf.parse("1986-06-26"))))
     }
 
     it("reads an employee if line starts with '('") {
-      becomes(Array("(10001,'1953-09-02','Georgie','Facello','M','1986-06-26'),"), EmployeeDemographic,
+      Array("(10001,'1953-09-02','Georgie','Facello','M','1986-06-26'),") should become(
         Array(EmployeeDemographic("10001", sdf.parse("1953-09-02"), "Georgie", "Facello", Gender withName "M", sdf.parse("1986-06-26"))))
     }
 
     it("reads an employee if line ends with ');' instead of '),'") {
-      becomes(Array("(10001,'1953-09-02','Georgie','Facello','M','1986-06-26');"), EmployeeDemographic,
+      Array("(10001,'1953-09-02','Georgie','Facello','M','1986-06-26');") should become(
         Array(EmployeeDemographic("10001", sdf.parse("1953-09-02"), "Georgie", "Facello", Gender withName "M", sdf.parse("1986-06-26"))))
     }
 
@@ -56,15 +70,16 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
   describe("Constructing Departments RDD") {
 
     it("eliminates rows that it its only an insert statement") {
-      becomes(Array("INSERT INTO `departments` VALUES"), Department, Array())
+      Array("INSERT INTO `departments` VALUES") should become[Department](Array())
     }
 
     it("reads a department if line starts with '('") {
-      becomes(Array("('d001','Marketing'),"), Department, Array(Department("d001", "Marketing")))
+      1 should equal (1)
+      Array("('d001','Marketing'),") should become(Array(Department("d001", "Marketing")))
     }
 
     it("reads a department if line ends with ');' instead of '),'") {
-      becomes(Array("('d009','Customer Service');"), Department, Array(Department("d009", "Customer Service")))
+      Array("('d009','Customer Service');") should become(Array(Department("d009", "Customer Service")))
     }
 
   }
@@ -72,17 +87,17 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
   describe("Constructing Department Employee Relationship RDD") {
 
     it("reads a department employee relationsip if line starts with 'INSERT'") {
-      becomes(Array("INSERT INTO `dept_emp` VALUES (10001,'d005','1986-06-26','9999-01-01'),"), DepartmentEmployee,
+      Array("INSERT INTO `dept_emp` VALUES (10001,'d005','1986-06-26','9999-01-01'),") should become(
         Array(DepartmentEmployee("10001", "d005", sdf.parse("1986-06-26"), sdf.parse("9999-01-01"))))
     }
 
     it("reads a department employee relationsip if line starts with '('") {
-      becomes(Array("(10001,'d005','1986-06-26','9999-01-01'),"), DepartmentEmployee,
+      Array("(10001,'d005','1986-06-26','9999-01-01'),") should become(
         Array(DepartmentEmployee("10001", "d005", sdf.parse("1986-06-26"), sdf.parse("9999-01-01"))))
     }
 
     it("reads a department employee relationsip if line ends with ');' instead of '),'") {
-      becomes(Array("(10001,'d005','1986-06-26','9999-01-01');"), DepartmentEmployee,
+      Array("(10001,'d005','1986-06-26','9999-01-01');") should become(
         Array(DepartmentEmployee("10001", "d005", sdf.parse("1986-06-26"), sdf.parse("9999-01-01"))))
     }
 
@@ -91,15 +106,17 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
   describe("Constructing Department Manager Relationship RDD") {
 
     it("reads a department manager relationsip if line starts with 'INSERT'") {
-      becomes(Array("INSERT INTO `dept_manager` VALUES '),"), DepartmentManager, Array())
+      Array("INSERT INTO `dept_manager` VALUES '),") should become[DepartmentManager](Array())
     }
 
     it("reads a department manager relationsip if line starts with '('") {
-      becomes(Array("(110022,'d004','1985-01-01','1991-10-01'),"), DepartmentManager, Array(DepartmentManager("110022", "d004", sdf.parse("1985-01-01"), sdf.parse("1991-10-01"))))
+      Array("(110022,'d004','1985-01-01','1991-10-01'),") should become(
+          Array(DepartmentManager("110022", "d004", sdf.parse("1985-01-01"), sdf.parse("1991-10-01"))))
     }
 
     it("reads a department employee relationsip if line ends with ');' instead of '),'") {
-      becomes(Array("(110022,'d004','1985-01-01','1991-10-01');"), DepartmentManager, Array(DepartmentManager("110022", "d004", sdf.parse("1985-01-01"), sdf.parse("1991-10-01"))))
+      Array("(110022,'d004','1985-01-01','1991-10-01');") should become(
+          Array(DepartmentManager("110022", "d004", sdf.parse("1985-01-01"), sdf.parse("1991-10-01"))))
     }
 
   }
@@ -107,17 +124,17 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
   describe("Constructing Employee Title RDD") {
 
     it("reads an employee title if line starts with 'INSERT'") {
-      becomes(Array("INSERT INTO `titles` VALUES (10001,'Senior Engineer','1986-06-26','9999-01-01'),"), EmployeeTitle,
+      Array("INSERT INTO `titles` VALUES (10001,'Senior Engineer','1986-06-26','9999-01-01'),") should become(
         Array(EmployeeTitle("10001", "Senior Engineer", sdf.parse("1986-06-26"), sdf.parse("9999-01-01"))))
     }
 
     it("reads an employee title if line starts with '('") {
-      becomes(Array("(10001,'Senior Engineer','1986-06-26','9999-01-01'),"), EmployeeTitle,
+      Array("(10001,'Senior Engineer','1986-06-26','9999-01-01'),") should become(
         Array(EmployeeTitle("10001", "Senior Engineer", sdf.parse("1986-06-26"), sdf.parse("9999-01-01"))))
     }
 
     it("reads an employee title if line ends with ');'") {
-      becomes(Array("(10001,'Senior Engineer','1986-06-26','9999-01-01');"), EmployeeTitle,
+      Array("(10001,'Senior Engineer','1986-06-26','9999-01-01');") should become(
         Array(EmployeeTitle("10001", "Senior Engineer", sdf.parse("1986-06-26"), sdf.parse("9999-01-01"))))
     }
 
@@ -126,17 +143,17 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
   describe("Constructing Employee Salary RDD") {
 
     it("reads an employee salary if line starts with 'INSERT'") {
-      becomes(Array("INSERT INTO `salaries` VALUES (10001,60117,'1986-06-26','1987-06-26'),"), EmployeeSalary,
+      Array("INSERT INTO `salaries` VALUES (10001,60117,'1986-06-26','1987-06-26'),") should become( 
         Array(EmployeeSalary("10001", 60117, sdf.parse("1986-06-26"), sdf.parse("1987-06-26"))))
     }
 
     it("reads an employee salary if line starts with '('") {
-      becomes(Array("(10001,60117,'1986-06-26','1987-06-26'),"), EmployeeSalary,
+      Array("(10001,60117,'1986-06-26','1987-06-26'),") should become(
         Array(EmployeeSalary("10001", 60117, sdf.parse("1986-06-26"), sdf.parse("1987-06-26"))))
     }
 
     it("reads an employee salary if line ends with ');'") {
-      becomes(Array("(10001,60117,'1986-06-26','1987-06-26');"), EmployeeSalary,
+      Array("(10001,60117,'1986-06-26','1987-06-26');") should become(
         Array(EmployeeSalary("10001", 60117, sdf.parse("1986-06-26"), sdf.parse("1987-06-26"))))
     }
 
@@ -227,11 +244,11 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
         cachedDepartmentEmployees.count() should equal(records.length)
 
-        val firstDeptEmp = List(DepartmentEmployee.convert(Array("10001", "d005", "1986-06-26", "9999-01-01")))
+        val firstDeptEmp = List(DepartmentEmployee(Array("10001", "d005", "1986-06-26", "9999-01-01"), sdf))
 
         cachedDepartmentEmployees.filter { _.employeeId == "10001" }.collect() should equal(firstDeptEmp)
 
-        val lastDeptEmp = List(DepartmentEmployee.convert(Array("499999", "d004", "1997-11-30", "9999-01-01")))
+        val lastDeptEmp = List(DepartmentEmployee(Array("499999", "d004", "1997-11-30", "9999-01-01"), sdf))
 
         cachedDepartmentEmployees.filter { _.employeeId == "499999" }.collect() should equal(lastDeptEmp)
       }
@@ -249,11 +266,11 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
         cachedDepartmentManagers.count() should equal(records.filter { row => !row.isEmpty() && !row.trim().endsWith("VALUES") }.length)
 
-        val firstDeptMgr = List(DepartmentManager.convert(Array("110022", "d001", "1985-01-01", "1991-10-01")))
+        val firstDeptMgr = List(DepartmentManager(Array("110022", "d001", "1985-01-01", "1991-10-01"), sdf))
 
         cachedDepartmentManagers.filter { _.employeeId == "110022" }.collect() should equal(firstDeptMgr)
 
-        val lastDeptMgr = List(DepartmentManager.convert(Array("111939", "d009", "1996-01-03", "9999-01-01")))
+        val lastDeptMgr = List(DepartmentManager(Array("111939", "d009", "1996-01-03", "9999-01-01"), sdf))
 
         cachedDepartmentManagers.filter { _.employeeId == "111939" }.collect() should equal(lastDeptMgr)
       }
@@ -271,11 +288,11 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
         cachedEmployeeTitles.count() should equal(records.length)
 
-        val firstEmpTitle = List(EmployeeTitle.convert(Array("10001", "Senior Engineer", "1986-06-26", "9999-01-01")))
+        val firstEmpTitle = List(EmployeeTitle(Array("10001", "Senior Engineer", "1986-06-26", "9999-01-01"), sdf))
 
         cachedEmployeeTitles.filter { _.employeeId == "10001" }.collect() should equal(firstEmpTitle)
 
-        val lastEmpTitle = List(EmployeeTitle.convert(Array("499999", "Engineer", "1997-11-30", "9999-01-01")))
+        val lastEmpTitle = List(EmployeeTitle(Array("499999", "Engineer", "1997-11-30", "9999-01-01"), sdf))
 
         cachedEmployeeTitles.filter { _.employeeId == "499999" }.collect() should equal(lastEmpTitle)
       }
