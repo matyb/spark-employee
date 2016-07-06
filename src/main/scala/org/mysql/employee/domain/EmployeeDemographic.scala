@@ -3,9 +3,8 @@ package org.mysql.employee.domain
 import java.text.SimpleDateFormat
 import java.util.Date
 
-import org.mysql.employee.enums.Gender
-import org.mysql.employee.utils.Converter
 import org.mysql.employee.constants.DateConstants
+import org.mysql.employee.enums.Gender
 
 case class EmployeeDemographic(employeeId: String, dob: Date, firstName: String, lastName: String, gender: Gender.Value, hireDate: Date) extends EmployeeId {
 
@@ -19,6 +18,6 @@ case class EmployeeDemographic(employeeId: String, dob: Date, firstName: String,
 
 }
 
-object EmployeeDemographic extends Converter[(Array[String], SimpleDateFormat), EmployeeDemographic] {
-  def apply(record: (Array[String], SimpleDateFormat)) = new EmployeeDemographic(record._1, record._2)
+object EmployeeDemographic {
+  def apply(record: Array[String], sdf: SimpleDateFormat) = new EmployeeDemographic(record, sdf)
 }

@@ -1,46 +1,55 @@
 package org.mysql.employee
 
 import java.text.SimpleDateFormat
+import java.util.Enumeration
+
+import scala.reflect._
 import scala.reflect.ClassTag
+import scala.reflect.Manifest
+import scala.reflect.Manifest
+
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.mysql.employee.constants.DateConstants
 import org.mysql.employee.domain.Department
-import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.DepartmentEmployee
 import org.mysql.employee.domain.DepartmentManager
+import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.EmployeeDemographic
 import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
-import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.enums.Gender
-import org.mysql.employee.utils.Converter
 import org.mysql.employee.utils.Companion._
+import org.mysql.employee.utils.Companion.companion
+import org.scalatest.FunSpec
 import org.scalatest.FunSpec
 import org.scalatest.Matchers
-import com.holdenkarau.spark.testing.SharedSparkContext
-import java.util.Properties
-import java.util.Enumeration
-import scala.reflect.Manifest
-import org.scalatest.matchers.Matcher
+import org.scalatest.Matchers
 import org.scalatest.matchers.MatchResult
+import org.scalatest.matchers.MatchResult
+import org.scalatest.matchers.Matcher
+import org.scalatest.matchers.Matcher
+
+import com.holdenkarau.spark.testing.SharedSparkContext
+import com.holdenkarau.spark.testing.SharedSparkContext
 
 class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
   val sdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
   
-  def parse[T: ClassTag](records: Array[String], entity: Converter[(Array[String], SimpleDateFormat), T], sc: SparkContext = sc): RDD[T] = {
+  def parse[T: ClassTag](records: Array[String], entity: (Array[String],SimpleDateFormat) => T, sc: SparkContext = sc): RDD[T] = {
     Main.parse(sc.parallelize(records), entity)
   }
 
   class ShouldBecomeMatcher[T](expected: Array[T]) (implicit m : Manifest[T])  extends Matcher[Array[String]] {
     
     def apply(records: Array[String]) = {
-      val results = parse(records, companion(m)).collect().toList
+      val comp : { def apply(record: Array[String], sdf: SimpleDateFormat): T } = companion(m)
+      val results = parse(records, comp.apply(_, _)).collect().toList
       MatchResult(
         results.sameElements(expected),
-        s"""Records $records did not equal "$results"""",
-        s"""Records $records did equal "$results""""
+        s"Records $records did not equal $results",
+        s"Records $records did equal $results"
       )
     }
     
@@ -207,7 +216,7 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
       def loadEmployees(): (Array[String], RDD[EmployeeDemographic], List[EmployeeDemographic]) = {
         val records = readRecords("load_employees.dump")
-        val rdd = Main.parse(sc.parallelize(records), EmployeeDemographic)
+        val rdd = Main.parse(sc.parallelize(records), EmployeeDemographic(_,_))
         (records, rdd, rdd.collect().toList)
       }
 
@@ -220,7 +229,7 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
       def loadDepartments(): (Array[String], RDD[Department], List[Department]) = {
         val records = readRecords("load_departments.dump")
-        val departments = Main.parse(sc.parallelize(records), Department)
+        val departments = Main.parse(sc.parallelize(records), Department(_,_))
         (records, departments, departments.collect().toList)
       }
 
@@ -233,7 +242,7 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
       def loadDepartmentEmployees(): (Array[String], RDD[DepartmentEmployee], List[DepartmentEmployee]) = {
         val records = readRecords("load_dept_emp.dump")
-        val departmentEmployees = Main.parse(sc.parallelize(records), DepartmentEmployee)
+        val departmentEmployees = Main.parse(sc.parallelize(records), DepartmentEmployee(_,_))
         (records, departmentEmployees, departmentEmployees.collect().toList)
       }
 
@@ -255,7 +264,7 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
       def loadDepartmentManagers(): (Array[String], RDD[DepartmentManager], List[DepartmentManager]) = {
         val records = readRecords("load_dept_manager.dump")
-        val departmentManagers = Main.parse(sc.parallelize(records), DepartmentManager)
+        val departmentManagers = Main.parse(sc.parallelize(records), DepartmentManager(_,_))
         (records, departmentManagers, departmentManagers.collect().toList)
       }
 
@@ -277,7 +286,7 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
       def loadEmployeeTitles(): (Array[String], RDD[EmployeeTitle], List[EmployeeTitle]) = {
         val records = readRecords("load_titles.dump")
-        val employeeTitles = Main.parse(sc.parallelize(records), EmployeeTitle)
+        val employeeTitles = Main.parse(sc.parallelize(records), EmployeeTitle(_,_))
         (records, employeeTitles, employeeTitles.collect().toList)
       }
 

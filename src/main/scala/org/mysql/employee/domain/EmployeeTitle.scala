@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import org.mysql.employee.constants.DateConstants
-import org.mysql.employee.utils.Converter
 import org.mysql.util.Range
 
 case class EmployeeTitle(employeeId: String, title: String, start: Date, end: Date) extends EmployeeId with Range[Date] {
@@ -14,6 +13,6 @@ case class EmployeeTitle(employeeId: String, title: String, start: Date, end: Da
 
 }
 
-object EmployeeTitle extends Converter[(Array[String], SimpleDateFormat), EmployeeTitle] {
-  def apply(record: (Array[String], SimpleDateFormat)) = new EmployeeTitle(record._1, record._2)
+object EmployeeTitle {
+  def apply(record: Array[String], sdf: SimpleDateFormat) = new EmployeeTitle(record, sdf)
 }

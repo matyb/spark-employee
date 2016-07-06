@@ -1,6 +1,5 @@
 package org.mysql.employee.domain
 
-import org.mysql.employee.utils.Converter
 import java.text.SimpleDateFormat
 
 case class Department(id: String, name: String) {
@@ -9,8 +8,8 @@ case class Department(id: String, name: String) {
 
 }
 
-object Department extends Converter[(Array[String], SimpleDateFormat), Department] {
+object Department {
 
-  def apply(record: (Array[String], SimpleDateFormat)) = new Department(record._1)
+  def apply(record: Array[String], sdf: SimpleDateFormat) = new Department(record)
 
 }
