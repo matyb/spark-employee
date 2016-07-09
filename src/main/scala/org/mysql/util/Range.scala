@@ -1,8 +1,12 @@
 package org.mysql.util
 
-trait Range[T] {
+import java.util.Date
+
+trait Range {
   
-  val start: T
-  val end: T
+  def start: Date
+  def end: Date
+  
+  def isActiveOn(asOfDate: Date) = !start.after(asOfDate) && !end.before(asOfDate)
   
 }

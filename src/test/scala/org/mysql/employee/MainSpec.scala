@@ -197,8 +197,9 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
       val employee = Main.join(sc.parallelize(List(oneDepartment(0), twoDepartment(0))), sc.parallelize(oneDepartmentEmployee), 
           sc.parallelize(oneDepartmentManager), sc.parallelize(oneDemographic), sc.parallelize(oneTitle), 
           sc.parallelize(oneEmployeeSalary)).collect()
-      val expectedEmployee : Employee = Employee("10001", List((oneDepartmentEmployee(0),oneDepartment(0))), 
-                                      List((twoDepartment(0),oneDepartmentManager(0))), List(oneDemographic(0)), 
+      val expectedEmployee = Employee("10001", 
+                                      List((oneDepartmentEmployee(0),oneDepartment(0))), 
+                                      List((oneDepartmentManager(0),twoDepartment(0))), List(oneDemographic(0)), 
                                       List(oneTitle(0)), List(oneEmployeeSalary(0)))
       employee should equal (Array(expectedEmployee))    
     }

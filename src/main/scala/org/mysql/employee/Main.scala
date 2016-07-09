@@ -18,6 +18,7 @@ import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.EmployeeDemographic
 import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
+import org.mysql.employee.report.ConsoleReporter
 import org.mysql.employee.utils.FileUtils.rmFolder
 
 object Main {
@@ -60,6 +61,8 @@ object Main {
                          employeeDemographics, employeeTitles, employeeSalaries).cache()
                          
     employees.saveAsTextFile(s"$outputPath/employees")
+    
+    println(ConsoleReporter.report(employees))
   }
   
   def validateArgs(logger: Logger, arg: Array[String]) = {
@@ -88,7 +91,7 @@ object Main {
     val departmentEmployeesDepKeyRdd = departmentsRdd.join(departmentEmployees.map { row => (row.departmentId, row) })
     val departmentEmployeesEmpKeyRdd = departmentEmployeesDepKeyRdd.map { row => (row._2._2.employeeId, row._2) }
     val departmentManagerDepRdd = departmentsRdd.join(departmentManagers.map { row => (row.managedDepartmentId, row) })
-                                                .map{ row => (row._2._2.employeeId, (row._2._1, row._2._2)) }
+                                                .map{ row => (row._2._2.employeeId, (row._2._2, row._2._1)) }
     val employeeDemographicsRdd = employeeDemographics.map { row => (row.employeeId, row )}
                                                       .leftOuterJoin(departmentManagerDepRdd)
     
@@ -99,7 +102,7 @@ object Main {
     
     grouped.map { row =>
       val departmentEmployee = ListBuffer[(DepartmentEmployee, Department)]()
-      val departmentManager = ListBuffer[(Department, DepartmentManager)]()
+      val departmentManager = ListBuffer[(DepartmentManager, Department)]()
       val employeeDemographic = ListBuffer[EmployeeDemographic]()
       val employeeTitles = ListBuffer[EmployeeTitle]()
       val employeeSalaries = ListBuffer[EmployeeSalary]()
