@@ -16,8 +16,8 @@ object ConsoleReporter {
     new Reporter[String] {
       def asOf(asOfDate: Date) = {
     	  val asOfString = sdf.format(asOfDate)
-        val filtered = employees.map { employee => employee.filter(asOfDate)}
-                                .map { employee => (employee.isEmployedAsOf(asOfDate), employee )}.cache()
+        val filtered = employees.map { employee => employee.filter(asOfDate) }
+                                .map { employee => (employee.isEmployedAsOf(asOfDate), employee ) }.cache()
                                 
         val active = filtered.filter(_._1).map(_._2).cache()
         val inactive = filtered.filter(!_._1).map(_._2).cache()
@@ -35,14 +35,19 @@ Department               Manager(s):
 ====================================
 """ + 
 managersByDepartment.map{ mgr => 
-  mgr._1.padTo(25, ' ') + mgr._2.map {(employee => {
+  mgr._1.padTo(25, ' ') + mgr._2.map { employee => {
     val demographic = employee.employeeDemographic
     demographic.lastName + ", " + demographic.firstName
-  })}.mkString("; ")
-}.collect().mkString("\n") + "\n"
-//        .map { ((departmentName : String, employeeNames : Iterable[String])) =>
-//          departmentName + employeeNames.mkString(";")
-//        }
+  }}.mkString("; ")
+}.collect().mkString("\n") +"""
+  
+Department               Avg Salary:
+====================================
+""" + 
+active.groupBy{ emp => emp.department.name }.map { emp =>
+  emp._1.padTo(25, ' ') + (emp._2.foldLeft(0L){ (a, b) => a + b.employeeSalary.salaryDollars } / emp._2.size)
+}.collect().mkString("\n") + """
+"""
       }
     }
   }

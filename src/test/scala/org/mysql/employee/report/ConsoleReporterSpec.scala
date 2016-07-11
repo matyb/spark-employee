@@ -170,4 +170,33 @@ Department1              Facello, Manager3
     }
   }
   
+  describe("salaries") {
+    
+    describe("by department"){
+
+      it ("can print heading even without employees") {
+        val result = report.asOf(outputSdf.parse("01/01/1980"))
+        result should include(
+s"""
+Department               Avg Salary:
+====================================
+
+""")
+      }
+      
+      it ("can print heading with employees") {
+        val result = report.asOf(asOfDate)
+        result should include(
+s"""
+Department               Avg Salary:
+====================================
+Department2              39500
+Department1              78333
+""")
+      }
+      
+    }
+    
+  }
+  
 }
