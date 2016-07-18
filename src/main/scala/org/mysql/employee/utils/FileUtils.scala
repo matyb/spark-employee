@@ -2,8 +2,7 @@
 
 package org.mysql.employee.utils
 
-import scalax.file.Path
-import scala.util.Try
+import java.io.File
 
 object FileUtils {
   
@@ -18,8 +17,7 @@ object FileUtils {
   }
 
   def rmLocalFile(outputPath: String) = {
-    val path = Path (outputPath.replace("\\", "/"))
-    Try(path.deleteRecursively(continueOnFailure = false))
+    new File(outputPath).delete()
   }
   
 }

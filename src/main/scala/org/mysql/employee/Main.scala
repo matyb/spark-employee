@@ -1,10 +1,8 @@
 package org.mysql.employee
 
 import java.text.SimpleDateFormat
-
 import scala.collection.mutable.ListBuffer
 import scala.reflect.ClassTag
-
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
@@ -18,8 +16,9 @@ import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.EmployeeDemographic
 import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
-import org.mysql.employee.report.ConsoleReporter
 import org.mysql.employee.utils.FileUtils.rmFolder
+import org.mysql.employee.report.ConsoleReporter
+import java.util.Date
 
 object Main {
 
@@ -59,10 +58,8 @@ object Main {
 
     val employees = join(departments, departmentEmployees, departmentManagers, 
                          employeeDemographics, employeeTitles, employeeSalaries).cache()
-                         
-    employees.saveAsTextFile(s"$outputPath/employees")
-    
-    println(ConsoleReporter.report(employees))
+                             
+    println(ConsoleReporter.report(employees).asOf(new Date()))
   }
   
   def validateArgs(logger: Logger, arg: Array[String]) = {
