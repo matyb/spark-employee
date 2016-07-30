@@ -7,49 +7,39 @@ import org.apache.spark.rdd.RDD
 import org.mysql.employee.constants.DateConstants
 import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.Department
+import org.mysql.employee.aggregator.EmployeeAggregate
+import scala.collection.SeqLike
 
-object ConsoleReporter {
+object ConsoleReporter extends Reporter[String]{
 
   def sdf = new SimpleDateFormat(DateConstants.outputDateFormat)
   
-  def report(employees: RDD[Employee]) = {
-    new Reporter[String] {
-      def asOf(asOfDate: Date) = {
-    	  val asOfString = sdf.format(asOfDate)
-        val filtered = employees.map { employee => employee.filter(asOfDate) }
-                                .map { employee => (employee.isEmployedAsOf(asOfDate), employee ) }.cache()
-                                
-        val active = filtered.filter(_._1).map(_._2).cache()
-        val inactive = filtered.filter(!_._1).map(_._2).cache()
-        filtered.unpersist(false) // Don't use filtered anymore
-        
-        val managers = active.filter { employee => employee.managedDepartment != Department.UNKNOWN }
-        val managersByDepartment = managers.groupBy { manager => manager.managedDepartment.name }
-                                
+  def report(aggregate: EmployeeAggregate) = {
+    val asOfString = sdf.format(aggregate.asOfDate)
+    val salaryByDepartment = aggregate.salaryByDepartment()
+    val separator = System.getProperty("line.separator")
+    val formatMap = (map : Map[String,_]) => 
+      map.foldLeft(""){(x,y) =>
+        x + s"${y._1.padTo(25, ' ')}${y._2}$separator"  } 
+    val formatMapOfLists = (map : Map[String, List[String]]) =>
+      formatMap(map.foldLeft(Map.empty[String,String]){
+        (result: Map[String,String], e: (String, List[String])) => 
+          result + (e._1 -> e._2.mkString("; "))})                                
 s"""
 Report as of: '$asOfString'
 ==========================
---- Number employed: ${active.count()}
+--- Number employed: ${aggregate.activeCount()}
 
 Department               Manager(s):
 ====================================
 """ + 
-managersByDepartment.map{ mgr => 
-  mgr._1.padTo(25, ' ') + mgr._2.map { employee => {
-    val demographic = employee.employeeDemographic
-    demographic.lastName + ", " + demographic.firstName
-  }}.mkString("; ")
-}.collect().mkString("\n") +"""
+formatMapOfLists(aggregate.managersByDepartment()) +"""
   
 Department               Avg Salary:
 ====================================
 """ + 
-active.groupBy{ emp => emp.department.name }.map { emp =>
-  emp._1.padTo(25, ' ') + (emp._2.foldLeft(0L){ (a, b) => a + b.employeeSalary.salaryDollars } / emp._2.size)
-}.collect().mkString("\n") + """
+formatMap(salaryByDepartment.averageByDepartment()) +"""
 """
-      }
-    }
   }
   
 }

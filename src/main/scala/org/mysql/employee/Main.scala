@@ -19,6 +19,8 @@ import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.utils.FileUtils.rmFolder
 import org.mysql.employee.report.ConsoleReporter
 import java.util.Date
+import org.mysql.employee.aggregator.EmployeeAggregate
+import org.mysql.employee.aggregator.RddEmployeeAggregate
 
 object Main {
 
@@ -59,7 +61,7 @@ object Main {
     val employees = join(departments, departmentEmployees, departmentManagers, 
                          employeeDemographics, employeeTitles, employeeSalaries).cache()
                              
-    println(ConsoleReporter.report(employees).asOf(new Date()))
+    println(ConsoleReporter.report(new RddEmployeeAggregate(employees, new Date())))
   }
   
   def validateArgs(logger: Logger, arg: Array[String]) = {
