@@ -156,7 +156,7 @@ class RddEmployeeAggregateSpec extends FunSpec with Matchers with BeforeAndAfter
         new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().averageByDepartment() should equal(Map())
       }
       
-      it ("can print heading with employees") {
+      it ("with employees") {
         val result = new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().averageByDepartment()
         result.get("Department2") should equal(Some(39500))
         result.get("Department1") should equal(Some(78333))

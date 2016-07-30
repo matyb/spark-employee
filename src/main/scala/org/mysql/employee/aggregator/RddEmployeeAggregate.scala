@@ -4,17 +4,18 @@ import java.util.Date
 import org.apache.spark.rdd.RDD
 import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.Department
+import org.mysql.employee.domain.EmployeeAsOf
 
-case class RddEmployeeAggregate (employees: RDD[Employee], asOfDate: Date) extends EmployeeAggregate {
+case class RddEmployeeAggregate (asOfDate: Date, employeesByDepartment: RDD[(String, Iterable[EmployeeAsOf])]) extends EmployeeAggregate {
   
-  val filtered = employees.map { employee => employee.filter(asOfDate) }
-                          .map { employee => (employee.isEmployedAsOf(asOfDate), employee ) }.cache()
-                          
-  val active = filtered.filter(_._1).map(_._2).cache()
-  val inactive = filtered.filter(!_._1).map(_._2).cache()
-  filtered.unpersist(false) // Don't use filtered anymore
-  
-  val managers = active.filter { employee => employee.managedDepartment != Department.UNKNOWN }
+			
+  def this(employees: RDD[Employee], asOfDate: Date) = 
+    this(asOfDate, employees.map { employee => employee.filter(asOfDate) }
+                            .map { employee => (employee.isEmployedAsOf(asOfDate), employee ) }
+                            .filter(_._1).map(_._2).groupBy{ emp => emp.department.name }.cache())
+                  
+  val active = employeesByDepartment.flatMap(_._2)
+  val managers = active.filter { employee => employee.managedDepartment != Department.UNKNOWN }.cache()
   val departmentManagers = managers.groupBy { manager => manager.managedDepartment.name }
   
   def activeCount() = {
@@ -31,7 +32,7 @@ case class RddEmployeeAggregate (employees: RDD[Employee], asOfDate: Date) exten
   }
   
   def salaryByDepartment() = {
-    new RddSalariesAggregate(active)
+    new RddSalariesAggregate(employeesByDepartment)
   }
   
 }

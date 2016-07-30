@@ -17,7 +17,7 @@ object ConsoleReporter extends Reporter[String]{
   def report(aggregate: EmployeeAggregate) = {
     val asOfString = sdf.format(aggregate.asOfDate)
     val salaryByDepartment = aggregate.salaryByDepartment()
-    val separator = System.getProperty("line.separator")
+    val separator = "\n"
     val formatMap = (map : Map[String,_]) => 
       map.foldLeft(""){(x,y) =>
         x + s"${y._1.padTo(25, ' ')}${y._2}$separator"  } 
