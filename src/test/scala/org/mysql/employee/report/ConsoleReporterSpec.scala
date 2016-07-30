@@ -132,8 +132,8 @@ Department2              78533
     
   }
  
-  def createAggregator(asOfDate: Date = new Date(), averageSalaries: Map[String, Int] = Map(), 
-      activeCount: Int = 0, managersByDepartment: Map[String,List[String]] = Map()) : EmployeeAggregate = {
+  def createAggregator(asOfDate: Date = new Date(), averageSalaries: Map[String, Long] = Map(), 
+      activeCount: Long = 0, managersByDepartment: Map[String,List[String]] = Map()) : EmployeeAggregate = {
     val employee = mock[EmployeeAggregate]
     val salaries = mock[SalariesAggregate]
     employee.expects('asOfDate)().returning(asOfDate)
