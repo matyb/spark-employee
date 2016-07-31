@@ -95,7 +95,7 @@ Department1              Facello, Manager3
   
   describe("salaries") {
     
-    describe("by department"){
+    describe("average by department"){
 
       it ("can print heading with no departments") {
         val aggregate = createAggregator(averageSalaries = Map())
@@ -130,9 +130,44 @@ Department2              78533
       
     }
     
+    describe("max by department"){
+
+      it ("can print heading with no departments") {
+        val aggregate = createAggregator(maxSalaries = Map())
+        ConsoleReporter.report(aggregate) should include(
+s"""
+Department               Max Salary:
+====================================
+
+""")
+      }
+      
+      it ("can print heading with one department") {
+        val aggregate = createAggregator(maxSalaries = Map("Department1" -> 39500))
+        ConsoleReporter.report(aggregate) should include(
+s"""
+Department               Max Salary:
+====================================
+Department1              39500
+""")
+      }
+      
+      it ("can print heading with multiple departments") {
+        val aggregate = createAggregator(maxSalaries = Map("Department1" -> 39500, "Department2" -> 78533))
+        ConsoleReporter.report(aggregate) should include(
+s"""
+Department               Max Salary:
+====================================
+Department1              39500
+Department2              78533
+""")
+      }
+      
+    }
+    
   }
  
-  def createAggregator(asOfDate: Date = new Date(), averageSalaries: Map[String, Long] = Map(), 
+  def createAggregator(asOfDate: Date = new Date(), averageSalaries: Map[String, Long] = Map(), maxSalaries: Map[String, Long] = Map(),
       activeCount: Long = 0, managersByDepartment: Map[String,List[String]] = Map()) : EmployeeAggregate = {
     val employee = mock[EmployeeAggregate]
     val salaries = mock[SalariesAggregate]
@@ -140,7 +175,8 @@ Department2              78533
     employee.expects('salaryByDepartment)().returning(salaries)
     employee.expects('activeCount)().returning(activeCount)
     employee.expects('managersByDepartment)().returning(managersByDepartment)
-    salaries.expects('averageByDepartment)().returning(averageSalaries)
+    salaries.expects('averages)().returning(averageSalaries)
+    salaries.expects('maximums)().returning(maxSalaries)
     employee
   }
   

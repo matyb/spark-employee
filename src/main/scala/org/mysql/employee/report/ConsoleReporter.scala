@@ -38,7 +38,12 @@ formatMapOfLists(aggregate.managersByDepartment()) +"""
 Department               Avg Salary:
 ====================================
 """ + 
-formatMap(salaryByDepartment.averageByDepartment()) +"""
+formatMap(salaryByDepartment.averages()) +"""
+  
+Department               Max Salary:
+====================================
+""" + 
+formatMap(salaryByDepartment.maximums()) +"""
 """
   }
   

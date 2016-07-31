@@ -55,7 +55,7 @@ class RddEmployeeAggregateSpec extends FunSpec with Matchers with BeforeAndAfter
                      employeeTitles = List(oneEmployeeTitle), 
                      employeeSalaries = List(oneEmployeeSalary))
                      
-    val twoDepartmentEmployee = DepartmentEmployee("10002", "d000", inputSdf.parse("1993-09-02"), inputSdf.parse("2013-02-03"))
+    val twoDepartmentEmployee = DepartmentEmployee("10002", "d001", inputSdf.parse("1993-09-02"), inputSdf.parse("2013-02-03"))
   	val twoDemographic = EmployeeDemographic("10002", inputSdf.parse("1973-09-02"), "Employee", "Facello", Gender withName "M", inputSdf.parse("1993-09-02"))
   	val twoEmployeeSalary = EmployeeSalary("10002", 34000, inputSdf.parse("1993-09-02"), inputSdf.parse("2013-02-03"))
     val twoEmployeeTitle = EmployeeTitle("10002","Not Managed",inputSdf.parse("1993-09-02"), inputSdf.parse("2013-02-03"))
@@ -67,7 +67,7 @@ class RddEmployeeAggregateSpec extends FunSpec with Matchers with BeforeAndAfter
                     employeeTitles = List(twoEmployeeTitle), 
                     employeeSalaries = List(twoEmployeeSalary))
                     
-    val threeDepartmentEmployee = DepartmentEmployee("10003", "d000", inputSdf.parse("2003-09-02"), inputSdf.parse("2013-03-03"))
+    val threeDepartmentEmployee = DepartmentEmployee("10003", "d001", inputSdf.parse("2003-09-02"), inputSdf.parse("2013-03-03"))
   	val threeDemographic = EmployeeDemographic("10003", inputSdf.parse("1998-09-02"), "ManagedEmployee", "Facello", Gender withName "M", inputSdf.parse("2003-09-02"))
   	val threeEmployeeSalary = EmployeeSalary("10003", 45000, inputSdf.parse("2003-09-02"), inputSdf.parse("2013-03-03"))
     val threeEmployeeTitle = EmployeeTitle("10003","Managed",inputSdf.parse("2003-09-02"), inputSdf.parse("2013-03-03"))
@@ -149,18 +149,33 @@ class RddEmployeeAggregateSpec extends FunSpec with Matchers with BeforeAndAfter
   
   describe("salaries") {
     
-    describe("by department"){
+    describe("average by department"){
 
       it ("no employees") {
         val asOfDate = outputSdf.parse("01/01/1980")
-        new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().averageByDepartment() should equal(Map())
+        new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().averages() should equal(Map())
       }
       
       it ("with employees") {
-        val result = new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().averageByDepartment()
+        val result = new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().averages()
         result.get("Department2") should equal(Some(39500))
         result.get("Department1") should equal(Some(78333))
+      }      
+      
+    }
+    
+    describe("max by department"){
+
+      it ("no employees") {
+        val asOfDate = outputSdf.parse("01/01/1980")
+        new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().maximums() should equal(Map())
       }
+      
+      it ("with employees") {
+        val result = new RddEmployeeAggregate(employees, asOfDate).salaryByDepartment().maximums()
+        result.get("Department2") should equal(Some(45000))
+        result.get("Department1") should equal(Some(95000))
+      }      
       
     }
     

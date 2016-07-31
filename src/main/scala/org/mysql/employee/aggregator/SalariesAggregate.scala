@@ -2,6 +2,7 @@ package org.mysql.employee.aggregator
 
 trait SalariesAggregate {
   
-  def averageByDepartment() : Map[String, Long]
+  def averages() : Map[String, Long]
+  def maximums() : Map[String, Long]
   
 }
