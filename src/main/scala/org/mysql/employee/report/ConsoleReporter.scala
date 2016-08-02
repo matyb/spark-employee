@@ -1,6 +1,7 @@
 package org.mysql.employee.report
 
-import java.text.SimpleDateFormat
+import org.mysql.employee.utils.DateUtils._
+
 import java.util.Date
 
 import org.apache.spark.rdd.RDD
@@ -12,7 +13,7 @@ import scala.collection.SeqLike
 
 object ConsoleReporter extends Reporter[String]{
 
-  def sdf = new SimpleDateFormat(DateConstants.outputDateFormat)
+  def sdf = outputFormat()
   
   def report(aggregate: EmployeeAggregate) = {
     val asOfString = sdf.format(aggregate.asOfDate)

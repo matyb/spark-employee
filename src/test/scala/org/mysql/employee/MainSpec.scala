@@ -1,6 +1,6 @@
 package org.mysql.employee
 
-import java.text.SimpleDateFormat
+import org.mysql.employee.utils.DateUtils._
 import java.util.Enumeration
 
 import scala.reflect._
@@ -32,10 +32,11 @@ import org.scalatest.matchers.Matcher
 
 import com.holdenkarau.spark.testing.SharedSparkContext
 import com.holdenkarau.spark.testing.SharedSparkContext
+import java.text.SimpleDateFormat
 
 class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
-  val sdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
+  val sdf = ingestionFormat()
   
   def parse[T: ClassTag](records: Array[String], entity: (Array[String],SimpleDateFormat) => T, sc: SparkContext = sc): RDD[T] = {
     Main.parse(sc.parallelize(records), entity)

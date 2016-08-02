@@ -1,6 +1,6 @@
 package org.mysql.employee.aggregator
 
-import java.text.SimpleDateFormat
+import org.mysql.employee.utils.DateUtils._
 
 import org.apache.spark.rdd.RDD
 import org.mysql.employee.constants.DateConstants
@@ -20,12 +20,12 @@ import com.holdenkarau.spark.testing.SharedSparkContext
 
 class RddEmployeeAggregateSpec extends FunSpec with Matchers with BeforeAndAfter with SharedSparkContext {
   
-  val outputSdf = new SimpleDateFormat(DateConstants.outputDateFormat)
+  val outputSdf = outputFormat()
   var employees : RDD[Employee] = _
   val asOfDate = outputSdf.parse("01/01/2005");
   
   before {
-    val inputSdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
+    val inputSdf = ingestionFormat()
     
     val oneDepartment  = Department("d000", "Department1")
   	val twoDepartment  = Department("d001", "Department2")

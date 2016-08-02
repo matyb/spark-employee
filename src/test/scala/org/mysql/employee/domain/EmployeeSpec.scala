@@ -2,7 +2,7 @@ package org.mysql.employee.domain
 
 import org.mysql.employee.constants.DateConstants
 import org.scalatest.BeforeAndAfter
-import java.text.SimpleDateFormat
+import org.mysql.employee.utils.DateUtils._
 import org.apache.spark.rdd.RDD
 import org.mysql.employee.enums.Gender
 import org.scalatest.FunSpec
@@ -10,14 +10,14 @@ import org.scalatest.Matchers
 
 class EmployeeSpec extends FunSpec with Matchers with BeforeAndAfter {
   
-  val outputSdf = new SimpleDateFormat(DateConstants.outputDateFormat)
+  val outputSdf = outputFormat()
   var employee : Employee = _
   var manager : Employee = _
   var dateString = "01/01/2005"
   var asOfDate = outputSdf.parse(dateString)
   
   before {
-    val inputSdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
+    val inputSdf = ingestionFormat()
     
     val oneDepartment  = Department("d000", "Department1")
   	val twoDepartment  = Department("d001", "Department2")

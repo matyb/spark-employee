@@ -1,6 +1,6 @@
 package org.mysql.employee.report
 
-import java.text.SimpleDateFormat
+import org.mysql.employee.utils.DateUtils._
 import java.util.Date
 
 import org.mysql.employee.aggregator.EmployeeAggregate
@@ -19,7 +19,7 @@ import org.mysql.employee.aggregator.SalariesAggregate
 
 class ConsoleReporterSpec extends FunSpec with Matchers with MockFactory {
   
-  val outputSdf = new SimpleDateFormat(DateConstants.outputDateFormat)
+  val outputSdf = outputFormat()
   
   describe("the header") {
         

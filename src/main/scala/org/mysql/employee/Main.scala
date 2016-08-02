@@ -1,13 +1,19 @@
 package org.mysql.employee
 
+import java.io.File
+import java.io.PrintWriter
 import java.text.SimpleDateFormat
+import java.util.Date
+
 import scala.collection.mutable.ListBuffer
 import scala.reflect.ClassTag
+
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.rdd.RDD.rddToPairRDDFunctions
+import org.mysql.employee.aggregator.RddEmployeeAggregate
 import org.mysql.employee.constants.DateConstants
 import org.mysql.employee.domain.Department
 import org.mysql.employee.domain.DepartmentEmployee
@@ -16,11 +22,12 @@ import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.EmployeeDemographic
 import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
-import org.mysql.employee.utils.FileUtils.rmFolder
 import org.mysql.employee.report.ConsoleReporter
-import java.util.Date
-import org.mysql.employee.aggregator.EmployeeAggregate
-import org.mysql.employee.aggregator.RddEmployeeAggregate
+import org.mysql.employee.utils.DateUtils.outputFormat
+import org.mysql.employee.utils.DateUtils.toHumanTime
+import org.mysql.employee.utils.DateUtils.outputTimeFormat
+import org.mysql.employee.utils.FileUtils.rmFolder
+
 
 object Main {
 
@@ -28,6 +35,8 @@ object Main {
 
   def main(arg: Array[String]) {
 
+    val start = System.currentTimeMillis()
+    
     validateArgs(logger, arg)
 
     val jobName = "Employee DB"
@@ -35,8 +44,11 @@ object Main {
     val sc = createContext(jobName)
 
     val (pathToFiles, outputPath) = (arg(0), arg(1))
-
-    rmFolder(outputPath)
+    val fsOutput = s"$outputPath/tmp"
+    val reportDir = s"$outputPath/reports";
+    
+    rmFolder(fsOutput)
+    new File(reportDir).mkdirs()
 
     logger.info(s"=> jobName  $jobName ")
     logger.info(s"=> pathToFiles $pathToFiles ")
@@ -60,8 +72,21 @@ object Main {
 
     val employees = join(departments, departmentEmployees, departmentManagers, 
                          employeeDemographics, employeeTitles, employeeSalaries).cache()
-                             
-    println(ConsoleReporter.report(new RddEmployeeAggregate(employees, new Date())))
+    
+    report(employees, start, reportDir)
+  }
+  
+  def report(employees: RDD[Employee], start: Long, reportDir: String){
+    val report = ConsoleReporter.report(new RddEmployeeAggregate(employees, new Date()))   
+    val now = System.currentTimeMillis()
+    val endTimeString = outputTimeFormat().format(new Date())
+    val times = s"${toHumanTime(now - start)} to generate, ended @$endTimeString"
+    
+    println(report)
+    println(times)
+    
+    new PrintWriter(s"$reportDir/report-$now.log") { write(times); close }
+    new PrintWriter(s"$reportDir/report-$now.txt") { write(report); close }
   }
   
   def validateArgs(logger: Logger, arg: Array[String]) = {
@@ -82,7 +107,7 @@ object Main {
   }
   
   def parse[T: ClassTag](rdd: RDD[String], converter: (Array[String],SimpleDateFormat) => T): RDD[T] = {
-    parse(rdd).map { line => converter(line.split(","), new SimpleDateFormat(DateConstants.ingestionDateFormat)) }
+    parse(rdd).map { line => converter(line.split(","), outputFormat()) }
   }
 
   def join(departments: RDD[Department], departmentEmployees: RDD[DepartmentEmployee], departmentManagers: RDD[DepartmentManager], employeeDemographics: RDD[EmployeeDemographic], employeeTitles: RDD[EmployeeTitle], employeeSalaries: RDD[EmployeeSalary]) = {
