@@ -9,18 +9,33 @@ case class Employee(id: String,
                     employeeTitles: List[EmployeeTitle], 
                     employeeSalaries: List[EmployeeSalary]) {
   
+  def getDepartment(asOfDate: Date) = {
+    departmentEmployees.filter{ t => t._1.isActiveOn(asOfDate)}.map(_._2).foldLeft(Department.UNKNOWN){(x, y) => y}
+  }
+  
+  def getDepartmentManaging(asOfDate: Date) = {
+    departmentManagers.filter{ t => t._1.isActiveOn(asOfDate)}.map(_._2).foldLeft(Department.UNKNOWN){(x, y) => y}
+  }
+  
+  def getEmployeeDemographic(asOfDate: Date) = {
+    employeeDemographics.filter{ t => t.isActiveOn(asOfDate)}.foldLeft(EmployeeDemographic.UNKNOWN){(x, y) => y}
+  }
+  
+  def getEmployeeTitle(asOfDate: Date) = {
+    employeeTitles.filter{ t => t.isActiveOn(asOfDate)}.foldLeft(EmployeeTitle.UNKNOWN){(x, y) => y}
+  }
+  
+  def getEmployeeSalary(asOfDate: Date) = {
+    employeeSalaries.filter{ t => t.isActiveOn(asOfDate)}.foldLeft(EmployeeSalary.UNKNOWN){(x, y) => y}
+  }
+  
   def filter(asOfDate: Date) = {
-    val departmentsAsOf = departmentEmployees.filter{ t => t._1.isActiveOn(asOfDate)} 
-    val departmentManagersAsOf = departmentManagers.filter{ t => t._1.isActiveOn(asOfDate)}
-    val employeeDemographicsAsOf = employeeDemographics.filter{ d => d.isActiveOn(asOfDate)}
-    val employeeTitlesAsOf = employeeTitles.filter{ t => t.isActiveOn(asOfDate)}  
-    val employeeSalariesAsOf = employeeSalaries.filter{ t => t.isActiveOn(asOfDate)}
     EmployeeAsOf(id = this.id,
-        if(departmentsAsOf.isEmpty) Department.UNKNOWN else departmentsAsOf(0)._2,
-        if(departmentManagersAsOf.isEmpty) Department.UNKNOWN else departmentManagersAsOf(0)._2,
-        if(employeeDemographicsAsOf.isEmpty) EmployeeDemographic.UNKNOWN else employeeDemographicsAsOf(0),
-        if(employeeTitlesAsOf.isEmpty) EmployeeTitle.UNKNOWN else employeeTitlesAsOf(0),
-        if(employeeSalariesAsOf.isEmpty) EmployeeSalary.UNKNOWN else employeeSalariesAsOf(0),
+        getDepartment(asOfDate),
+        getDepartmentManaging(asOfDate),
+        getEmployeeDemographic(asOfDate),
+        getEmployeeTitle(asOfDate),
+        getEmployeeSalary(asOfDate),
         asOfDate)
   } 
     

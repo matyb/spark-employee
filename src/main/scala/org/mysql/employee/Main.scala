@@ -24,6 +24,7 @@ import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.report.ConsoleReporter
 import org.mysql.employee.utils.DateUtils.outputFormat
+import org.mysql.employee.utils.DateUtils.ingestionFormat
 import org.mysql.employee.utils.DateUtils.toHumanTime
 import org.mysql.employee.utils.DateUtils.outputTimeFormat
 import org.mysql.employee.utils.FileUtils.rmFolder
@@ -107,7 +108,7 @@ object Main {
   }
   
   def parse[T: ClassTag](rdd: RDD[String], converter: (Array[String],SimpleDateFormat) => T): RDD[T] = {
-    parse(rdd).map { line => converter(line.split(","), outputFormat()) }
+    parse(rdd).map { line => converter(line.split(","), ingestionFormat()) }
   }
 
   def join(departments: RDD[Department], departmentEmployees: RDD[DepartmentEmployee], departmentManagers: RDD[DepartmentManager], employeeDemographics: RDD[EmployeeDemographic], employeeTitles: RDD[EmployeeTitle], employeeSalaries: RDD[EmployeeSalary]) = {
