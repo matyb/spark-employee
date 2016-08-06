@@ -21,5 +21,4 @@ case class EmployeeDemographic(employeeId: String, dob: Date, firstName: String,
 
 object EmployeeDemographic {
   def apply(record: Array[String], sdf: SimpleDateFormat) = new EmployeeDemographic(record, sdf)
-  val UNKNOWN = EmployeeDemographic("-999999", DateConstants.endOfTime, "UNKNOWN", "UNKNOWN", Gender withName "U", DateConstants.endOfTime)
 }

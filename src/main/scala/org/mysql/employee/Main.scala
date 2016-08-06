@@ -14,7 +14,6 @@ import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.rdd.RDD.rddToPairRDDFunctions
 import org.mysql.employee.aggregator.RddEmployeeAggregate
-import org.mysql.employee.constants.DateConstants
 import org.mysql.employee.domain.Department
 import org.mysql.employee.domain.DepartmentEmployee
 import org.mysql.employee.domain.DepartmentManager
@@ -23,10 +22,9 @@ import org.mysql.employee.domain.EmployeeDemographic
 import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.report.ConsoleReporter
-import org.mysql.employee.utils.DateUtils.outputFormat
 import org.mysql.employee.utils.DateUtils.ingestionFormat
-import org.mysql.employee.utils.DateUtils.toHumanTime
 import org.mysql.employee.utils.DateUtils.outputTimeFormat
+import org.mysql.employee.utils.DateUtils.toHumanTime
 import org.mysql.employee.utils.FileUtils.rmFolder
 
 
@@ -113,15 +111,14 @@ object Main {
 
   def join(departments: RDD[Department], departmentEmployees: RDD[DepartmentEmployee], departmentManagers: RDD[DepartmentManager], employeeDemographics: RDD[EmployeeDemographic], employeeTitles: RDD[EmployeeTitle], employeeSalaries: RDD[EmployeeSalary]) = {
     val departmentsRdd = departments.map { row => (row.id, row) }
+    
     val departmentEmployeesDepKeyRdd = departmentsRdd.join(departmentEmployees.map { row => (row.departmentId, row) })
     val departmentEmployeesEmpKeyRdd = departmentEmployeesDepKeyRdd.map { row => (row._2._2.employeeId, row._2) }
     val departmentManagerDepRdd = departmentsRdd.join(departmentManagers.map { row => (row.managedDepartmentId, row) })
                                                 .map{ row => (row._2._2.employeeId, (row._2._2, row._2._1)) }
-    val employeeDemographicsRdd = employeeDemographics.map { row => (row.employeeId, row )}
-                                                      .leftOuterJoin(departmentManagerDepRdd)
     
     val grouped = departmentEmployeesEmpKeyRdd
-                    .join(employeeDemographicsRdd
+                    .join(employeeDemographics.map { row => (row.employeeId, row )}.leftOuterJoin(departmentManagerDepRdd)
                         .join(employeeSalaries.map { row => (row.employeeId, row) })
                         .join(employeeTitles.map { row => (row.employeeId, row) } )).groupBy { row => row._1 }
     
@@ -143,12 +140,13 @@ object Main {
         employeeSalaries += values._2._2._1._2
       }
       if (id == "") throw new RuntimeException("Employee with no records")
+      
       Employee(id,
-          departmentEmployee.toList, 
-          departmentManager.toList, 
-          employeeDemographic.toList,
-          employeeTitles.toList, 
-          employeeSalaries.toList)
+              departmentEmployee.toList,
+              departmentManager.toList,
+              employeeDemographic.toList,
+              employeeTitles.toList, 
+              employeeSalaries.toList)
     }
   }
 

@@ -1,38 +1,38 @@
 package org.mysql.employee.aggregator
 
 import java.util.Date
-import org.apache.spark.rdd.RDD
-import org.mysql.employee.domain.Employee
-import org.mysql.employee.domain.Department
-import org.mysql.employee.domain.EmployeeAsOf
 
-case class RddEmployeeAggregate (asOfDate: Date, employeesByDepartment: RDD[(String, Iterable[EmployeeAsOf])]) extends EmployeeAggregate {
+import org.apache.spark.rdd.RDD
+import org.mysql.employee.domain.Department
+import org.mysql.employee.domain.Employee
+import org.mysql.employee.domain.EmployeeAsOf
+import org.mysql.employee.enums.Gender
+
+case class RddEmployeeAggregate (asOfDate: Date, employeesByGenderAndDepartment: RDD[(GroupBy, Iterable[EmployeeAsOf])]) extends EmployeeAggregate {
   
 			
   def this(employees: RDD[Employee], asOfDate: Date) = 
-    this(asOfDate, employees.map { employee => employee.filter(asOfDate) }
-                            .map { employee => (employee.isEmployedAsOf(asOfDate), employee ) }
-                            .filter(_._1).map(_._2).groupBy{ emp => emp.department.name }.cache())
+    this(asOfDate, employees.filter { employee => (employee.isEmployedAsOf(asOfDate)) }
+                            .map(_.asOf(asOfDate))
+                            .groupBy{ emp => GroupBy(emp.employeeDemographic.gender, emp.departmentEmployee._2) }.cache())
                   
-  val active = employeesByDepartment.flatMap(_._2)
-  val managers = active.filter { employee => employee.managedDepartment != Department.UNKNOWN }.cache()
-  val departmentManagers = managers.groupBy { manager => manager.managedDepartment.name }
+  val active = employeesByGenderAndDepartment.flatMap(_._2)
+  val managers = active.filter { employee => employee.departmentManaged != None}
+                                                     .groupBy { manager => manager.departmentManaged.get._2 }.cache()
   
   def activeCount() = {
-    active.count()
+    employeesByGenderAndDepartment.map{ case (groupBy, employees) => (groupBy, employees.size.toLong) }
+                                  .reduceByKey(_ + _).collectAsMap().toMap
   }
   
   def managersByDepartment() = {
-    departmentManagers.collect().foldLeft(Map.empty[String,List[String]]){ (result, mgr) =>
-      result + (mgr._1 -> mgr._2.map{ employee =>
-        val demographic = employee.employeeDemographic
-        demographic.lastName + ", " + demographic.firstName
-      }.toList)
-    }
+    managers.collectAsMap().toMap
   }
   
   def salaryByDepartment() = {
-    new RddSalariesAggregate(employeesByDepartment)
+    new RddSalariesAggregate(employeesByGenderAndDepartment)
   }
   
 }
+
+case class GroupBy(gender: Gender.Value, department: Department) 

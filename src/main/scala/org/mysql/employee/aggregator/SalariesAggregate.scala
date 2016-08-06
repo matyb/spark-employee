@@ -1,8 +1,12 @@
 package org.mysql.employee.aggregator
 
+import org.mysql.employee.domain.Department
+import scala.collection.Map
+import org.mysql.employee.enums.Gender
+
 trait SalariesAggregate {
   
-  def averages() : Map[String, Long]
-  def maximums() : Map[String, Long]
+  def averages() : Map[GroupBy, Long]
+  def maximums() : Map[GroupBy, Long]
   
 }

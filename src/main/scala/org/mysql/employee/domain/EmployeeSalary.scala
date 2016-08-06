@@ -13,6 +13,5 @@ case class EmployeeSalary(employeeId: String, salaryDollars: Long, start: Date, 
 
 object EmployeeSalary {
   def apply(record: Array[String], sdf: SimpleDateFormat) = new EmployeeSalary(record, sdf)
-  val UNKNOWN = EmployeeSalary("-999999", 0L, DateConstants.endOfTime, DateConstants.endOfTime)
 }
   

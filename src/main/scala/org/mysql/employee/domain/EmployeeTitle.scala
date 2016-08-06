@@ -15,5 +15,4 @@ case class EmployeeTitle(employeeId: String, title: String, start: Date, end: Da
 
 object EmployeeTitle {
   def apply(record: Array[String], sdf: SimpleDateFormat) = new EmployeeTitle(record, sdf)
-  val UNKNOWN = EmployeeTitle("-999999","UNKNOWN",DateConstants.endOfTime,DateConstants.endOfTime)
 }
