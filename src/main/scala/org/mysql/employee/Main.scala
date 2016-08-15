@@ -113,38 +113,42 @@ object Main {
     val departmentsRdd = departments.map { row => (row.id, row) }
     
     val departmentEmployeesDepKeyRdd = departmentsRdd.join(departmentEmployees.map { row => (row.departmentId, row) })
-    val departmentEmployeesEmpKeyRdd = departmentEmployeesDepKeyRdd.map { row => (row._2._2.employeeId, row._2) }
+    val departmentEmployeesEmpKeyRdd = departmentEmployeesDepKeyRdd.map { case (departmentId ,(department, departmentEmployee)) =>
+      (departmentEmployee.employeeId, (department, departmentEmployee)) 
+    }
     val departmentManagerDepRdd = departmentsRdd.join(departmentManagers.map { row => (row.managedDepartmentId, row) })
-                                                .map{ row => (row._2._2.employeeId, (row._2._2, row._2._1)) }
+                                                .map{ case (departmentId, (managedDepartment, departmentManager)) =>
+                                                  (departmentManager.employeeId, (departmentManager, managedDepartment)) 
+                                                }
     
     val grouped = departmentEmployeesEmpKeyRdd
-                    .join(employeeDemographics.map { row => (row.employeeId, row )}.leftOuterJoin(departmentManagerDepRdd)
-                        .join(employeeSalaries.map { row => (row.employeeId, row) })
-                        .join(employeeTitles.map { row => (row.employeeId, row) } )).groupBy { row => row._1 }
+                    .join(employeeDemographics.map { demographic => (demographic.employeeId, demographic )}
+                    .leftOuterJoin(departmentManagerDepRdd)
+                    .join(employeeSalaries.map { salary => (salary.employeeId, salary) })
+                    .join(employeeTitles.map { title => (title.employeeId, title) } ))
+                    .groupBy { case (empId, _) => 
+                      empId
+                    }
     
-    grouped.map { row =>
-      val departmentEmployee = ListBuffer[(DepartmentEmployee, Department)]()
-      val departmentManager = ListBuffer[(DepartmentManager, Department)]()
-      val employeeDemographic = ListBuffer[EmployeeDemographic]()
+    grouped.map { case (key, records) =>
+      val departmentEmployees = ListBuffer[(DepartmentEmployee, Department)]()
+      val departmentManagers = ListBuffer[(DepartmentManager, Department)]()
+      val employeeDemographics = ListBuffer[EmployeeDemographic]()
       val employeeTitles = ListBuffer[EmployeeTitle]()
       val employeeSalaries = ListBuffer[EmployeeSalary]()
-      var id : String = ""
-      row._2.foreach { values =>
-        id = values._1
-        departmentEmployee += ((values._2._1._2, values._2._1._1))
-        if(values._2._2._1._1._2 != None){
-          departmentManager += ((values._2._2._1._1._2.get))
-        }
-        employeeDemographic += values._2._2._1._1._1
-        employeeTitles += values._2._2._2
-        employeeSalaries += values._2._2._1._2
+      records.foreach { case (empId, ((department, departmentEmployee), (((demographic, manager), salary), title))) =>
+        departmentEmployees += ((departmentEmployee, department))
+        departmentManagers ++= manager
+        employeeDemographics += demographic
+        employeeTitles += title
+        employeeSalaries += salary
       }
-      if (id == "") throw new RuntimeException("Employee with no records")
+      if (key == "") throw new RuntimeException("Employee with no records")
       
-      Employee(id,
-              departmentEmployee.toList,
-              departmentManager.toList,
-              employeeDemographic.toList,
+      Employee(key,
+              departmentEmployees.toList,
+              departmentManagers.toList,
+              employeeDemographics.toList,
               employeeTitles.toList, 
               employeeSalaries.toList)
     }
