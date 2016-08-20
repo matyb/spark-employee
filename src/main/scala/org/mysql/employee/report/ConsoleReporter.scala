@@ -25,11 +25,17 @@ object ConsoleReporter extends Reporter[String]{
     val activeByGender = active.foldLeft(Map.empty[Gender.Value, Long]){ (result, emp) =>
       val sum = result.getOrElse(emp._1.gender, 0L) + emp._2
       result + ((emp._1.gender, sum))  
-    };
+    }
+    val activeByDepartmentAndGender = active.foldLeft(Map.empty[Department,Map[Gender.Value,Long]]) { case(result, employee) => 
+      val employeesByGender = result.getOrElse(employee._1.department, Map())
+      val sum = employeesByGender.getOrElse(employee._1.gender, 0L)
+      val m = employeesByGender + (employee._1.gender -> (sum + employee._2))
+      result + (employee._1.department -> m)
+    }
     val longFormat = java.text.NumberFormat.getIntegerInstance.format(_ : Long)
     val countText = s"${longFormat(activeByGender.values.foldLeft(0L)(_ + _))}" + 
-                      s" (${longFormat(activeByGender.getOrElse(Gender.F, 0L))} - ${Gender.F}" +
-                      s", ${longFormat(activeByGender.getOrElse(Gender.M, 0L))} - ${Gender.M})"
+                      s" (${longFormat(activeByGender.getOrElse(Gender.M, 0L))} - ${Gender.M}" +
+                      s", ${longFormat(activeByGender.getOrElse(Gender.F, 0L))} - ${Gender.F})"
     val separator = "\n"
     val formatMap = (map : Map[String,Iterable[_]]) => 
       map.foldLeft(""){(x,y) =>
@@ -53,17 +59,20 @@ formatMap(aggregate.managersByDepartment().map { case(x,y) =>
 Department               # Employed:
 ====================================
 """ + 
-formatDepartmentCount(active.foldLeft(Map.empty[Department,Map[Gender.Value,Long]]) { case(result, employee) => 
-  val employeesByGender = result.getOrElse(employee._1.department, Map())
-  val sum = employeesByGender.getOrElse(employee._1.gender, 0L)
-  val m = employeesByGender + (employee._1.gender -> (sum + employee._2))
-  result + (employee._1.department -> m)
-}) +"""
+formatDepartmentCount(activeByDepartmentAndGender) +"""
   
 Department               Avg Salary:
 ====================================
 """ + 
-formatMap(salaryByDepartment.averages().map { case(x,y) => (x.department.name, List(y)) } ) +"""
+formatMap(salaryByDepartment.averages().groupBy(_._1.department).map { case(department, avgByGroup) =>
+  val totalAvg = (avgByGroup.getOrElse(GroupBy(Gender.M, department), 0L) * 
+                                 activeByDepartmentAndGender.get(department).get.getOrElse(Gender.M, 1L) + 
+                  avgByGroup.getOrElse(GroupBy(Gender.F, department), 0L) * 
+                                 activeByDepartmentAndGender.get(department).get.getOrElse(Gender.F, 1L)) / activeByDepartmentAndGender.get(department).get.values.sum
+  println(s"$totalAvg ++++ ${avgByGroup.values.sum} ++++ ${activeByDepartmentAndGender.get(department).get}")
+  (department.name, List(s"$$${longFormat(totalAvg)} ($$${longFormat(avgByGroup.getOrElse(GroupBy(Gender.M, department), 0L))} - ${Gender.M}, " +
+                                                    s"$$${longFormat(avgByGroup.getOrElse(GroupBy(Gender.F, department), 0L))} - ${Gender.F})") ) 
+}) +"""
   
 Department               Max Salary:
 ====================================

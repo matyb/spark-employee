@@ -49,21 +49,21 @@ Report as of: '$dateString'
                                                          GroupBy(Gender.M, data.oneDepartment) -> 2, GroupBy(Gender.M, data.twoDepartment) -> 1))
       ConsoleReporter.report(aggregate) should include(
         s"""
---- Number employed: 5 (2 - F, 3 - M)""")
+--- Number employed: 5 (3 - M, 2 - F)""")
     }
 
     it("should contain a count of active employees when no one is employed") {
       val aggregate = createAggregator(activeCount = Map())
       ConsoleReporter.report(aggregate) should include(
         s"""
---- Number employed: 0 (0 - F, 0 - M)""")
+--- Number employed: 0 (0 - M, 0 - F)""")
     }
 
     it("should contain a count of active employees with commas in every 3 places") {
       val aggregate = createAggregator(activeCount = Map(GroupBy(Gender.F, data.oneDepartment) -> 9999, GroupBy(Gender.M, data.twoDepartment) -> 8888))
       ConsoleReporter.report(aggregate) should include(
         s"""
---- Number employed: 18,887 (9,999 - F, 8,888 - M)""")
+--- Number employed: 18,887 (8,888 - M, 9,999 - F)""")
     }
 
     describe("by department") {
@@ -157,24 +157,31 @@ Department               Avg Salary:
       }
 
       it("can print heading with one department") {
-        val aggregate = createAggregator(averageSalaries = Map(GroupBy(Gender.M, Department("id1", "Department1")) -> 39500))
+        val department = Department("id1", "Department1")
+        val aggregate = createAggregator(activeCount = Map(GroupBy(Gender.M, department) -> 1, GroupBy(Gender.F, department) -> 2),
+                                         averageSalaries = Map(GroupBy(Gender.M, department) -> 41000,
+                                                               GroupBy(Gender.F, department) -> 28000))
         ConsoleReporter.report(aggregate) should include(
-          s"""
+"""
 Department               Avg Salary:
 ====================================
-Department1              39500
+Department1              $32,333 ($41,000 - M, $28,000 - F)
 """)
       }
 
       it("can print heading with multiple departments") {
-        val aggregate = createAggregator(averageSalaries = 
-          Map(GroupBy(Gender.M, Department("id1", "Department1")) -> 39500, GroupBy(Gender.F, data.twoDepartment) -> 78533))
+        val departmentOne = Department("id1", "Department1")
+        val departmentTwo = Department("id2", "Department2")
+        val aggregate = createAggregator(activeCount = Map(GroupBy(Gender.M, departmentOne) -> 1, GroupBy(Gender.F, departmentOne) -> 1, GroupBy(Gender.F, departmentTwo) -> 1),
+                                         averageSalaries = Map(GroupBy(Gender.M, departmentOne) -> 41000,
+                                                               GroupBy(Gender.F, departmentOne) -> 28000,
+                                                               GroupBy(Gender.F, departmentTwo) -> 78533))
         ConsoleReporter.report(aggregate) should include(
-          s"""
+"""
 Department               Avg Salary:
 ====================================
-Department1              39500
-Department2              78533
+Department2              $78,533 ($0 - M, $78,533 - F)
+Department1              $34,500 ($41,000 - M, $28,000 - F)
 """)
       }
 
