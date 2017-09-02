@@ -11,5 +11,5 @@ case class Department(id: String, name: String) {
 object Department {
 
   def apply(record: Array[String], sdf: SimpleDateFormat) = new Department(record)
-
+  
 }

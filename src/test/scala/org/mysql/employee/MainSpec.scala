@@ -10,7 +10,6 @@ import scala.reflect.Manifest
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.mysql.employee.constants.DateConstants
 import org.mysql.employee.domain.Department
 import org.mysql.employee.domain.DepartmentEmployee
 import org.mysql.employee.domain.DepartmentManager
@@ -21,6 +20,7 @@ import org.mysql.employee.domain.EmployeeTitle
 import org.mysql.employee.enums.Gender
 import org.mysql.employee.utils.Companion._
 import org.mysql.employee.utils.Companion.companion
+import org.mysql.employee.utils.DateUtils._
 import org.scalatest.FunSpec
 import org.scalatest.FunSpec
 import org.scalatest.Matchers
@@ -30,12 +30,11 @@ import org.scalatest.matchers.MatchResult
 import org.scalatest.matchers.Matcher
 import org.scalatest.matchers.Matcher
 
-import com.holdenkarau.spark.testing.SharedSparkContext
 import com.holdenkarau.spark.testing.SharedSparkContext
 
 class MainSpec extends FunSpec with SharedSparkContext with Matchers {
 
-  val sdf = new SimpleDateFormat(DateConstants.ingestionDateFormat)
+  val sdf = ingestionFormat()
   
   def parse[T: ClassTag](records: Array[String], entity: (Array[String],SimpleDateFormat) => T, sc: SparkContext = sc): RDD[T] = {
     Main.parse(sc.parallelize(records), entity)
@@ -197,9 +196,12 @@ class MainSpec extends FunSpec with SharedSparkContext with Matchers {
       val employee = Main.join(sc.parallelize(List(oneDepartment(0), twoDepartment(0))), sc.parallelize(oneDepartmentEmployee), 
           sc.parallelize(oneDepartmentManager), sc.parallelize(oneDemographic), sc.parallelize(oneTitle), 
           sc.parallelize(oneEmployeeSalary)).collect()
-      val expectedEmployee : Employee = Employee("10001", List((oneDepartmentEmployee(0),oneDepartment(0))), 
-                                      List((twoDepartment(0),oneDepartmentManager(0))), List(oneDemographic(0)), 
-                                      List(oneTitle(0)), List(oneEmployeeSalary(0)))
+      val expectedEmployee = Employee("10001", 
+                                     List((oneDepartmentEmployee(0),oneDepartment(0))), 
+                                     List((oneDepartmentManager(0),twoDepartment(0))),
+                                     List(oneDemographic(0)), 
+                                     List(oneTitle(0)), List(oneEmployeeSalary(0)))
+                   
       employee should equal (Array(expectedEmployee))    
     }
     

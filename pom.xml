@@ -127,5 +127,11 @@
 		  <artifactId>spark-testing-base_2.10</artifactId>
 		  <version>1.6.1_0.3.3</version>
 		</dependency>
+		<dependency>
+		  <groupId>org.scalamock</groupId>
+		  <artifactId>scalamock-scalatest-support_2.10</artifactId>
+		  <version>3.2.2</version>
+		  <scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

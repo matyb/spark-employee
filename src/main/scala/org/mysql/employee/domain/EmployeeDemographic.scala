@@ -5,8 +5,9 @@ import java.util.Date
 
 import org.mysql.employee.constants.DateConstants
 import org.mysql.employee.enums.Gender
+import org.mysql.util.Range
 
-case class EmployeeDemographic(employeeId: String, dob: Date, firstName: String, lastName: String, gender: Gender.Value, hireDate: Date) extends EmployeeId {
+case class EmployeeDemographic(employeeId: String, dob: Date, firstName: String, lastName: String, gender: Gender.Value, start: Date, end: Date = DateConstants.endOfTime) extends EmployeeId with Range {
 
   def this(record: Array[String], sdf: SimpleDateFormat = new SimpleDateFormat(DateConstants.ingestionDateFormat)) =
     this(record(0),

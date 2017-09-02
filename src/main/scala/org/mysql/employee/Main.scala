@@ -1,6 +1,9 @@
 package org.mysql.employee
 
+import java.io.File
+import java.io.PrintWriter
 import java.text.SimpleDateFormat
+import java.util.Date
 
 import scala.collection.mutable.ListBuffer
 import scala.reflect.ClassTag
@@ -10,7 +13,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.rdd.RDD.rddToPairRDDFunctions
-import org.mysql.employee.constants.DateConstants
+import org.mysql.employee.aggregator.RddEmployeeAggregate
 import org.mysql.employee.domain.Department
 import org.mysql.employee.domain.DepartmentEmployee
 import org.mysql.employee.domain.DepartmentManager
@@ -18,7 +21,12 @@ import org.mysql.employee.domain.Employee
 import org.mysql.employee.domain.EmployeeDemographic
 import org.mysql.employee.domain.EmployeeSalary
 import org.mysql.employee.domain.EmployeeTitle
+import org.mysql.employee.report.ConsoleReporter
+import org.mysql.employee.utils.DateUtils.ingestionFormat
+import org.mysql.employee.utils.DateUtils.outputTimeFormat
+import org.mysql.employee.utils.DateUtils.toHumanTime
 import org.mysql.employee.utils.FileUtils.rmFolder
+
 
 object Main {
 
@@ -26,6 +34,8 @@ object Main {
 
   def main(arg: Array[String]) {
 
+    val start = System.currentTimeMillis()
+    
     validateArgs(logger, arg)
 
     val jobName = "Employee DB"
@@ -33,8 +43,11 @@ object Main {
     val sc = createContext(jobName)
 
     val (pathToFiles, outputPath) = (arg(0), arg(1))
-
-    rmFolder(outputPath)
+    val fsOutput = s"$outputPath/tmp"
+    val reportDir = s"$outputPath/reports";
+    
+    rmFolder(fsOutput)
+    new File(reportDir).mkdirs()
 
     logger.info(s"=> jobName  $jobName ")
     logger.info(s"=> pathToFiles $pathToFiles ")
@@ -58,8 +71,21 @@ object Main {
 
     val employees = join(departments, departmentEmployees, departmentManagers, 
                          employeeDemographics, employeeTitles, employeeSalaries).cache()
-                         
-    employees.saveAsTextFile(s"$outputPath/employees")
+    
+    report(employees, start, reportDir)
+  }
+  
+  def report(employees: RDD[Employee], start: Long, reportDir: String){
+    val report = ConsoleReporter.report(new RddEmployeeAggregate(employees, new Date()))   
+    val now = System.currentTimeMillis()
+    val endTimeString = outputTimeFormat().format(new Date())
+    val times = s"${toHumanTime(now - start)} to generate, ended @$endTimeString"
+    
+    println(report)
+    println(times)
+    
+    new PrintWriter(s"$reportDir/report-$now.log") { write(times); close }
+    new PrintWriter(s"$reportDir/report-$now.txt") { write(report); close }
   }
   
   def validateArgs(logger: Logger, arg: Array[String]) = {
@@ -80,47 +106,51 @@ object Main {
   }
   
   def parse[T: ClassTag](rdd: RDD[String], converter: (Array[String],SimpleDateFormat) => T): RDD[T] = {
-    parse(rdd).map { line => converter(line.split(","), new SimpleDateFormat(DateConstants.ingestionDateFormat)) }
+    parse(rdd).map { line => converter(line.split(","), ingestionFormat()) }
   }
 
   def join(departments: RDD[Department], departmentEmployees: RDD[DepartmentEmployee], departmentManagers: RDD[DepartmentManager], employeeDemographics: RDD[EmployeeDemographic], employeeTitles: RDD[EmployeeTitle], employeeSalaries: RDD[EmployeeSalary]) = {
     val departmentsRdd = departments.map { row => (row.id, row) }
+    
     val departmentEmployeesDepKeyRdd = departmentsRdd.join(departmentEmployees.map { row => (row.departmentId, row) })
-    val departmentEmployeesEmpKeyRdd = departmentEmployeesDepKeyRdd.map { row => (row._2._2.employeeId, row._2) }
+    val departmentEmployeesEmpKeyRdd = departmentEmployeesDepKeyRdd.map { case (departmentId ,(department, departmentEmployee)) =>
+      (departmentEmployee.employeeId, (department, departmentEmployee)) 
+    }
     val departmentManagerDepRdd = departmentsRdd.join(departmentManagers.map { row => (row.managedDepartmentId, row) })
-                                                .map{ row => (row._2._2.employeeId, (row._2._1, row._2._2)) }
-    val employeeDemographicsRdd = employeeDemographics.map { row => (row.employeeId, row )}
-                                                      .leftOuterJoin(departmentManagerDepRdd)
+                                                .map{ case (departmentId, (managedDepartment, departmentManager)) =>
+                                                  (departmentManager.employeeId, (departmentManager, managedDepartment)) 
+                                                }
     
     val grouped = departmentEmployeesEmpKeyRdd
-                    .join(employeeDemographicsRdd
-                        .join(employeeSalaries.map { row => (row.employeeId, row) })
-                        .join(employeeTitles.map { row => (row.employeeId, row) } )).groupBy { row => row._1 }
+                    .join(employeeDemographics.map { demographic => (demographic.employeeId, demographic )}
+                    .leftOuterJoin(departmentManagerDepRdd)
+                    .join(employeeSalaries.map { salary => (salary.employeeId, salary) })
+                    .join(employeeTitles.map { title => (title.employeeId, title) } ))
+                    .groupBy { case (empId, _) => 
+                      empId
+                    }
     
-    grouped.map { row =>
-      val departmentEmployee = ListBuffer[(DepartmentEmployee, Department)]()
-      val departmentManager = ListBuffer[(Department, DepartmentManager)]()
-      val employeeDemographic = ListBuffer[EmployeeDemographic]()
+    grouped.map { case (key, records) =>
+      val departmentEmployees = ListBuffer[(DepartmentEmployee, Department)]()
+      val departmentManagers = ListBuffer[(DepartmentManager, Department)]()
+      val employeeDemographics = ListBuffer[EmployeeDemographic]()
       val employeeTitles = ListBuffer[EmployeeTitle]()
       val employeeSalaries = ListBuffer[EmployeeSalary]()
-      var id : String = ""
-      row._2.foreach { values =>
-        id = values._1
-        departmentEmployee += ((values._2._1._2, values._2._1._1))
-        if(values._2._2._1._1._2 != None){
-          departmentManager += ((values._2._2._1._1._2.get))
-        }
-        employeeDemographic += values._2._2._1._1._1
-        employeeTitles += values._2._2._2
-        employeeSalaries += values._2._2._1._2
+      records.foreach { case (empId, ((department, departmentEmployee), (((demographic, manager), salary), title))) =>
+        departmentEmployees += ((departmentEmployee, department))
+        departmentManagers ++= manager
+        employeeDemographics += demographic
+        employeeTitles += title
+        employeeSalaries += salary
       }
-      if (id == "") throw new RuntimeException("Employee with no records")
-      Employee(id,
-          departmentEmployee.toList, 
-          departmentManager.toList, 
-          employeeDemographic.toList,
-          employeeTitles.toList, 
-          employeeSalaries.toList)
+      if (key == "") throw new RuntimeException("Employee with no records")
+      
+      Employee(key,
+              departmentEmployees.toList,
+              departmentManagers.toList,
+              employeeDemographics.toList,
+              employeeTitles.toList, 
+              employeeSalaries.toList)
     }
   }
 
