@@ -1,36 +1,39 @@
 {
   "paragraphs": [
     {
-      "title": "temp folder (for files)",
-      "text": "import java.text.SimpleDateFormat\nimport java.util.Date\nimport java.io.File\nimport scala.io.Source\nimport java.io.PrintWriter\nimport org.apache.spark.sql.DataFrame\nimport scala.reflect.ClassTag\nimport sqlContext.implicits._\n\nval tmpFolder \u003d z.input(\"tmp folder:\", \"/tmp/mysql-employees\").toString",
+      "text": "val tmpFolder \u003d z.input(\"Temp folder:\", \"/tmp/tables\").toString\ndef runAll(paragraphIds: String*) \u003d {\n    paragraphIds.foreach( paragraphId \u003d\u003e z.run(paragraphId))\n}\n\nrunAll(\"20170626-235624_472643241\",\n       \"20170608-230725_940288366\",\n       \"20170612-223907_315450278\",\n       \"20170609-230831_1575803286\")",
       "user": "anonymous",
-      "dateUpdated": "Jun 14, 2017 11:05:30 PM",
+      "dateUpdated": "Sep 2, 2017 12:33:25 PM",
       "config": {
-        "editorSetting": {
-          "language": "scala"
-        },
         "colWidth": 6.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 77.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": true
+        },
         "editorMode": "ace/mode/scala",
         "editorHide": true,
-        "results": {},
-        "enabled": true,
-        "tableHide": true,
-        "title": true
+        "tableHide": false
       },
       "settings": {
         "params": {
-          "tmp folder": "/tmp/mysql-employee2",
-          "%html \u003ch1\u003etmp folder\u003c/h1\u003e": "/tmp/mysql-employees",
-          "\u003ch1\u003etmp folder\u003c/h1\u003e": "/tmp/mysql-employees",
-          "tmp folder:": "/tmp/mysql-employees2",
-          "as of date:": "06/12/2017"
+          "Temp folder:": "c:\\tmp"
         },
         "forms": {
-          "tmp folder:": {
-            "name": "tmp folder:",
-            "displayName": "tmp folder:",
+          "Temp folder:": {
+            "name": "Temp folder:",
+            "displayName": "Temp folder:",
             "type": "input",
-            "defaultValue": "/tmp/mysql-employees",
+            "defaultValue": "/tmp/tables",
             "hidden": false
           }
         }
@@ -40,16 +43,54 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "\nimport java.text.SimpleDateFormat\n\nimport java.util.Date\n\nimport java.io.File\n\nimport scala.io.Source\n\nimport java.io.PrintWriter\n\nimport org.apache.spark.sql.DataFrame\n\nimport scala.reflect.ClassTag\n\nimport sqlContext.implicits._\n\ntmpFolder: String \u003d /tmp/mysql-employees2\n"
+            "data": "\ntmpFolder: String \u003d c:\\tmp\n\nrunAll: (paragraphIds: String*)Unit\n"
           }
         ]
       },
       "apps": [],
-      "jobName": "paragraph_1496885062049_1040098059",
-      "id": "20170606-234917_1402088511",
-      "dateCreated": "Jun 7, 2017 9:24:22 PM",
-      "dateStarted": "Jun 13, 2017 11:27:59 PM",
-      "dateFinished": "Jun 13, 2017 11:28:05 PM",
+      "jobName": "paragraph_1498534923212_-164929956",
+      "id": "20170626-234203_1444621787",
+      "dateCreated": "Jun 26, 2017 11:42:03 PM",
+      "dateStarted": "Sep 2, 2017 12:30:52 PM",
+      "dateFinished": "Sep 2, 2017 12:30:57 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "imports",
+      "text": "import java.text._\nimport java.util.Date\nimport java.io.File\nimport scala.io.Source\nimport java.io.PrintWriter\nimport org.apache.spark.sql.DataFrame\nimport scala.reflect.ClassTag\nimport sqlContext.implicits._",
+      "user": "anonymous",
+      "dateUpdated": "Sep 2, 2017 12:30:23 PM",
+      "config": {
+        "colWidth": 2.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\nimport java.text._\n\nimport java.util.Date\n\nimport java.io.File\n\nimport scala.io.Source\n\nimport java.io.PrintWriter\n\nimport org.apache.spark.sql.DataFrame\n\nimport scala.reflect.ClassTag\n\nimport sqlContext.implicits._\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1498535784493_-1235647274",
+      "id": "20170626-235624_472643241",
+      "dateCreated": "Jun 26, 2017 11:56:24 PM",
+      "dateStarted": "Sep 2, 2017 12:30:55 PM",
+      "dateFinished": "Sep 2, 2017 12:31:03 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -57,12 +98,12 @@
       "title": "delete files",
       "text": "val folder \u003d new File(tmpFolder)\nfolder.mkdirs\nval files \u003d new File(tmpFolder).listFiles\nif(files !\u003d null) {\n    files.filter(_.getPath.toLowerCase.\n        endsWith(\".csv\")).foreach(_.delete)\n}",
       "user": "anonymous",
-      "dateUpdated": "Jun 14, 2017 11:05:30 PM",
+      "dateUpdated": "Jun 28, 2017 12:28:55 AM",
       "config": {
         "editorSetting": {
           "language": "scala"
         },
-        "colWidth": 3.0,
+        "colWidth": 2.0,
         "editorMode": "ace/mode/scala",
         "editorHide": true,
         "results": {},
@@ -96,19 +137,19 @@
     },
     {
       "title": "save files",
-      "text": "def save(names: String*) \u003d names.foreach { (name) \u003d\u003e\n    val contents \u003d Source.fromURL(\n        s\"https://raw.githubusercontent.com/datacharmer/test_db/master/load_$name.dump\").mkString\n    val records \u003d contents.split(\"\\n\").map(_.\n        replaceAll(\n            \"(INSERT.*VALUES|\\\\(|\\\\),|\\\\)|\u0027|;)\",\"\").\n                trim).filter(_ !\u003d \"\").mkString(\"\\n\")\n    new PrintWriter(s\"$tmpFolder/$name.csv\") { \n        write(records); \n        close \n    }\n}\n\nsave(\"departments\", \"dept_emp\", \"dept_manager\", \"employees\", \"salaries1\", \"salaries2\", \"salaries3\", \"titles\")",
+      "text": "new File(tmpFolder).mkdirs\ndef save(names: String*) \u003d names.map { (name) \u003d\u003e\n    val contents \u003d Source.fromURL(\n        s\"https://raw.githubusercontent.com/datacharmer/test_db/master/load_$name.dump\").mkString\n    val records \u003d contents.split(\"\\n\").map(_.\n        replaceAll(\n            \"(INSERT.*VALUES|\\\\(|\\\\),|\\\\)|\u0027|;)\",\"\").\n                trim).filter(_ !\u003d \"\").mkString(\"\\n\")\n    val fileName \u003d s\"$tmpFolder/$name.csv\"\n    new PrintWriter(fileName) { \n        write(records); \n        close \n    }\n    fileName\n}\n\nsave(\"departments\", \"dept_emp\", \"dept_manager\", \"employees\", \"salaries1\", \"salaries2\", \"salaries3\", \"titles\")",
       "user": "anonymous",
-      "dateUpdated": "Jun 14, 2017 11:05:31 PM",
+      "dateUpdated": "Sep 2, 2017 12:31:11 PM",
       "config": {
         "editorSetting": {
           "language": "scala"
         },
-        "colWidth": 3.0,
+        "colWidth": 2.0,
         "editorMode": "ace/mode/scala",
         "editorHide": true,
         "results": {},
-        "enabled": false,
-        "tableHide": true,
+        "enabled": true,
+        "tableHide": false,
         "title": true
       },
       "settings": {
@@ -122,7 +163,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "\nsave: (names: String*)Unit\n"
+            "data": "\nres9: Boolean \u003d false\n\nsave: (names: String*)Seq[String]\n\nres10: Seq[String] \u003d ArrayBuffer(c:\\tmp/departments.csv, c:\\tmp/dept_emp.csv, c:\\tmp/dept_manager.csv, c:\\tmp/employees.csv, c:\\tmp/salaries1.csv, c:\\tmp/salaries2.csv, c:\\tmp/salaries3.csv, c:\\tmp/titles.csv)\n"
           }
         ]
       },
@@ -130,8 +171,8 @@
       "jobName": "paragraph_1497069936752_1044872281",
       "id": "20170610-004536_1743560568",
       "dateCreated": "Jun 10, 2017 12:45:36 AM",
-      "dateStarted": "Jun 10, 2017 1:45:17 AM",
-      "dateFinished": "Jun 10, 2017 1:46:20 AM",
+      "dateStarted": "Sep 2, 2017 12:31:25 PM",
+      "dateFinished": "Sep 2, 2017 12:32:26 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -139,7 +180,7 @@
       "title": "debug files",
       "text": "println(s\"\"\"%table\nbytes\\tpath\\texample\n${new File(tmpFolder).listFiles.filter(_.getPath.toLowerCase.endsWith(\".csv\")).map{ (x) \u003d\u003e \n    s\"${x.length}\\t${x.getAbsolutePath}\\t${Source.fromFile(x).getLines.take(1).toList(0)}\"\n}.mkString(\"\\n\")}\"\"\")",
       "user": "anonymous",
-      "dateUpdated": "Jun 14, 2017 11:05:31 PM",
+      "dateUpdated": "Sep 2, 2017 12:33:43 PM",
       "config": {
         "editorSetting": {
           "language": "scala",
@@ -147,7 +188,7 @@
         },
         "colWidth": 6.0,
         "editorMode": "ace/mode/scala",
-        "editorHide": true,
+        "editorHide": false,
         "results": {},
         "enabled": true,
         "tableHide": false,
@@ -162,7 +203,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "bytes\tpath\texample\n152\tC:\\tmp\\mysql-employees2\\departments.csv\td001,Marketing\n11175032\tC:\\tmp\\mysql-employees2\\dept_emp.csv\t10001,d005,1986-06-26,9999-01-01\n815\tC:\\tmp\\mysql-employees2\\dept_manager.csv\t110022,d001,1985-01-01,1991-10-01\n13821992\tC:\\tmp\\mysql-employees2\\employees.csv\t10001,1953-09-02,Georgi,Facello,M,1986-06-26\n33033583\tC:\\tmp\\mysql-employees2\\salaries1.csv\t10001,60117,1986-06-26,1987-06-26\n33175938\tC:\\tmp\\mysql-employees2\\salaries2.csv\t201772,54369,1999-11-26,2000-11-25\n32571657\tC:\\tmp\\mysql-employees2\\salaries3.csv\t401781,83383,1993-08-26,1994-08-26\n17718375\tC:\\tmp\\mysql-employees2\\titles.csv\t10001,Senior Engineer,1986-06-26,9999-01-01\r\n"
+            "data": "bytes\tpath\texample\n152\tc:\\tmp\\departments.csv\td001,Marketing\n11175032\tc:\\tmp\\dept_emp.csv\t10001,d005,1986-06-26,9999-01-01\n815\tc:\\tmp\\dept_manager.csv\t110022,d001,1985-01-01,1991-10-01\n13821992\tc:\\tmp\\employees.csv\t10001,1953-09-02,Georgi,Facello,M,1986-06-26\n33033583\tc:\\tmp\\salaries1.csv\t10001,60117,1986-06-26,1987-06-26\n33175938\tc:\\tmp\\salaries2.csv\t201772,54369,1999-11-26,2000-11-25\n32571657\tc:\\tmp\\salaries3.csv\t401781,83383,1993-08-26,1994-08-26\n17718375\tc:\\tmp\\titles.csv\t10001,Senior Engineer,1986-06-26,9999-01-01\r\n"
           }
         ]
       },
@@ -170,16 +211,16 @@
       "jobName": "paragraph_1496977645090_-207233862",
       "id": "20170608-230725_940288366",
       "dateCreated": "Jun 8, 2017 11:07:25 PM",
-      "dateStarted": "Jun 13, 2017 11:28:00 PM",
-      "dateFinished": "Jun 13, 2017 11:28:05 PM",
+      "dateStarted": "Sep 2, 2017 12:33:43 PM",
+      "dateFinished": "Sep 2, 2017 12:33:44 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "load tables",
-      "text": "case class Department(id: String, name: String)\ncase class DepartmentEmployee(employeeId: String, departmentId: String, activeFrom: String, activeTo: String)\ncase class DepartmentManager(employeeId: String, departmentId: String, activeFrom: String, activeTo: String)\ncase class Employee(id: String, dob: String, firstName: String, lastName: String, gender: String, hireDate: String)\ncase class EmployeeSalary(employeeId: String, salary: String, activeFrom: String, activeTo: String)\ncase class EmployeeTitle(employeeId: String, title: String, activeFrom: String, activeTo: String)\n\ndef read[T:ClassTag](tmpFolder: String)(name: String, constructor: Seq[String] \u003d\u003e T) \u003d {\n    sc.textFile(s\"$tmpFolder/$name.csv\").map(_.split(\",\")).map(constructor(_))\n}\n\ndef fromTemp[T:ClassTag](name: String, constructor: Seq[String] \u003d\u003e T) \u003d read[T](tmpFolder)(name, constructor)\n\ndef reg(df: DataFrame, tableName: String) \u003d { df.registerTempTable(tableName); (tableName -\u003e df) }\n\nval csvToSalary \u003d (vals: Seq[String]) \u003d\u003e {\n    EmployeeSalary(vals(0), vals(1), vals(2), vals(3))\n}\n\nval tableDataFrames \u003d Map(\n    reg(fromTemp(\"departments\", (vals: Seq[String]) \u003d\u003e Department(vals(0), vals(1))).toDF, \n        \"department\"),\n    reg(fromTemp(\"dept_emp\", (vals: Seq[String]) \u003d\u003e DepartmentEmployee(vals(0), vals(1), vals(2), vals(3))).toDF, \n        \"department_employee\"),\n    reg(fromTemp(\"dept_manager\", (vals: Seq[String]) \u003d\u003e DepartmentManager(vals(0), vals(1), vals(2), vals(3))).toDF, \n        \"department_manager\"),\n    reg(fromTemp(\"employees\", (vals: Seq[String]) \u003d\u003e Employee(vals(0), vals(1), vals(2), vals(3), vals(4), vals(5))).toDF, \n        \"employee\"),\n    reg(fromTemp(\"salaries1\", csvToSalary).union(fromTemp(\"salaries2\", csvToSalary)).union(fromTemp(\"salaries3\", csvToSalary)).toDF, \n        \"employee_salary\"),\n    reg(fromTemp(\"titles\", (vals: Seq[String]) \u003d\u003e EmployeeTitle(vals(0), vals(1), vals(2), vals(3))).toDF, \n        \"employee_title\"))\n    \nsqlContext.cacheTable(\"department\")\n\ncase class Dual(dummy: String)\nsc.parallelize(Seq(Dual(\"x\"))).toDF.registerTempTable(\"dual\")",
+      "text": "z.run(\"20170609-230831_1575803286\")\n\ncase class Department(id: String, name: String)\ncase class DepartmentEmployee(employeeId: String, departmentId: String, activeFrom: String, activeTo: String)\ncase class DepartmentManager(employeeId: String, departmentId: String, activeFrom: String, activeTo: String)\ncase class Employee(id: String, dob: String, firstName: String, lastName: String, gender: String, hireDate: String)\ncase class EmployeeSalary(employeeId: String, salary: String, activeFrom: String, activeTo: String)\ncase class EmployeeTitle(employeeId: String, title: String, activeFrom: String, activeTo: String)\n\ndef read[T:ClassTag](tmpFolder: String)(name: String, constructor: Seq[String] \u003d\u003e T) \u003d {\n    sc.textFile(s\"$tmpFolder/$name.csv\").map(_.split(\",\")).map(constructor(_))\n}\n\ndef fromTemp[T:ClassTag](name: String, constructor: Seq[String] \u003d\u003e T) \u003d read[T](tmpFolder)(name, constructor)\n\ndef reg(df: DataFrame, tableName: String) \u003d { df.registerTempTable(tableName); (tableName -\u003e df) }\n\nval csvToSalary \u003d (vals: Seq[String]) \u003d\u003e {\n    EmployeeSalary(vals(0), vals(1), vals(2), vals(3))\n}\n\nval tableDataFrames \u003d Map(\n    reg(fromTemp(\"departments\", (vals: Seq[String]) \u003d\u003e Department(vals(0), vals(1))).toDF, \n        \"department\"),\n    reg(fromTemp(\"dept_emp\", (vals: Seq[String]) \u003d\u003e DepartmentEmployee(vals(0), vals(1), vals(2), vals(3))).toDF, \n        \"department_employee\"),\n    reg(fromTemp(\"dept_manager\", (vals: Seq[String]) \u003d\u003e DepartmentManager(vals(0), vals(1), vals(2), vals(3))).toDF, \n        \"department_manager\"),\n    reg(fromTemp(\"employees\", (vals: Seq[String]) \u003d\u003e Employee(vals(0), vals(1), vals(2), vals(3), vals(4), vals(5))).toDF, \n        \"employee\"),\n    reg(fromTemp(\"salaries1\", csvToSalary).union(fromTemp(\"salaries2\", csvToSalary)).union(fromTemp(\"salaries3\", csvToSalary)).toDF, \n        \"employee_salary\"),\n    reg(fromTemp(\"titles\", (vals: Seq[String]) \u003d\u003e EmployeeTitle(vals(0), vals(1), vals(2), vals(3))).toDF, \n        \"employee_title\"))\n    \nsqlContext.cacheTable(\"department\")\n\ncase class Dual(dummy: String)\nsc.parallelize(Seq(Dual(\"x\"))).toDF.registerTempTable(\"dual\")\n",
       "user": "anonymous",
-      "dateUpdated": "Jun 14, 2017 11:05:31 PM",
+      "dateUpdated": "Sep 2, 2017 12:33:49 PM",
       "config": {
         "editorSetting": {
           "language": "scala",
@@ -210,26 +251,28 @@
       "jobName": "paragraph_1497321547613_-1023361435",
       "id": "20170612-223907_315450278",
       "dateCreated": "Jun 12, 2017 10:39:07 PM",
-      "dateStarted": "Jun 13, 2017 11:28:05 PM",
-      "dateFinished": "Jun 13, 2017 11:28:10 PM",
+      "dateStarted": "Sep 2, 2017 12:33:49 PM",
+      "dateFinished": "Sep 2, 2017 12:33:58 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "title": "corpus dates",
-      "text": "val sqlFormat \u003d new SimpleDateFormat(\"yyyy-MM-dd\")\r\nval humanFormat \u003d new SimpleDateFormat(\"MM/dd/yyyy\")\r\nval start \u003d sqlFormat.parse(\r\n    sqlContext.sql(\"select min(hireDate) from employee\").head.getString(0))\r\nval end \u003d sqlFormat.parse(\r\n    sqlContext.sql(\r\n        \"select max(activeTo) from employee_salary where activeTo \u003c \u00279999-01-01\u0027\"\r\n    ).head.getString(0))\r\n\r\nval days \u003d Iterator.iterate(start){\r\n    (d) \u003d\u003e new Date(d.getTime() + 604800000)\r\n}.takeWhile(_.compareTo(end) \u003d\u003d -1).map(sqlFormat.format(_:Date))\r\n    \r\nsc.parallelize(days.toSeq).toDF.registerTempTable(\"days\")",
+      "title": "table schemas",
+      "text": "println(s\"\"\"%table\ntable\\tschema\n${tableDataFrames.map { case (tableName, dataFrame) \u003d\u003e {\n    val s \u003d dataFrame.schema.fields.map{ (x) \u003d\u003e s\" ${x.name}:${x.dataType}\" }.mkString(\",\")\n    s\"$tableName\\t$s\"\n}}.mkString(\"\\n\")}\"\"\")",
       "user": "anonymous",
-      "dateUpdated": "Jun 14, 2017 11:05:31 PM",
+      "dateUpdated": "Sep 2, 2017 12:34:38 PM",
       "config": {
-        "colWidth": 4.0,
-        "enabled": true,
-        "results": {},
-        "editorSetting": {
-          "language": "scala"
-        },
+        "colWidth": 12.0,
         "editorMode": "ace/mode/scala",
+        "results": {},
+        "enabled": true,
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorHide": false,
         "title": true,
-        "editorHide": false
+        "tableHide": false
       },
       "settings": {
         "params": {},
@@ -239,8 +282,66 @@
         "code": "SUCCESS",
         "msg": [
           {
+            "type": "TABLE",
+            "data": "table\tschema\nemployee_title\t employeeId:StringType, title:StringType, activeFrom:StringType, activeTo:StringType\ndepartment_employee\t employeeId:StringType, departmentId:StringType, activeFrom:StringType, activeTo:StringType\nemployee\t id:StringType, dob:StringType, firstName:StringType, lastName:StringType, gender:StringType, hireDate:StringType\ndepartment\t id:StringType, name:StringType\ndepartment_manager\t employeeId:StringType, departmentId:StringType, activeFrom:StringType, activeTo:StringType\nemployee_salary\t employeeId:StringType, salary:StringType, activeFrom:StringType, activeTo:StringType\r\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1497064111105_1372648063",
+      "id": "20170609-230831_1575803286",
+      "dateCreated": "Jun 9, 2017 11:08:31 PM",
+      "dateStarted": "Sep 2, 2017 12:34:38 PM",
+      "dateFinished": "Sep 2, 2017 12:34:39 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "corpus dates",
+      "text": "val sqlFormat \u003d new SimpleDateFormat(\"yyyy-MM-dd\")\r\nval humanFormat \u003d new SimpleDateFormat(\"MM/dd/yyyy\")\r\n\r\ndef toFormat(dateString: String, inFormat: DateFormat, outFormat: DateFormat) \u003d outFormat.format(inFormat.parse(dateString))\r\n\r\ndef toSqlFormat(dateString: String) \u003d toFormat(dateString, humanFormat, sqlFormat)\r\ndef toHumanFormat(dateString: String) \u003d toFormat(dateString, sqlFormat, humanFormat)\r\n\r\nval start \u003d humanFormat.format(sqlFormat.parse(sqlContext.sql(\r\n    \"select min(hireDate) from employee\").head.getString(0)))\r\nval end \u003d humanFormat.format(sqlFormat.parse(sqlContext.sql(\r\n    \"select max(activeTo) from employee_salary where activeTo \u003c \u00279999-01-01\u0027\").head.getString(0)))\r\n\r\nval maxDate \u003d humanFormat.parse(z.input(\"Max Date:\", end).toString)\r\nval minDate \u003d humanFormat.parse(z.input(\"Min Date:\", start).toString)\r\n\r\nval days \u003d Iterator.iterate(minDate){\r\n    (d) \u003d\u003e new Date(d.getTime() + 2419200000l)\r\n}.takeWhile(_.compareTo(maxDate) \u003d\u003d -1).map(sqlFormat.format(_:Date))\r\n    \r\nsc.parallelize(days.toSeq).toDF.registerTempTable(\"days\")\r\nz.run(\"20170613-230643_1017913076\")",
+      "user": "anonymous",
+      "dateUpdated": "Sep 2, 2017 12:34:44 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "editorHide": true
+      },
+      "settings": {
+        "params": {
+          "Maximum date:": "08/01/2002",
+          "Minimum date:": "01/01/1985",
+          "Max Date:": "08/01/2002",
+          "Min Date:": "01/01/1985"
+        },
+        "forms": {
+          "Max Date:": {
+            "name": "Max Date:",
+            "displayName": "Max Date:",
+            "type": "input",
+            "defaultValue": "08/01/2002",
+            "hidden": false
+          },
+          "Min Date:": {
+            "name": "Min Date:",
+            "displayName": "Min Date:",
+            "type": "input",
+            "defaultValue": "01/01/1985",
+            "hidden": false
+          }
+        }
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
             "type": "TEXT",
-            "data": "\nsqlFormat: java.text.SimpleDateFormat \u003d java.text.SimpleDateFormat@f67a0200\n\nhumanFormat: java.text.SimpleDateFormat \u003d java.text.SimpleDateFormat@7c669100\n\nstart: java.util.Date \u003d Tue Jan 01 00:00:00 EST 1985\n\nend: java.util.Date \u003d Thu Aug 01 00:00:00 EDT 2002\n\ndays: Iterator[String] \u003d non-empty iterator\n\nwarning: there was one deprecation warning; re-run with -deprecation for details\n"
+            "data": "\nsqlFormat: java.text.SimpleDateFormat \u003d java.text.SimpleDateFormat@f67a0200\n\nhumanFormat: java.text.SimpleDateFormat \u003d java.text.SimpleDateFormat@7c669100\n\ntoFormat: (dateString: String, inFormat: java.text.DateFormat, outFormat: java.text.DateFormat)String\n\ntoSqlFormat: (dateString: String)String\n\ntoHumanFormat: (dateString: String)String\n\nstart: String \u003d 01/01/1985\n\nend: String \u003d 08/01/2002\n\nmaxDate: java.util.Date \u003d Thu Aug 01 00:00:00 EDT 2002\n\nminDate: java.util.Date \u003d Tue Jan 01 00:00:00 EST 1985\n\ndays: Iterator[String] \u003d non-empty iterator\n\nwarning: there was one deprecation warning; re-run with -deprecation for details\n"
           }
         ]
       },
@@ -248,23 +349,24 @@
       "jobName": "paragraph_1497322097765_-1983512444",
       "id": "20170612-224817_1992245322",
       "dateCreated": "Jun 12, 2017 10:48:17 PM",
-      "dateStarted": "Jun 13, 2017 11:28:05 PM",
-      "dateFinished": "Jun 13, 2017 11:28:14 PM",
+      "dateStarted": "Sep 2, 2017 12:34:44 PM",
+      "dateFinished": "Sep 2, 2017 12:34:55 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
+      "title": "Employed \u0026 Salary by Gender",
       "text": "%sql\nselect days.value as day, gender, count(*) as employed, avg(salary.salary) as salary from days\ncross join employee\njoin employee_salary salary on\n    salary.employeeId \u003d employee.id\n    and salary.activeFrom \u003c\u003d days.value\n    and salary.activeTo \u003e days.value\ngroup by days.value, gender\norder by days.value, gender",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:11 PM",
+      "dateUpdated": "Sep 2, 2017 12:35:17 PM",
       "config": {
-        "colWidth": 8.0,
+        "colWidth": 12.0,
         "enabled": true,
         "results": {
           "0": {
             "graph": {
               "mode": "stackedAreaChart",
-              "height": 300.0,
+              "height": 644.0,
               "optionOpen": false,
               "setting": {
                 "stackedAreaChart": {}
@@ -286,12 +388,86 @@
               ],
               "values": [
                 {
-                  "name": "salary",
-                  "index": 3.0,
+                  "name": "employed",
+                  "index": 2.0,
                   "aggr": "sum"
                 },
                 {
-                  "name": "employed",
+                  "name": "salary",
+                  "index": 3.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/sql",
+        "editorHide": true,
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "day\tgender\temployed\tsalary\n1985-01-01\tF\t4\t47935.25\n1985-01-01\tM\t5\t64775.2\n1985-01-29\tF\t5\t48762.2\n1985-01-29\tM\t5\t64775.2\n1985-02-26\tF\t536\t51938.125\n1985-02-26\tM\t873\t53634.962199312715\n1985-03-26\tF\t1151\t52660.80017376195\n1985-03-26\tM\t1796\t53411.09855233853\n1985-04-23\tF\t1729\t52953.39386928861\n1985-04-23\tM\t2712\t53294.6854719764\n1985-05-21\tF\t2360\t52763.15677966102\n1985-05-21\tM\t3614\t53170.60653016049\n1985-06-18\tF\t2948\t52805.70318860244\n1985-06-18\tM\t4534\t52830.38376709307\n1985-07-16\tF\t3572\t52830.6679731243\n1985-07-16\tM\t5452\t52978.79420396185\n1985-08-13\tF\t4199\t52878.72707787569\n1985-08-13\tM\t6358\t53077.89273356401\n1985-09-10\tF\t4819\t52887.84353600332\n1985-09-10\tM\t7271\t53142.46596066566\n1985-10-08\tF\t5438\t52927.372195660166\n1985-10-08\tM\t8248\t53110.95271580989\n1985-11-05\tF\t6081\t53078.75694787042\n1985-11-05\tM\t9100\t53079.0178021978\n1985-12-03\tF\t6725\t53200.660223048326\n1985-12-03\tM\t10025\t53086.24528678304\n1985-12-31\tF\t7310\t53190.638440492476\n1985-12-31\tM\t10894\t53190.19653020011\n1986-01-28\tF\t7864\t53168.49593082401\n1986-01-28\tM\t11737\t53212.537871687826\n1986-02-25\tF\t8457\t53305.008395412086\n1986-02-25\tM\t12638\t53410.63586010445\n1986-03-25\tF\t9034\t53310.844919194154\n1986-03-25\tM\t13606\t53498.97060120535\n1986-04-22\tF\t9613\t53397.61874544887\n1986-04-22\tM\t14510\t53603.32253618194\n1986-05-20\tF\t10182\t53537.70477312905\n1986-05-20\tM\t15411\t53731.155148919606\n1986-06-17\tF\t10822\t53604.48198114951\n1986-06-17\tM\t16287\t53791.331307177505\n1986-07-15\tF\t11450\t53687.888384279475\n1986-07-15\tM\t17159\t53863.271053091674\n1986-08-12\tF\t12046\t53788.04582434003\n1986-08-12\tM\t18079\t53922.89457381493\n1986-09-09\tF\t12653\t53860.1913380226\n1986-09-09\tM\t18967\t53960.93689038857\n1986-10-07\tF\t13225\t53879.9588657845\n1986-10-07\tM\t19857\t54029.98156821272\n1986-11-04\tF\t13798\t53940.30750833454\n1986-11-04\tM\t20746\t54087.732333943895\n1986-12-02\tF\t14403\t53973.14837186697\n1986-12-02\tM\t21665\t54145.59815370413\n1986-12-30\tF\t15029\t54028.86639164283\n1986-12-30\tM\t22638\t54131.99173955296\n1987-01-27\tF\t15620\t54054.982842509606\n1987-01-27\tM\t23455\t54175.797996162866\n1987-02-24\tF\t16205\t54147.61536562789\n1987-02-24\tM\t24332\t54254.55166036495\n1987-03-24\tF\t16794\t54268.70912230558\n1987-03-24\tM\t25204\t54351.11708458975\n1987-04-21\tF\t17376\t54375.87028084714\n1987-04-21\tM\t26088\t54480.409383624654\n1987-05-19\tF\t17975\t54442.36194714882\n1987-05-19\tM\t26975\t54557.91922150139\n1987-06-16\tF\t18572\t54539.549536937324\n1987-06-16\tM\t27872\t54611.79987083812\n1987-07-14\tF\t19151\t54605.34139209441\n1987-07-14\tM\t28716\t54660.408552723224\n1987-08-11\tF\t19715\t54689.45442556429\n1987-08-11\tM\t29645\t54714.67397537528\n1987-09-08\tF\t20323\t54749.41809772179\n1987-09-08\tM\t30514\t54774.93684865963\n1987-10-06\tF\t20879\t54783.77307342306\n1987-10-06\tM\t31445\t54810.867482906666\n1987-11-03\tF\t21488\t54833.73561988086\n1987-11-03\tM\t32337\t54878.36166001794\n1987-12-01\tF\t22100\t54882.92787330317\n1987-12-01\tM\t33263\t54928.11078375372\n1987-12-29\tF\t22692\t54933.47796580293\n1987-12-29\tM\t34228\t54965.477357718824\n1988-01-26\tF\t23264\t54977.91867262724\n1988-01-26\tM\t35143\t54985.73454172951\n1988-02-23\tF\t23899\t55058.99188250554\n1988-02-23\tM\t36018\t55064.199094897\n1988-03-22\tF\t24501\t55110.504836537286\n1988-03-22\tM\t36850\t55161.66081411126\n1988-04-19\tF\t25083\t55188.7010724395\n1988-04-19\tM\t37720\t55255.30148462354\n1988-05-17\tF\t25679\t55267.26087464465\n1988-05-17\tM\t38593\t55349.51576710802\n1988-06-14\tF\t26258\t55362.44013253104\n1988-06-14\tM\t39458\t55411.21633128897\n1988-07-12\tF\t26806\t55444.56185182422\n1988-07-12\tM\t40339\t55479.010436550234\n1988-08-09\tF\t27426\t55502.93425946182\n1988-08-09\tM\t41271\t55565.389183688305\n1988-09-06\tF\t28036\t55557.100834641176\n1988-09-06\tM\t42194\t55653.124994074984\n1988-10-04\tF\t28582\t55650.03155832342\n1988-10-04\tM\t43030\t55718.3082035789\n1988-11-01\tF\t29165\t55695.94671695525\n1988-11-01\tM\t43942\t55773.74493650722\n1988-11-29\tF\t29776\t55736.18027941967\n1988-11-29\tM\t44764\t55838.40132695917\n1988-12-27\tF\t30398\t55775.4674320679\n1988-12-27\tM\t45626\t55908.110112655064\n1989-01-24\tF\t30976\t55810.33232179752\n1989-01-24\tM\t46524\t55960.18540968103\n1989-02-21\tF\t31561\t55882.0363740059\n1989-02-21\tM\t47369\t56048.437121324074\n1989-03-21\tF\t32138\t55969.69761652872\n1989-03-21\tM\t48260\t56121.022523829255\n1989-04-18\tF\t32733\t56055.19704884978\n1989-04-18\tM\t49121\t56206.18729260398\n1989-05-16\tF\t33322\t56137.845897605184\n1989-05-16\tM\t49995\t56298.7100710071\n1989-06-13\tF\t33961\t56216.9454374135\n1989-06-13\tM\t50901\t56375.121137109294\n1989-07-11\tF\t34541\t56289.13942850525\n1989-07-11\tM\t51715\t56453.32226626704\n1989-08-08\tF\t35157\t56364.11056119692\n1989-08-08\tM\t52589\t56531.06153378083\n1989-09-05\tF\t35744\t56447.32827887198\n1989-09-05\tM\t53432\t56602.955981434345\n1989-10-03\tF\t36283\t56523.18543119367\n1989-10-03\tM\t54274\t56679.61476950289\n1989-10-31\tF\t36893\t56594.22635730355\n1989-10-31\tM\t55125\t56747.487419501136\n1989-11-28\tF\t37518\t56687.26971053894\n1989-11-28\tM\t56004\t56811.25498178702\n1989-12-26\tF\t38105\t56743.84626689411\n1989-12-26\tM\t56876\t56878.54344538997\n1990-01-23\tF\t38664\t56829.48947341196\n1990-01-23\tM\t57713\t56940.758425311455\n1990-02-20\tF\t39224\t56916.47017132368\n1990-02-20\tM\t58562\t57022.79102489669\n1990-03-20\tF\t39814\t56992.924297985635\n1990-03-20\tM\t59430\t57101.644556621235\n1990-04-17\tF\t40394\t57080.13509432094\n1990-04-17\tM\t60269\t57187.01012128955\n1990-05-15\tF\t40968\t57152.464899433704\n1990-05-15\tM\t61168\t57278.68772887784\n1990-06-12\tF\t41515\t57235.089076237506\n1990-06-12\tM\t62000\t57354.68419354839\n1990-07-10\tF\t42062\t57317.34841424564\n1990-07-10\tM\t62871\t57424.88490719091\n1990-08-07\tF\t42615\t57390.1505573155\n1990-08-07\tM\t63717\t57515.69053784704\n1990-09-04\tF\t43212\t57455.820073127834\n1990-09-04\tM\t64573\t57584.662986077776\n1990-10-02\tF\t43801\t57518.24604461085\n1990-10-02\tM\t65400\t57650.04354740061\n1990-10-30\tF\t44374\t57588.47577410195\n1990-10-30\tM\t66233\t57731.7636525599\n1990-11-27\tF\t44960\t57665.45785142349\n1990-11-27\tM\t67071\t57804.58418690641\n1990-12-25\tF\t45505\t57745.74818151852\n1990-12-25\tM\t67873\t57879.58902656432\n1991-01-22\tF\t46026\t57811.47831660366\n1991-01-22\tM\t68769\t57933.92381741773\n1991-02-19\tF\t46581\t57888.863785663685\n1991-02-19\tM\t69651\t58012.63875608391\n1991-03-19\tF\t47127\t57980.748021304134\n1991-03-19\tM\t70455\t58103.45211837343\n1991-04-16\tF\t47623\t58073.38141234277\n1991-04-16\tM\t71262\t58177.56302096489\n1991-05-14\tF\t48166\t58153.65710252045\n1991-05-14\tM\t72117\t58254.797523468806\n1991-06-11\tF\t48740\t58226.51112022979\n1991-06-11\tM\t72917\t58329.36889888503\n1991-07-09\tF\t49299\t58302.63191951155\n1991-07-09\tM\t73765\t58407.46336338372\n1991-08-06\tF\t49817\t58378.759499769156\n1991-08-06\tM\t74578\t58474.086795033385\n1991-09-03\tF\t50408\t58449.19040628472\n1991-09-03\tM\t75495\t58546.889833763824\n1991-10-01\tF\t50920\t58514.32716025138\n1991-10-01\tM\t76304\t58618.60445061858\n1991-10-29\tF\t51466\t58588.193292659234\n1991-10-29\tM\t77080\t58690.79984431759\n1991-11-26\tF\t51985\t58679.69727806098\n1991-11-26\tM\t77940\t58760.810700538874\n1991-12-24\tF\t52527\t58742.938050907156\n1991-12-24\tM\t78785\t58821.501973725964\n1992-01-21\tF\t53045\t58819.00880384579\n1992-01-21\tM\t79624\t58898.28676027329\n1992-02-18\tF\t53587\t58898.043014163886\n1992-02-18\tM\t80418\t58976.75042900843\n1992-03-17\tF\t54159\t58988.87407448439\n1992-03-17\tM\t81205\t59063.42728896004\n1992-04-14\tF\t54684\t59063.824811645085\n1992-04-14\tM\t81991\t59155.89642765669\n1992-05-12\tF\t55225\t59140.45589859665\n1992-05-12\tM\t82889\t59226.226724897155\n1992-06-09\tF\t55786\t59218.72156096512\n1992-06-09\tM\t83700\t59300.676009557945\n1992-07-07\tF\t56363\t59283.5239607544\n1992-07-07\tM\t84525\t59373.37207926649\n1992-08-04\tF\t56924\t59360.649163797345\n1992-08-04\tM\t85338\t59451.160772457755\n1992-09-01\tF\t57459\t59437.5717816182\n1992-09-01\tM\t86137\t59522.11756852456\n1992-09-29\tF\t57967\t59510.42232649611\n1992-09-29\tM\t86956\t59583.923800542805\n1992-10-27\tF\t58534\t59576.449499436225\n1992-10-27\tM\t87769\t59650.276133942505\n1992-11-24\tF\t59103\t59652.098505998\n1992-11-24\tM\t88583\t59721.98676947044\n1992-12-22\tF\t59620\t59719.1375712848\n1992-12-22\tM\t89465\t59786.17920974683\n1993-01-19\tF\t60142\t59779.20278673805\n1993-01-19\tM\t90252\t59856.65514337632\n1993-02-16\tF\t60686\t59854.75930198069\n1993-02-16\tM\t91085\t59927.122402151836\n1993-03-16\tF\t61241\t59942.72137946801\n1993-03-16\tM\t91844\t60018.48104394408\n1993-04-13\tF\t61727\t60020.69209584137\n1993-04-13\tM\t92635\t60108.67907378421\n1993-05-11\tF\t62299\t60094.64933626543\n1993-05-11\tM\t93483\t60187.98510959212\n1993-06-08\tF\t62815\t60186.8418849001\n1993-06-08\tM\t94276\t60269.81622045908\n1993-07-06\tF\t63355\t60255.76017678163\n1993-07-06\tM\t95085\t60336.59739180733\n1993-08-03\tF\t63839\t60338.7695609267\n1993-08-03\tM\t95852\t60413.58849058966\n1993-08-31\tF\t64366\t60424.05788770469\n1993-08-31\tM\t96649\t60487.60711440367\n1993-09-28\tF\t64868\t60493.30010174508\n1993-09-28\tM\t97431\t60562.74852972873\n1993-10-26\tF\t65429\t60564.411667609165\n1993-10-26\tM\t98153\t60628.92714435626\n1993-11-23\tF\t65959\t60630.86059521824\n1993-11-23\tM\t98917\t60702.01402185671\n1993-12-21\tF\t66486\t60694.358917666876\n1993-12-21\tM\t99720\t60768.354201764945\n1994-01-18\tF\t67034\t60753.09818897873\n1994-01-18\tM\t100467\t60838.739118317455\n1994-02-15\tF\t67606\t60828.452918380026\n1994-02-15\tM\t101237\t60911.612048954434\n1994-03-15\tF\t68164\t60903.51116425092\n1994-03-15\tM\t102024\t60987.32773661099\n1994-04-12\tF\t68634\t60978.53033481948\n1994-04-12\tM\t102828\t61063.48706577975\n1994-05-10\tF\t69153\t61068.28053735919\n1994-05-10\tM\t103596\t61140.09973358045\n1994-06-07\tF\t69694\t61149.37757913163\n1994-06-07\tM\t104375\t61211.93660359282\n1994-07-05\tF\t70226\t61226.998618745194\n1994-07-05\tM\t105096\t61292.0905362716\n1994-08-02\tF\t70752\t61307.176419041156\n1994-08-02\tM\t105888\t61369.91398458749\n1994-08-30\tF\t71233\t61388.70398551233\n1994-08-30\tM\t106666\t61449.47417171358\n1994-09-27\tF\t71765\t61463.59204347523\n1994-09-27\tM\t107427\t61514.10993511873\n1994-10-25\tF\t72264\t61532.66971105945\n1994-10-25\tM\t108172\t61582.51122286729\n1994-11-22\tF\t72751\t61617.363197756735\n1994-11-22\tM\t108956\t61653.07287345351\n1994-12-20\tF\t73273\t61683.1666098017\n1994-12-20\tM\t109706\t61731.816728346676\n1995-01-17\tF\t73749\t61753.520468074144\n1995-01-17\tM\t110453\t61801.06294985197\n1995-02-14\tF\t74281\t61821.274255866236\n1995-02-14\tM\t111189\t61877.9285271025\n1995-03-14\tF\t74795\t61906.86071261448\n1995-03-14\tM\t111993\t61953.35226308787\n1995-04-11\tF\t75295\t61982.9886977887\n1995-04-11\tM\t112760\t62036.4709116708\n1995-05-09\tF\t75791\t62053.95411064638\n1995-05-09\tM\t113555\t62112.420782880545\n1995-06-06\tF\t76260\t62140.84984264359\n1995-06-06\tM\t114299\t62185.11167201813\n1995-07-04\tF\t76753\t62214.59148176618\n1995-07-04\tM\t115047\t62249.16891357445\n1995-08-01\tF\t77254\t62283.83233230642\n1995-08-01\tM\t115778\t62327.268816182695\n1995-08-29\tF\t77754\t62365.89883478663\n1995-08-29\tM\t116510\t62400.27437988156\n1995-09-26\tF\t78230\t62447.73106225234\n1995-09-26\tM\t117169\t62472.70729459157\n1995-10-24\tF\t78722\t62508.66852976297\n1995-10-24\tM\t117875\t62540.31938918346\n1995-11-21\tF\t79169\t62585.37677626344\n1995-11-21\tM\t118604\t62611.91265893225\n1995-12-19\tF\t79681\t62644.496944064456\n1995-12-19\tM\t119349\t62688.51637634166\n1996-01-16\tF\t80201\t62703.54013042231\n1996-01-16\tM\t120108\t62762.26198088387\n1996-02-13\tF\t80726\t62776.706092213164\n1996-02-13\tM\t120829\t62838.67977058487\n1996-03-12\tF\t81195\t62862.36922224275\n1996-03-12\tM\t121634\t62916.56680697831\n1996-04-09\tF\t81639\t62938.02933646909\n1996-04-09\tM\t122373\t62993.131360675965\n1996-05-07\tF\t82123\t63016.11454769066\n1996-05-07\tM\t123096\t63072.25852992786\n1996-06-04\tF\t82594\t63085.37424025958\n1996-06-04\tM\t123798\t63141.51469329069\n1996-07-02\tF\t83097\t63157.25282501173\n1996-07-02\tM\t124513\t63209.801530763856\n1996-07-30\tF\t83587\t63220.53559764078\n1996-07-30\tM\t125283\t63278.93684697844\n1996-08-27\tF\t84056\t63298.61362662986\n1996-08-27\tM\t126058\t63344.71187865903\n1996-09-24\tF\t84553\t63366.59152247703\n1996-09-24\tM\t126798\t63410.02840738813\n1996-10-22\tF\t85043\t63431.31033712357\n1996-10-22\tM\t127465\t63487.30839838387\n1996-11-19\tF\t85531\t63511.12609463235\n1996-11-19\tM\t128183\t63558.88132591685\n1996-12-17\tF\t85948\t63587.51567226695\n1996-12-17\tM\t128882\t63629.30602411508\n1997-01-14\tF\t86400\t63653.370092592595\n1997-01-14\tM\t129616\t63698.19013856314\n1997-02-11\tF\t86886\t63721.29297009875\n1997-02-11\tM\t130297\t63780.24375849022\n1997-03-11\tF\t87356\t63800.689901094374\n1997-03-11\tM\t130998\t63852.455335195955\n1997-04-08\tF\t87829\t63866.07310797117\n1997-04-08\tM\t131691\t63925.89881616815\n1997-05-06\tF\t88298\t63944.95666946024\n1997-05-06\tM\t132372\t64002.28164566524\n1997-06-03\tF\t88748\t64032.0825258034\n1997-06-03\tM\t133067\t64080.138125906495\n1997-07-01\tF\t89233\t64104.900485246486\n1997-07-01\tM\t133783\t64157.62274728478\n1997-07-29\tF\t89659\t64178.92751424843\n1997-07-29\tM\t134451\t64232.803110426845\n1997-08-26\tF\t90132\t64250.301879465675\n1997-08-26\tM\t135143\t64310.05173778886\n1997-09-23\tF\t90572\t64326.24938170737\n1997-09-23\tM\t135822\t64376.502503276344\n1997-10-21\tF\t91027\t64409.83178617333\n1997-10-21\tM\t136524\t64436.32879200727\n1997-11-18\tF\t91458\t64483.06936517308\n1997-11-18\tM\t137225\t64503.237310985605\n1997-12-16\tF\t91905\t64553.354267994124\n1997-12-16\tM\t137936\t64572.93507133743\n1998-01-13\tF\t92355\t64615.830057928644\n1998-01-13\tM\t138640\t64645.53392960185\n1998-02-10\tF\t92777\t64693.10673981698\n1998-02-10\tM\t139308\t64714.436493238005\n1998-03-10\tF\t93203\t64776.41339871034\n1998-03-10\tM\t140005\t64792.756358701474\n1998-04-07\tF\t93641\t64851.76357578411\n1998-04-07\tM\t140614\t64882.94387472087\n1998-05-05\tF\t94095\t64926.52060151974\n1998-05-05\tM\t141245\t64963.09955042657\n1998-06-02\tF\t94548\t64996.89583068917\n1998-06-02\tM\t141850\t65040.67154035954\n1998-06-30\tF\t94989\t65065.08471507227\n1998-06-30\tM\t142464\t65122.2724126797\n1998-07-28\tF\t95403\t65135.25797930883\n1998-07-28\tM\t143098\t65198.89092789557\n1998-08-25\tF\t95807\t65209.97833143716\n1998-08-25\tM\t143730\t65270.34891811034\n1998-09-22\tF\t96231\t65283.58549739689\n1998-09-22\tM\t144412\t65340.12523197518\n1998-10-20\tF\t96653\t65362.213495701115\n1998-10-20\tM\t145035\t65413.077264108666\n1998-11-17\tF\t97056\t65443.454047148036\n1998-11-17\tM\t145711\t65478.83637474178\n1998-12-15\tF\t97471\t65510.881513475804\n1998-12-15\tM\t146286\t65564.50380760976\n1999-01-12\tF\t97910\t65579.78225921765\n1999-01-12\tM\t146888\t65636.7284733947\n1999-02-09\tF\t98286\t65661.46518324074\n1999-02-09\tM\t147517\t65708.66254058854\n1999-03-09\tF\t98721\t65733.13972710974\n1999-03-09\tM\t148095\t65795.40952766805\n1999-04-06\tF\t99063\t65816.21298567578\n1999-04-06\tM\t148666\t65876.0823187548\n1999-05-04\tF\t99487\t65892.80000402062\n1999-05-04\tM\t149279\t65957.61153946636\n1999-06-01\tF\t99845\t65986.91652060694\n1999-06-01\tM\t149895\t66028.08670736181\n1999-06-29\tF\t100224\t66065.62714519477\n1999-06-29\tM\t150516\t66097.32425788621\n1999-07-27\tF\t100653\t66138.24442391185\n1999-07-27\tM\t151138\t66177.92996466804\n1999-08-24\tF\t101062\t66215.70192555065\n1999-08-24\tM\t151702\t66259.61854161449\n1999-09-21\tF\t101469\t66287.51937044812\n1999-09-21\tM\t152319\t66334.70559811973\n1999-10-19\tF\t101836\t66363.82230252563\n1999-10-19\tM\t152937\t66404.84355649712\n1999-11-16\tF\t102198\t66449.27476075853\n1999-11-16\tM\t153471\t66482.55226720357\n1999-12-14\tF\t102648\t66519.53024900632\n1999-12-14\tM\t154055\t66561.01158677095\n2000-01-11\tF\t103034\t66593.08241939553\n2000-01-11\tM\t154637\t66632.06014084598\n2000-02-08\tF\t103220\t66690.3554737454\n2000-02-08\tM\t154960\t66728.50370418173\n2000-03-07\tF\t102965\t66853.53263730394\n2000-03-07\tM\t154586\t66892.48499217264\n2000-04-04\tF\t102732\t67012.55688587781\n2000-04-04\tM\t154211\t67052.58181971454\n2000-05-02\tF\t102488\t67172.62642455702\n2000-05-02\tM\t153850\t67219.36811829705\n2000-05-30\tF\t102277\t67334.14684630954\n2000-05-30\tM\t153494\t67384.83796109294\n2000-06-27\tF\t102031\t67500.1560800149\n2000-06-27\tM\t153167\t67546.82617012803\n2000-07-25\tF\t101804\t67661.61850221995\n2000-07-25\tM\t152802\t67718.49337050562\n2000-08-22\tF\t101558\t67823.61733196794\n2000-08-22\tM\t152491\t67881.56165937662\n2000-09-19\tF\t101301\t67991.07676133503\n2000-09-19\tM\t152153\t68046.97381583012\n2000-10-17\tF\t101092\t68154.565890476\n2000-10-17\tM\t151806\t68211.1499479599\n2000-11-14\tF\t100857\t68319.26976808748\n2000-11-14\tM\t151497\t68371.89519924487\n2000-12-12\tF\t100611\t68485.93714404985\n2000-12-12\tM\t151147\t68540.08671028866\n2001-01-09\tF\t100378\t68644.45785929187\n2001-01-09\tM\t150822\t68710.70105820106\n2001-02-06\tF\t100175\t68804.71078612428\n2001-02-06\tM\t150491\t68869.98025131071\n2001-03-06\tF\t99955\t68970.87599419738\n2001-03-06\tM\t150135\t69037.19969360909\n2001-04-03\tF\t99725\t69131.9533617448\n2001-04-03\tM\t149810\t69199.88491422469\n2001-05-01\tF\t99501\t69295.8148360318\n2001-05-01\tM\t149449\t69364.68201861504\n2001-05-29\tF\t99289\t69453.14969432667\n2001-05-29\tM\t149097\t69531.9140492431\n2001-06-26\tF\t99078\t69617.02261854296\n2001-06-26\tM\t148767\t69694.56790148353\n2001-07-24\tF\t98843\t69776.46748884594\n2001-07-24\tM\t148441\t69861.15831205664\n2001-08-21\tF\t98627\t69945.77762681618\n2001-08-21\tM\t148104\t70022.3532922811\n2001-09-18\tF\t98407\t70108.95157864786\n2001-09-18\tM\t147781\t70185.65743904831\n2001-10-16\tF\t98191\t70273.31314478924\n2001-10-16\tM\t147424\t70350.39948041024\n2001-11-13\tF\t97978\t70432.17246728858\n2001-11-13\tM\t147088\t70511.61658326988\n2001-12-11\tF\t97767\t70593.07719373613\n2001-12-11\tM\t146769\t70676.87620682841\n2002-01-08\tF\t97546\t70754.5556045353\n2002-01-08\tM\t146413\t70844.99271922575\n2002-02-05\tF\t97351\t70917.76760382533\n2002-02-05\tM\t146099\t71009.8829629224\n2002-03-05\tF\t97129\t71087.78876545625\n2002-03-05\tM\t145768\t71173.66042615664\n2002-04-02\tF\t96907\t71250.09577223523\n2002-04-02\tM\t145464\t71337.04569515481\n2002-04-30\tF\t96684\t71411.66783542262\n2002-04-30\tM\t145168\t71496.78535214372\n2002-05-28\tF\t96465\t71583.41226351526\n2002-05-28\tM\t144845\t71662.65337429666\n2002-06-25\tF\t96257\t71750.85220815109\n2002-06-25\tM\t144552\t71824.46357020311\n2002-07-23\tF\t96066\t71910.47833780943\n2002-07-23\tM\t144216\t71991.13603206302\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1497409603659_1187352833",
+      "id": "20170613-230643_1017913076",
+      "dateCreated": "Jun 13, 2017 11:06:43 PM",
+      "dateStarted": "Sep 2, 2017 12:35:17 PM",
+      "dateFinished": "Sep 2, 2017 12:38:03 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Average Duration of Employment by Gender",
+      "text": "%sql\nselect days.value as day, gender, avg(dateDiff(date(days.value), date(hireDate))) as avg_length_employment, count(*), sum(dateDiff(date(days.value), date(hireDate))) from days, employee\nwhere hireDate \u003c\u003d days.value\nand days.value \u003c (select max(activeTo) from employee_salary where employeeId \u003d id)\ngroup by days.value, gender\norder by days.value, gender",
+      "user": "anonymous",
+      "dateUpdated": "Sep 2, 2017 12:53:00 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "stackedAreaChart",
+              "height": 644.0,
+              "optionOpen": false,
+              "setting": {
+                "stackedAreaChart": {
+                  "style": "stack"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "gender",
+                  "index": 1.0,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "day",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "avg_length_employment",
                   "index": 2.0,
                   "aggr": "sum"
                 }
@@ -305,7 +481,8 @@
           "editOnDblClick": false
         },
         "editorMode": "ace/mode/sql",
-        "editorHide": true
+        "editorHide": true,
+        "title": true
       },
       "settings": {
         "params": {},
@@ -316,24 +493,59 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "day\tgender\temployed\tsalary\n1985-01-01\tF\t4\t47935.25\n1985-01-01\tM\t5\t64775.2\n1985-01-08\tF\t4\t47935.25\n1985-01-08\tM\t5\t64775.2\n1985-01-15\tF\t5\t48762.2\n1985-01-15\tM\t5\t64775.2\n1985-01-22\tF\t5\t48762.2\n1985-01-22\tM\t5\t64775.2\n1985-01-29\tF\t5\t48762.2\n1985-01-29\tM\t5\t64775.2\n1985-02-05\tF\t96\t51112.177083333336\n1985-02-05\tM\t145\t53757.503448275864\n1985-02-12\tF\t239\t51028.33472803347\n1985-02-12\tM\t377\t53689.58885941644\n1985-02-19\tF\t384\t51884.645833333336\n1985-02-19\tM\t616\t53714.743506493505\n1985-02-26\tF\t536\t51938.125\n1985-02-26\tM\t873\t53634.962199312715\n1985-03-05\tF\t695\t52464.945323741005\n1985-03-05\tM\t1104\t53671.713768115944\n1985-03-12\tF\t841\t52604.10225921522\n1985-03-12\tM\t1307\t53437.621270084164\n1985-03-19\tF\t989\t52740.58543983822\n1985-03-19\tM\t1532\t53341.62989556136\n1985-03-26\tF\t1151\t52660.80017376195\n1985-03-26\tM\t1796\t53411.09855233853\n1985-04-02\tF\t1297\t52660.40863531226\n1985-04-02\tM\t2024\t53473.291007905136\n1985-04-09\tF\t1437\t52835.302713987476\n1985-04-09\tM\t2246\t53469.53784505788\n1985-04-16\tF\t1590\t52968.47044025157\n1985-04-16\tM\t2467\t53345.683015808674\n1985-04-23\tF\t1729\t52953.39386928861\n1985-04-23\tM\t2712\t53294.6854719764\n1985-04-30\tF\t1860\t52923.398924731184\n1985-04-30\tM\t2956\t53278.74864682003\n1985-05-07\tF\t2012\t52824.33250497018\n1985-05-07\tM\t3174\t53164.02646502836\n1985-05-14\tF\t2173\t52725.232397607\n1985-05-14\tM\t3387\t53148.30174195453\n1985-05-21\tF\t2360\t52763.15677966102\n1985-05-21\tM\t3614\t53170.60653016049\n1985-05-28\tF\t2525\t52851.23683168317\n1985-05-28\tM\t3844\t53056.96592091571\n1985-06-04\tF\t2672\t52903.626497005986\n1985-06-04\tM\t4063\t52988.589465911886\n1985-06-11\tF\t2811\t52894.59622909997\n1985-06-11\tM\t4303\t52903.867301882405\n1985-06-18\tF\t2948\t52805.70318860244\n1985-06-18\tM\t4534\t52830.38376709307\n1985-06-25\tF\t3095\t52721.348626817446\n1985-06-25\tM\t4774\t52818.53519061584\n1985-07-02\tF\t3260\t52757.192331288345\n1985-07-02\tM\t4986\t52815.073004412356\n1985-07-09\tF\t3411\t52749.53474054529\n1985-07-09\tM\t5219\t52941.16075876605\n1985-07-16\tF\t3572\t52830.6679731243\n1985-07-16\tM\t5452\t52978.79420396185\n1985-07-23\tF\t3734\t52838.242099625066\n1985-07-23\tM\t5679\t53054.162704701535\n1985-07-30\tF\t3884\t52902.43717816684\n1985-07-30\tM\t5885\t53125.26304163127\n1985-08-06\tF\t4036\t52892.99702675917\n1985-08-06\tM\t6116\t53120.09238064094\n1985-08-13\tF\t4199\t52878.72707787569\n1985-08-13\tM\t6358\t53077.89273356401\n1985-08-20\tF\t4354\t52911.09875976114\n1985-08-20\tM\t6595\t53129.93631539045\n1985-08-27\tF\t4507\t52951.881073885066\n1985-08-27\tM\t6807\t53150.954311737914\n1985-09-03\tF\t4668\t52903.753856041134\n1985-09-03\tM\t7046\t53189.06571104172\n1985-09-10\tF\t4819\t52887.84353600332\n1985-09-10\tM\t7271\t53142.46596066566\n1985-09-17\tF\t4978\t52916.053033346725\n1985-09-17\tM\t7514\t53147.94969390471\n1985-09-24\tF\t5128\t52913.590483619344\n1985-09-24\tM\t7757\t53131.34549439216\n1985-10-01\tF\t5288\t52902.76077912254\n1985-10-01\tM\t8017\t53095.37832106773\n1985-10-08\tF\t5438\t52927.372195660166\n1985-10-08\tM\t8248\t53110.95271580989\n1985-10-15\tF\t5602\t52908.933059621566\n1985-10-15\tM\t8441\t53124.36772894207\n1985-10-22\tF\t5765\t53006.369124024284\n1985-10-22\tM\t8660\t53129.744803695154\n1985-10-29\tF\t5936\t53031.109164420486\n1985-10-29\tM\t8880\t53099.36103603603\n1985-11-05\tF\t6081\t53078.75694787042\n1985-11-05\tM\t9100\t53079.0178021978\n1985-11-12\tF\t6230\t53108.67849117175\n1985-11-12\tM\t9331\t53071.799807094634\n1985-11-19\tF\t6400\t53119.00828125\n1985-11-19\tM\t9574\t53085.15959891373\n1985-11-26\tF\t6574\t53175.9207484028\n1985-11-26\tM\t9800\t53094.29540816326\n1985-12-03\tF\t6725\t53200.660223048326\n1985-12-03\tM\t10025\t53086.24528678304\n1985-12-10\tF\t6868\t53214.22117064647\n1985-12-10\tM\t10228\t53139.82694563942\n1985-12-17\tF\t7020\t53217.96566951567\n1985-12-17\tM\t10449\t53164.32462436597\n1985-12-24\tF\t7149\t53205.76472233879\n1985-12-24\tM\t10677\t53178.16774374824\n1985-12-31\tF\t7310\t53190.638440492476\n1985-12-31\tM\t10894\t53190.19653020011\n1986-01-07\tF\t7447\t53249.98509466899\n1986-01-07\tM\t11095\t53189.387021180715\n1986-01-14\tF\t7579\t53234.317456128774\n1986-01-14\tM\t11308\t53223.60718075699\n1986-01-21\tF\t7720\t53202.65142487047\n1986-01-21\tM\t11527\t53219.79491628351\n1986-01-28\tF\t7864\t53168.49593082401\n1986-01-28\tM\t11737\t53212.537871687826\n1986-02-04\tF\t8020\t53194.76047381546\n1986-02-04\tM\t11974\t53251.338483380656\n1986-02-11\tF\t8158\t53228.00245158127\n1986-02-11\tM\t12220\t53301.96939443535\n1986-02-18\tF\t8312\t53255.57555341675\n1986-02-18\tM\t12440\t53351.47926045016\n1986-02-25\tF\t8457\t53305.008395412086\n1986-02-25\tM\t12638\t53410.63586010445\n1986-03-04\tF\t8604\t53277.75511390051\n1986-03-04\tM\t12897\t53443.40327207878\n1986-03-11\tF\t8745\t53286.903945111495\n1986-03-11\tM\t13135\t53462.45801294252\n1986-03-18\tF\t8901\t53291.56768902371\n1986-03-18\tM\t13372\t53477.424169907266\n1986-03-25\tF\t9034\t53310.844919194154\n1986-03-25\tM\t13606\t53498.97060120535\n1986-04-01\tF\t9190\t53340.505223068554\n1986-04-01\tM\t13824\t53558.197265625\n1986-04-08\tF\t9320\t53358.47210300429\n1986-04-08\tM\t14037\t53562.430220132504\n1986-04-15\tF\t9469\t53394.63734290844\n1986-04-15\tM\t14281\t53586.90091730271\n1986-04-22\tF\t9613\t53397.61874544887\n1986-04-22\tM\t14510\t53603.32253618194\n1986-04-29\tF\t9749\t53425.44260949841\n1986-04-29\tM\t14723\t53652.25857501868\n1986-05-06\tF\t9900\t53460.761414141416\n1986-05-06\tM\t14956\t53687.03236159401\n1986-05-13\tF\t10040\t53490.49950199203\n1986-05-13\tM\t15185\t53717.08086927889\n1986-05-20\tF\t10182\t53537.70477312905\n1986-05-20\tM\t15411\t53731.155148919606\n1986-05-27\tF\t10347\t53539.03614574273\n1986-05-27\tM\t15627\t53767.300121584434\n1986-06-03\tF\t10501\t53538.01295114751\n1986-06-03\tM\t15839\t53770.968684891726\n1986-06-10\tF\t10671\t53594.700684097086\n1986-06-10\tM\t16059\t53778.98997446914\n1986-06-17\tF\t10822\t53604.48198114951\n1986-06-17\tM\t16287\t53791.331307177505\n1986-06-24\tF\t10997\t53609.26125306902\n1986-06-24\tM\t16495\t53797.9482873598\n1986-07-01\tF\t11141\t53645.11210842833\n1986-07-01\tM\t16703\t53816.97802789918\n1986-07-08\tF\t11284\t53671.99264445232\n1986-07-08\tM\t16925\t53823.07692762186\n1986-07-15\tF\t11450\t53687.888384279475\n1986-07-15\tM\t17159\t53863.271053091674\n1986-07-22\tF\t11590\t53717.43701466782\n1986-07-22\tM\t17372\t53886.85004605111\n1986-07-29\tF\t11734\t53728.65936594512\n1986-07-29\tM\t17598\t53898.367257642916\n1986-08-05\tF\t11885\t53758.366259991584\n1986-08-05\tM\t17848\t53894.69425145675\n1986-08-12\tF\t12046\t53788.04582434003\n1986-08-12\tM\t18079\t53922.89457381493\n1986-08-19\tF\t12198\t53811.73594031808\n1986-08-19\tM\t18307\t53940.052220462116\n1986-08-26\tF\t12349\t53825.83917726132\n1986-08-26\tM\t18552\t53947.624838292366\n1986-09-02\tF\t12500\t53844.036\n1986-09-02\tM\t18747\t53961.50733450685\n1986-09-09\tF\t12653\t53860.1913380226\n1986-09-09\tM\t18967\t53960.93689038857\n1986-09-16\tF\t12792\t53858.08427141964\n1986-09-16\tM\t19193\t53985.2562392539\n1986-09-23\tF\t12963\t53849.77528349919\n1986-09-23\tM\t19395\t53995.61727249291\n1986-09-30\tF\t13094\t53861.96784786925\n1986-09-30\tM\t19621\t54010.87916008358\n1986-10-07\tF\t13225\t53879.9588657845\n1986-10-07\tM\t19857\t54029.98156821272\n1986-10-14\tF\t13368\t53901.81672651107\n1986-10-14\tM\t20098\t54041.79749228779\n1986-10-21\tF\t13524\t53910.95045844425\n1986-10-21\tM\t20308\t54052.19716367934\n1986-10-28\tF\t13659\t53924.6807233326\n1986-10-28\tM\t20538\t54078.42394585646\n1986-11-04\tF\t13798\t53940.30750833454\n1986-11-04\tM\t20746\t54087.732333943895\n1986-11-11\tF\t13947\t53963.13752061375\n1986-11-11\tM\t20979\t54089.36059869393\n1986-11-18\tF\t14096\t53968.003972758226\n1986-11-18\tM\t21203\t54111.22303447625\n1986-11-25\tF\t14250\t53967.67214035088\n1986-11-25\tM\t21432\t54150.83697275103\n1986-12-02\tF\t14403\t53973.14837186697\n1986-12-02\tM\t21665\t54145.59815370413\n1986-12-09\tF\t14573\t53977.98895217182\n1986-12-09\tM\t21924\t54133.541780696956\n1986-12-16\tF\t14725\t54005.59382003396\n1986-12-16\tM\t22151\t54135.72371450499\n1986-12-23\tF\t14875\t54027.541042016805\n1986-12-23\tM\t22385\t54139.56796962251\n1986-12-30\tF\t15029\t54028.86639164283\n1986-12-30\tM\t22638\t54131.99173955296\n1987-01-06\tF\t15154\t54026.99056354758\n1987-01-06\tM\t22839\t54132.78011296467\n1987-01-13\tF\t15294\t54026.000915391654\n1987-01-13\tM\t23054\t54135.009456059684\n1987-01-20\tF\t15469\t54046.62408688344\n1987-01-20\tM\t23266\t54163.10650734978\n1987-01-27\tF\t15620\t54054.982842509606\n1987-01-27\tM\t23455\t54175.797996162866\n1987-02-03\tF\t15756\t54058.96058644326\n1987-02-03\tM\t23680\t54179.49383445946\n1987-02-10\tF\t15880\t54088.37235516373\n1987-02-10\tM\t23884\t54206.98961647965\n1987-02-17\tF\t16054\t54134.163012333374\n1987-02-17\tM\t24098\t54228.67823055855\n1987-02-24\tF\t16205\t54147.61536562789\n1987-02-24\tM\t24332\t54254.55166036495\n1987-03-03\tF\t16383\t54162.52804736617\n1987-03-03\tM\t24516\t54278.93824441181\n1987-03-10\tF\t16517\t54197.78955016044\n1987-03-10\tM\t24758\t54299.55279101704\n1987-03-17\tF\t16667\t54235.97726045479\n1987-03-17\tM\t24990\t54322.9706282513\n1987-03-24\tF\t16794\t54268.70912230558\n1987-03-24\tM\t25204\t54351.11708458975\n1987-03-31\tF\t16931\t54303.66044533696\n1987-03-31\tM\t25432\t54373.012503932056\n1987-04-07\tF\t17089\t54324.49540640178\n1987-04-07\tM\t25640\t54413.51138845554\n1987-04-14\tF\t17228\t54351.075052240536\n1987-04-14\tM\t25871\t54439.727803331916\n1987-04-21\tF\t17376\t54375.87028084714\n1987-04-21\tM\t26088\t54480.409383624654\n1987-04-28\tF\t17532\t54373.74378279717\n1987-04-28\tM\t26299\t54496.90395072056\n1987-05-05\tF\t17686\t54394.00831165894\n1987-05-05\tM\t26520\t54510.39860482654\n1987-05-12\tF\t17812\t54421.6647204132\n1987-05-12\tM\t26750\t54546.381009345794\n1987-05-19\tF\t17975\t54442.36194714882\n1987-05-19\tM\t26975\t54557.91922150139\n1987-05-26\tF\t18128\t54475.37047661077\n1987-05-26\tM\t27204\t54571.949308925155\n1987-06-02\tF\t18273\t54491.18836534778\n1987-06-02\tM\t27438\t54586.67869378235\n1987-06-09\tF\t18413\t54519.00054309455\n1987-06-09\tM\t27644\t54592.373317899\n1987-06-16\tF\t18572\t54539.549536937324\n1987-06-16\tM\t27872\t54611.79987083812\n1987-06-23\tF\t18718\t54556.26899241372\n1987-06-23\tM\t28050\t54621.63565062389\n1987-06-30\tF\t18852\t54569.795141099086\n1987-06-30\tM\t28267\t54636.292673435455\n1987-07-07\tF\t19011\t54593.16763978749\n1987-07-07\tM\t28487\t54643.56646891565\n1987-07-14\tF\t19151\t54605.34139209441\n1987-07-14\tM\t28716\t54660.408552723224\n1987-07-21\tF\t19297\t54625.99155309115\n1987-07-21\tM\t28962\t54682.86306194324\n1987-07-28\tF\t19443\t54644.973923777194\n1987-07-28\tM\t29198\t54689.18535516131\n1987-08-04\tF\t19593\t54670.478844485275\n1987-08-04\tM\t29410\t54706.07269636178\n1987-08-11\tF\t19715\t54689.45442556429\n1987-08-11\tM\t29645\t54714.67397537528\n1987-08-18\tF\t19843\t54709.493826538324\n1987-08-18\tM\t29840\t54731.01819705094\n1987-08-25\tF\t20002\t54721.67253274673\n1987-08-25\tM\t30068\t54744.94768524677\n1987-09-01\tF\t20166\t54729.39720321333\n1987-09-01\tM\t30303\t54757.60871860872\n1987-09-08\tF\t20323\t54749.41809772179\n1987-09-08\tM\t30514\t54774.93684865963\n1987-09-15\tF\t20455\t54759.606942067956\n1987-09-15\tM\t30734\t54794.64101646385\n1987-09-22\tF\t20603\t54777.77789642285\n1987-09-22\tM\t30963\t54793.10380131124\n1987-09-29\tF\t20750\t54778.5698313253\n1987-09-29\tM\t31210\t54796.35056071772\n1987-10-06\tF\t20879\t54783.77307342306\n1987-10-06\tM\t31445\t54810.867482906666\n1987-10-13\tF\t21039\t54791.55663291982\n1987-10-13\tM\t31680\t54819.93143939394\n1987-10-20\tF\t21177\t54808.93752656184\n1987-10-20\tM\t31882\t54833.68251678063\n1987-10-27\tF\t21323\t54812.939361253106\n1987-10-27\tM\t32106\t54857.51364230985\n1987-11-03\tF\t21488\t54833.73561988086\n1987-11-03\tM\t32337\t54878.36166001794\n1987-11-10\tF\t21635\t54848.58257453201\n1987-11-10\tM\t32545\t54889.91322783838\n1987-11-17\tF\t21797\t54859.5485158508\n1987-11-17\tM\t32773\t54907.62774234889\n1987-11-24\tF\t21951\t54871.48580930254\n1987-11-24\tM\t33015\t54912.10113584734\n1987-12-01\tF\t22100\t54882.92787330317\n1987-12-01\tM\t33263\t54928.11078375372\n1987-12-08\tF\t22261\t54899.9946543282\n1987-12-08\tM\t33500\t54941.85337313433\n1987-12-15\tF\t22407\t54910.417012540725\n1987-12-15\tM\t33746\t54956.665856694126\n1987-12-22\tF\t22549\t54917.84278681981\n1987-12-22\tM\t33974\t54966.016542061574\n1987-12-29\tF\t22692\t54933.47796580293\n1987-12-29\tM\t34228\t54965.477357718824\n1988-01-05\tF\t22841\t54941.25077711134\n1988-01-05\tM\t34448\t54973.03251277287\n1988-01-12\tF\t22974\t54948.229520327324\n1988-01-12\tM\t34679\t54985.96320539808\n1988-01-19\tF\t23115\t54966.538048886\n1988-01-19\tM\t34899\t54993.666609358435\n1988-01-26\tF\t23264\t54977.91867262724\n1988-01-26\tM\t35143\t54985.73454172951\n1988-02-02\tF\t23419\t54996.35983603058\n1988-02-02\tM\t35343\t54995.03502815268\n1988-02-09\tF\t23569\t55006.78005006576\n1988-02-09\tM\t35572\t55012.19088046778\n1988-02-16\tF\t23719\t55030.481976474555\n1988-02-16\tM\t35794\t55039.35941777952\n1988-02-23\tF\t23899\t55058.99188250554\n1988-02-23\tM\t36018\t55064.199094897\n1988-03-01\tF\t24051\t55074.293833936215\n1988-03-01\tM\t36216\t55093.23462005743\n1988-03-08\tF\t24211\t55091.632852835486\n1988-03-08\tM\t36433\t55108.001317486895\n1988-03-15\tF\t24355\t55105.265202217204\n1988-03-15\tM\t36637\t55138.84283647678\n1988-03-22\tF\t24501\t55110.504836537286\n1988-03-22\tM\t36850\t55161.66081411126\n1988-03-29\tF\t24640\t55138.10929383117\n1988-03-29\tM\t37042\t55184.104610982125\n1988-04-05\tF\t24784\t55159.68778244028\n1988-04-05\tM\t37275\t55203.13167002012\n1988-04-12\tF\t24937\t55175.101535870395\n1988-04-12\tM\t37497\t55236.32591940689\n1988-04-19\tF\t25083\t55188.7010724395\n1988-04-19\tM\t37720\t55255.30148462354\n1988-04-26\tF\t25229\t55210.86265805224\n1988-04-26\tM\t37952\t55273.436841273186\n1988-05-03\tF\t25372\t55227.609254296076\n1988-05-03\tM\t38154\t55309.21413220108\n1988-05-10\tF\t25529\t55246.8911042344\n1988-05-10\tM\t38361\t55331.41513516332\n1988-05-17\tF\t25679\t55267.26087464465\n1988-05-17\tM\t38593\t55349.51576710802\n1988-05-24\tF\t25829\t55291.74396995625\n1988-05-24\tM\t38809\t55358.61776907418\n1988-05-31\tF\t25961\t55311.101999152575\n1988-05-31\tM\t39023\t55376.91658765343\n1988-06-07\tF\t26094\t55332.97202422013\n1988-06-07\tM\t39239\t55388.161013277604\n1988-06-14\tF\t26258\t55362.44013253104\n1988-06-14\tM\t39458\t55411.21633128897\n1988-06-21\tF\t26397\t55384.30855779066\n1988-06-21\tM\t39692\t55432.98377506802\n1988-06-28\tF\t26543\t55395.141506235166\n1988-06-28\tM\t39906\t55451.283165438785\n1988-07-05\tF\t26673\t55415.284107524465\n1988-07-05\tM\t40120\t55466.12547357926\n1988-07-12\tF\t26806\t55444.56185182422\n1988-07-12\tM\t40339\t55479.010436550234\n1988-07-19\tF\t26948\t55458.90652367523\n1988-07-19\tM\t40560\t55502.66777613412\n1988-07-26\tF\t27101\t55464.59285635217\n1988-07-26\tM\t40799\t55520.1995882252\n1988-08-02\tF\t27255\t55480.818015043114\n1988-08-02\tM\t41034\t55547.920529317154\n1988-08-09\tF\t27426\t55502.93425946182\n1988-08-09\tM\t41271\t55565.389183688305\n1988-08-16\tF\t27587\t55514.03639395368\n1988-08-16\tM\t41500\t55582.46807228916\n1988-08-23\tF\t27749\t55530.18101553209\n1988-08-23\tM\t41733\t55600.61538830183\n1988-08-30\tF\t27877\t55550.52243785199\n1988-08-30\tM\t41957\t55628.97111328265\n1988-09-06\tF\t28036\t55557.100834641176\n1988-09-06\tM\t42194\t55653.124994074984\n1988-09-13\tF\t28171\t55578.16449540307\n1988-09-13\tM\t42403\t55671.19932551942\n1988-09-20\tF\t28311\t55611.42923245382\n1988-09-20\tM\t42632\t55689.83854850816\n1988-09-27\tF\t28455\t55632.142997715695\n1988-09-27\tM\t42826\t55706.41871760146\n1988-10-04\tF\t28582\t55650.03155832342\n1988-10-04\tM\t43030\t55718.3082035789\n1988-10-11\tF\t28704\t55671.15983835005\n1988-10-11\tM\t43266\t55735.99842832709\n1988-10-18\tF\t28859\t55683.73453688624\n1988-10-18\tM\t43477\t55756.62426110357\n1988-10-25\tF\t29022\t55688.12542209358\n1988-10-25\tM\t43712\t55764.146046852125\n1988-11-01\tF\t29165\t55695.94671695525\n1988-11-01\tM\t43942\t55773.74493650722\n1988-11-08\tF\t29321\t55720.012618942055\n1988-11-08\tM\t44141\t55790.549828957206\n1988-11-15\tF\t29493\t55722.766893839216\n1988-11-15\tM\t44346\t55804.617733279214\n1988-11-22\tF\t29631\t55724.4407546151\n1988-11-22\tM\t44556\t55816.51788760212\n1988-11-29\tF\t29776\t55736.18027941967\n1988-11-29\tM\t44764\t55838.40132695917\n1988-12-06\tF\t29933\t55742.51334647379\n1988-12-06\tM\t44967\t55852.63112949496\n1988-12-13\tF\t30091\t55750.43032800505\n1988-12-13\tM\t45169\t55875.21592242467\n1988-12-20\tF\t30263\t55759.523840993956\n1988-12-20\tM\t45400\t55887.97314977973\n1988-12-27\tF\t30398\t55775.4674320679\n1988-12-27\tM\t45626\t55908.110112655064\n1989-01-03\tF\t30536\t55784.282780979825\n1989-01-03\tM\t45840\t55920.213568935425\n1989-01-10\tF\t30682\t55792.29538491624\n1989-01-10\tM\t46082\t55927.3356842151\n1989-01-17\tF\t30811\t55805.015806043295\n1989-01-17\tM\t46329\t55942.992553260374\n1989-01-24\tF\t30976\t55810.33232179752\n1989-01-24\tM\t46524\t55960.18540968103\n1989-01-31\tF\t31131\t55822.88770036298\n1989-01-31\tM\t46726\t55976.77258913667\n1989-02-07\tF\t31270\t55843.00265430125\n1989-02-07\tM\t46952\t56006.88437127279\n1989-02-14\tF\t31412\t55865.134534572775\n1989-02-14\tM\t47166\t56022.65986091676\n1989-02-21\tF\t31561\t55882.0363740059\n1989-02-21\tM\t47369\t56048.437121324074\n1989-02-28\tF\t31705\t55910.282132155815\n1989-02-28\tM\t47593\t56064.974134851764\n1989-03-07\tF\t31848\t55930.49987440342\n1989-03-07\tM\t47818\t56082.73825755991\n1989-03-14\tF\t31992\t55944.97149287322\n1989-03-14\tM\t48056\t56105.14052355585\n1989-03-21\tF\t32138\t55969.69761652872\n1989-03-21\tM\t48260\t56121.022523829255\n1989-03-28\tF\t32274\t55994.099367912255\n1989-03-28\tM\t48490\t56133.811280676426\n1989-04-04\tF\t32412\t56019.69418733802\n1989-04-04\tM\t48703\t56157.93864854321\n1989-04-11\tF\t32575\t56037.440399079045\n1989-04-11\tM\t48907\t56181.91860060932\n1989-04-18\tF\t32733\t56055.19704884978\n1989-04-18\tM\t49121\t56206.18729260398\n1989-04-25\tF\t32892\t56069.073543718834\n1989-04-25\tM\t49342\t56234.14059016659\n1989-05-02\tF\t33039\t56095.82193770998\n1989-05-02\tM\t49542\t56252.165697791774\n1989-05-09\tF\t33183\t56109.63330621101\n1989-05-09\tM\t49784\t56271.56628635706\n1989-05-16\tF\t33322\t56137.845897605184\n1989-05-16\tM\t49995\t56298.7100710071\n1989-05-23\tF\t33484\t56157.77186118743\n1989-05-23\tM\t50222\t56316.460813985905\n1989-05-30\tF\t33641\t56179.61757973901\n1989-05-30\tM\t50444\t56336.1833518357\n1989-06-06\tF\t33814\t56190.75187792039\n1989-06-06\tM\t50656\t56358.03602732154\n1989-06-13\tF\t33961\t56216.9454374135\n1989-06-13\tM\t50901\t56375.121137109294\n1989-06-20\tF\t34103\t56226.771457056566\n1989-06-20\tM\t51112\t56398.798129597744\n1989-06-27\tF\t34247\t56250.45358717552\n1989-06-27\tM\t51306\t56423.27708260243\n1989-07-04\tF\t34388\t56267.12870768873\n1989-07-04\tM\t51494\t56439.045597545344\n1989-07-11\tF\t34541\t56289.13942850525\n1989-07-11\tM\t51715\t56453.32226626704\n1989-07-18\tF\t34692\t56307.00824397556\n1989-07-18\tM\t51947\t56471.681887308216\n1989-07-25\tF\t34842\t56328.44388955858\n1989-07-25\tM\t52158\t56493.06913608651\n1989-08-01\tF\t34990\t56347.86741926265\n1989-08-01\tM\t52371\t56513.30963701285\n1989-08-08\tF\t35157\t56364.11056119692\n1989-08-08\tM\t52589\t56531.06153378083\n1989-08-15\tF\t35303\t56385.74183497153\n1989-08-15\tM\t52793\t56549.01706665656\n1989-08-22\tF\t35448\t56407.87858271271\n1989-08-22\tM\t53004\t56564.38978190325\n1989-08-29\tF\t35583\t56429.31079448051\n1989-08-29\tM\t53221\t56582.68151669454\n1989-09-05\tF\t35744\t56447.32827887198\n1989-09-05\tM\t53432\t56602.955981434345\n1989-09-12\tF\t35902\t56469.11286279316\n1989-09-12\tM\t53630\t56627.0058922245\n1989-09-19\tF\t36022\t56480.36330575759\n1989-09-19\tM\t53865\t56640.742597233824\n1989-09-26\tF\t36160\t56500.314850663715\n1989-09-26\tM\t54056\t56661.47604336244\n1989-10-03\tF\t36283\t56523.18543119367\n1989-10-03\tM\t54274\t56679.61476950289\n1989-10-10\tF\t36431\t56540.78106557602\n1989-10-10\tM\t54486\t56703.004221267845\n1989-10-17\tF\t36584\t56555.22457905095\n1989-10-17\tM\t54696\t56717.97866388767\n1989-10-24\tF\t36752\t56577.31677187636\n1989-10-24\tM\t54897\t56731.80547206587\n1989-10-31\tF\t36893\t56594.22635730355\n1989-10-31\tM\t55125\t56747.487419501136\n1989-11-07\tF\t37046\t56615.28491605032\n1989-11-07\tM\t55351\t56759.90986612708\n1989-11-14\tF\t37204\t56638.724787657244\n1989-11-14\tM\t55567\t56779.97892634117\n1989-11-21\tF\t37359\t56657.94210230467\n1989-11-21\tM\t55764\t56796.44916074887\n1989-11-28\tF\t37518\t56687.26971053894\n1989-11-28\tM\t56004\t56811.25498178702\n1989-12-05\tF\t37665\t56700.4369042878\n1989-12-05\tM\t56220\t56824.00062255425\n1989-12-12\tF\t37815\t56718.342007140025\n1989-12-12\tM\t56422\t56844.12277125944\n1989-12-19\tF\t37961\t56733.47504017281\n1989-12-19\tM\t56658\t56860.54915457658\n1989-12-26\tF\t38105\t56743.84626689411\n1989-12-26\tM\t56876\t56878.54344538997\n1990-01-02\tF\t38265\t56771.89000392003\n1990-01-02\tM\t57072\t56895.48607022708\n1990-01-09\tF\t38391\t56790.0568883332\n1990-01-09\tM\t57293\t56913.18237830101\n1990-01-16\tF\t38534\t56814.206129651735\n1990-01-16\tM\t57489\t56930.30411035154\n1990-01-23\tF\t38664\t56829.48947341196\n1990-01-23\tM\t57713\t56940.758425311455\n1990-01-30\tF\t38810\t56842.929373872714\n1990-01-30\tM\t57934\t56954.70632098595\n1990-02-06\tF\t38945\t56862.5148029272\n1990-02-06\tM\t58132\t56977.23138718778\n1990-02-13\tF\t39069\t56884.534567048046\n1990-02-13\tM\t58352\t56999.79157526734\n1990-02-20\tF\t39224\t56916.47017132368\n1990-02-20\tM\t58562\t57022.79102489669\n1990-02-27\tF\t39385\t56933.092954170366\n1990-02-27\tM\t58775\t57045.35048915355\n1990-03-06\tF\t39547\t56948.03261941487\n1990-03-06\tM\t59002\t57063.87703806651\n1990-03-13\tF\t39674\t56974.14117558098\n1990-03-13\tM\t59219\t57088.60581907834\n1990-03-20\tF\t39814\t56992.924297985635\n1990-03-20\tM\t59430\t57101.644556621235\n1990-03-27\tF\t39957\t57013.08368996671\n1990-03-27\tM\t59650\t57124.165666387256\n1990-04-03\tF\t40094\t57036.05232703147\n1990-04-03\tM\t59868\t57143.389540322045\n1990-04-10\tF\t40231\t57061.13017324948\n1990-04-10\tM\t60056\t57164.60876515252\n1990-04-17\tF\t40394\t57080.13509432094\n1990-04-17\tM\t60269\t57187.01012128955\n1990-04-24\tF\t40548\t57103.960787215154\n1990-04-24\tM\t60494\t57216.40213905511\n1990-05-01\tF\t40705\t57108.18309789952\n1990-05-01\tM\t60709\t57237.99240639773\n1990-05-08\tF\t40849\t57130.038776959045\n1990-05-08\tM\t60926\t57259.64745757148\n1990-05-15\tF\t40968\t57152.464899433704\n1990-05-15\tM\t61168\t57278.68772887784\n1990-05-22\tF\t41095\t57175.93373889768\n1990-05-22\tM\t61382\t57302.605926818935\n1990-05-29\tF\t41244\t57199.63233440016\n1990-05-29\tM\t61616\t57321.61902752532\n1990-06-05\tF\t41371\t57216.96545889633\n1990-06-05\tM\t61796\t57341.50951517898\n1990-06-12\tF\t41515\t57235.089076237506\n1990-06-12\tM\t62000\t57354.68419354839\n1990-06-19\tF\t41658\t57256.43991550242\n1990-06-19\tM\t62199\t57373.63671441663\n1990-06-26\tF\t41785\t57279.2599258107\n1990-06-26\tM\t62451\t57388.04142447679\n1990-07-03\tF\t41920\t57296.730367366414\n1990-07-03\tM\t62653\t57401.70987821812\n1990-07-10\tF\t42062\t57317.34841424564\n1990-07-10\tM\t62871\t57424.88490719091\n1990-07-17\tF\t42199\t57333.74148676509\n1990-07-17\tM\t63102\t57445.33079775601\n1990-07-24\tF\t42328\t57354.35579285579\n1990-07-24\tM\t63301\t57475.926351874376\n1990-07-31\tF\t42463\t57374.48964981278\n1990-07-31\tM\t63505\t57498.82924179199\n1990-08-07\tF\t42615\t57390.1505573155\n1990-08-07\tM\t63717\t57515.69053784704\n1990-08-14\tF\t42756\t57406.66479558425\n1990-08-14\tM\t63934\t57529.14640097601\n1990-08-21\tF\t42900\t57428.29745920746\n1990-08-21\tM\t64149\t57545.77556937754\n1990-08-28\tF\t43067\t57447.70564469315\n1990-08-28\tM\t64367\t57561.898379604456\n1990-09-04\tF\t43212\t57455.820073127834\n1990-09-04\tM\t64573\t57584.662986077776\n1990-09-11\tF\t43373\t57470.44566896457\n1990-09-11\tM\t64785\t57595.999521494174\n1990-09-18\tF\t43499\t57484.57049587347\n1990-09-18\tM\t65010\t57615.065128441776\n1990-09-25\tF\t43650\t57496.83743413517\n1990-09-25\tM\t65212\t57630.168465926516\n1990-10-02\tF\t43801\t57518.24604461085\n1990-10-02\tM\t65400\t57650.04354740061\n1990-10-09\tF\t43936\t57536.3106791697\n1990-10-09\tM\t65620\t57673.8165041146\n1990-10-16\tF\t44090\t57552.318552959856\n1990-10-16\tM\t65825\t57685.491682491454\n1990-10-23\tF\t44229\t57568.33855615094\n1990-10-23\tM\t66048\t57707.837194161824\n1990-10-30\tF\t44374\t57588.47577410195\n1990-10-30\tM\t66233\t57731.7636525599\n1990-11-06\tF\t44514\t57612.828256278925\n1990-11-06\tM\t66458\t57747.136131090316\n1990-11-13\tF\t44663\t57634.62767839151\n1990-11-13\tM\t66674\t57760.84665686775\n1990-11-20\tF\t44809\t57652.42728023388\n1990-11-20\tM\t66859\t57781.0862860647\n1990-11-27\tF\t44960\t57665.45785142349\n1990-11-27\tM\t67071\t57804.58418690641\n1990-12-04\tF\t45094\t57682.33372510755\n1990-12-04\tM\t67273\t57822.25772598219\n1990-12-11\tF\t45233\t57700.92083213583\n1990-12-11\tM\t67466\t57835.00730738446\n1990-12-18\tF\t45372\t57717.10920832231\n1990-12-18\tM\t67680\t57853.43919917258\n1990-12-25\tF\t45505\t57745.74818151852\n1990-12-25\tM\t67873\t57879.58902656432\n1991-01-01\tF\t45652\t57763.85376325243\n1991-01-01\tM\t68093\t57893.32066438547\n1991-01-08\tF\t45769\t57783.05016495881\n1991-01-08\tM\t68317\t57907.25443154705\n1991-01-15\tF\t45895\t57802.058873515634\n1991-01-15\tM\t68552\t57919.09087991597\n1991-01-22\tF\t46026\t57811.47831660366\n1991-01-22\tM\t68769\t57933.92381741773\n1991-01-29\tF\t46144\t57832.320019937586\n1991-01-29\tM\t69000\t57950.15113043478\n1991-02-05\tF\t46281\t57850.04126963549\n1991-02-05\tM\t69212\t57970.124833843845\n1991-02-12\tF\t46445\t57865.351447949186\n1991-02-12\tM\t69442\t57988.85412286512\n1991-02-19\tF\t46581\t57888.863785663685\n1991-02-19\tM\t69651\t58012.63875608391\n1991-02-26\tF\t46723\t57910.88551676904\n1991-02-26\tM\t69854\t58034.286769547914\n1991-03-05\tF\t46852\t57933.253073508065\n1991-03-05\tM\t70060\t58054.06430202683\n1991-03-12\tF\t47008\t57952.67514040163\n1991-03-12\tM\t70281\t58078.669113985285\n1991-03-19\tF\t47127\t57980.748021304134\n1991-03-19\tM\t70455\t58103.45211837343\n1991-03-26\tF\t47257\t58008.547728378864\n1991-03-26\tM\t70672\t58122.11199626443\n1991-04-02\tF\t47380\t58024.4309202195\n1991-04-02\tM\t70878\t58145.16203899658\n1991-04-09\tF\t47499\t58047.21429924841\n1991-04-09\tM\t71079\t58162.27536965911\n1991-04-16\tF\t47623\t58073.38141234277\n1991-04-16\tM\t71262\t58177.56302096489\n1991-04-23\tF\t47763\t58091.29372108117\n1991-04-23\tM\t71477\t58194.424849951734\n1991-04-30\tF\t47906\t58111.09775393479\n1991-04-30\tM\t71669\t58218.14102331552\n1991-05-07\tF\t48038\t58133.05091802323\n1991-05-07\tM\t71877\t58238.36608372637\n1991-05-14\tF\t48166\t58153.65710252045\n1991-05-14\tM\t72117\t58254.797523468806\n1991-05-21\tF\t48309\t58174.63116603532\n1991-05-21\tM\t72321\t58277.285947373515\n1991-05-28\tF\t48464\t58190.4849579069\n1991-05-28\tM\t72516\t58294.63820398257\n1991-06-04\tF\t48598\t58207.333511667144\n1991-06-04\tM\t72713\t58315.336817350406\n1991-06-11\tF\t48740\t58226.51112022979\n1991-06-11\tM\t72917\t58329.36889888503\n1991-06-18\tF\t48890\t58249.832031090205\n1991-06-18\tM\t73105\t58350.05013336981\n1991-06-25\tF\t49023\t58265.76431470942\n1991-06-25\tM\t73323\t58371.795793952784\n1991-07-02\tF\t49155\t58282.1686908758\n1991-07-02\tM\t73555\t58387.78095302835\n1991-07-09\tF\t49299\t58302.63191951155\n1991-07-09\tM\t73765\t58407.46336338372\n1991-07-16\tF\t49431\t58330.61789160648\n1991-07-16\tM\t73976\t58424.16529685303\n1991-07-23\tF\t49552\t58342.719244430096\n1991-07-23\tM\t74150\t58444.21465947404\n1991-07-30\tF\t49677\t58360.282947843065\n1991-07-30\tM\t74365\t58461.64297720702\n1991-08-06\tF\t49817\t58378.759499769156\n1991-08-06\tM\t74578\t58474.086795033385\n1991-08-13\tF\t49954\t58400.16258958242\n1991-08-13\tM\t74799\t58485.97891683044\n1991-08-20\tF\t50104\t58414.28696311672\n1991-08-20\tM\t75029\t58505.92701488758\n1991-08-27\tF\t50234\t58437.64565831907\n1991-08-27\tM\t75250\t58524.17596013289\n1991-09-03\tF\t50408\t58449.19040628472\n1991-09-03\tM\t75495\t58546.889833763824\n1991-09-10\tF\t50549\t58464.45009792478\n1991-09-10\tM\t75689\t58567.543447528704\n1991-09-17\tF\t50668\t58483.58139259493\n1991-09-17\tM\t75868\t58589.60847788264\n1991-09-24\tF\t50804\t58499.6118022203\n1991-09-24\tM\t76086\t58601.75310832479\n1991-10-01\tF\t50920\t58514.32716025138\n1991-10-01\tM\t76304\t58618.60445061858\n1991-10-08\tF\t51073\t58527.834687604016\n1991-10-08\tM\t76509\t58634.42623743612\n1991-10-15\tF\t51214\t58545.59302143945\n1991-10-15\tM\t76686\t58655.431760686435\n1991-10-22\tF\t51361\t58567.23942290843\n1991-10-22\tM\t76891\t58674.96524950905\n1991-10-29\tF\t51466\t58588.193292659234\n1991-10-29\tM\t77080\t58690.79984431759\n1991-11-05\tF\t51594\t58605.21558708377\n1991-11-05\tM\t77295\t58712.828850507794\n1991-11-12\tF\t51738\t58628.03241331323\n1991-11-12\tM\t77509\t58734.1830239069\n1991-11-19\tF\t51875\t58646.41746506024\n1991-11-19\tM\t77728\t58745.60895687526\n1991-11-26\tF\t51985\t58679.69727806098\n1991-11-26\tM\t77940\t58760.810700538874\n1991-12-03\tF\t52113\t58695.91604781916\n1991-12-03\tM\t78156\t58772.69165515123\n1991-12-10\tF\t52271\t58708.52223986532\n1991-12-10\tM\t78387\t58780.89958794188\n1991-12-17\tF\t52402\t58724.89761841151\n1991-12-17\tM\t78572\t58802.614620984576\n1991-12-24\tF\t52527\t58742.938050907156\n1991-12-24\tM\t78785\t58821.501973725964\n1991-12-31\tF\t52646\t58761.95049956312\n1991-12-31\tM\t78983\t58837.647772305434\n1992-01-07\tF\t52793\t58779.86189456935\n1992-01-07\tM\t79199\t58857.022134117855\n1992-01-14\tF\t52918\t58797.956706602665\n1992-01-14\tM\t79410\t58876.66757335348\n1992-01-21\tF\t53045\t58819.00880384579\n1992-01-21\tM\t79624\t58898.28676027329\n1992-01-28\tF\t53176\t58843.76579659997\n1992-01-28\tM\t79831\t58910.53421603137\n1992-02-04\tF\t53306\t58863.424586350506\n1992-02-04\tM\t80036\t58930.67640811635\n1992-02-11\tF\t53455\t58880.29132915536\n1992-02-11\tM\t80214\t58954.40257311691\n1992-02-18\tF\t53587\t58898.043014163886\n1992-02-18\tM\t80418\t58976.75042900843\n1992-02-25\tF\t53719\t58923.93017368157\n1992-02-25\tM\t80619\t58997.83120604324\n1992-03-03\tF\t53862\t58948.86220340871\n1992-03-03\tM\t80828\t59017.39563022715\n1992-03-10\tF\t54023\t58969.57686540918\n1992-03-10\tM\t80993\t59043.17562011532\n1992-03-17\tF\t54159\t58988.87407448439\n1992-03-17\tM\t81205\t59063.42728896004\n1992-03-24\tF\t54292\t59005.240016945405\n1992-03-24\tM\t81393\t59083.51758750752\n1992-03-31\tF\t54419\t59017.71278413789\n1992-03-31\tM\t81593\t59111.30372703541\n1992-04-07\tF\t54559\t59038.51313257208\n1992-04-07\tM\t81800\t59133.095048899755\n1992-04-14\tF\t54684\t59063.824811645085\n1992-04-14\tM\t81991\t59155.89642765669\n1992-04-21\tF\t54816\t59084.880600554585\n1992-04-21\tM\t82219\t59172.93474744281\n1992-04-28\tF\t54947\t59104.95515678745\n1992-04-28\tM\t82458\t59185.96912367508\n1992-05-05\tF\t55072\t59121.152818129\n1992-05-05\tM\t82695\t59205.68316101336\n1992-05-12\tF\t55225\t59140.45589859665\n1992-05-12\tM\t82889\t59226.226724897155\n1992-05-19\tF\t55370\t59163.93189452772\n1992-05-19\tM\t83103\t59242.191401032454\n1992-05-26\tF\t55505\t59190.44615800378\n1992-05-26\tM\t83302\t59259.3921154354\n1992-06-02\tF\t55636\t59203.61550075491\n1992-06-02\tM\t83517\t59279.68644707066\n1992-06-09\tF\t55786\t59218.72156096512\n1992-06-09\tM\t83700\t59300.676009557945\n1992-06-16\tF\t55929\t59238.72600976238\n1992-06-16\tM\t83887\t59322.64728742237\n1992-06-23\tF\t56080\t59254.00600927247\n1992-06-23\tM\t84095\t59343.03509126583\n1992-06-30\tF\t56223\t59270.05015740889\n1992-06-30\tM\t84288\t59359.119174734245\n1992-07-07\tF\t56363\t59283.5239607544\n1992-07-07\tM\t84525\t59373.37207926649\n1992-07-14\tF\t56494\t59305.14417460261\n1992-07-14\tM\t84718\t59395.99173729314\n1992-07-21\tF\t56633\t59323.22402133032\n1992-07-21\tM\t84943\t59418.56463746277\n1992-07-28\tF\t56762\t59346.436401113424\n1992-07-28\tM\t85121\t59433.21455340045\n1992-08-04\tF\t56924\t59360.649163797345\n1992-08-04\tM\t85338\t59451.160772457755\n1992-08-11\tF\t57060\t59385.925113915175\n1992-08-11\tM\t85517\t59470.730673433354\n1992-08-18\tF\t57207\t59400.652472599504\n1992-08-18\tM\t85713\t59484.45329179938\n1992-08-25\tF\t57337\t59420.78026405288\n1992-08-25\tM\t85922\t59499.62745280603\n1992-09-01\tF\t57459\t59437.5717816182\n1992-09-01\tM\t86137\t59522.11756852456\n1992-09-08\tF\t57592\t59457.215307681625\n1992-09-08\tM\t86344\t59536.88419577504\n1992-09-15\tF\t57705\t59474.574542933886\n1992-09-15\tM\t86524\t59550.57337848458\n1992-09-22\tF\t57847\t59491.5016509067\n1992-09-22\tM\t86758\t59564.08960556951\n1992-09-29\tF\t57967\t59510.42232649611\n1992-09-29\tM\t86956\t59583.923800542805\n1992-10-06\tF\t58084\t59529.6119585428\n1992-10-06\tM\t87173\t59602.5108003625\n1992-10-13\tF\t58222\t59544.223523753906\n1992-10-13\tM\t87372\t59615.85163439088\n1992-10-20\tF\t58375\t59558.21978586724\n1992-10-20\tM\t87563\t59630.462444183046\n1992-10-27\tF\t58534\t59576.449499436225\n1992-10-27\tM\t87769\t59650.276133942505\n1992-11-03\tF\t58675\t59592.65128248828\n1992-11-03\tM\t87984\t59669.47765502819\n1992-11-10\tF\t58821\t59609.42078509376\n1992-11-10\tM\t88174\t59686.76617823848\n1992-11-17\tF\t58948\t59628.81500644636\n1992-11-17\tM\t88370\t59705.758990607676\n1992-11-24\tF\t59103\t59652.098505998\n1992-11-24\tM\t88583\t59721.98676947044\n1992-12-01\tF\t59235\t59668.72026673419\n1992-12-01\tM\t88797\t59737.929659785805\n1992-12-08\tF\t59382\t59688.46426526557\n1992-12-08\tM\t89038\t59750.690401850894\n1992-12-15\tF\t59509\t59712.07477860492\n1992-12-15\tM\t89256\t59766.642892354575\n1992-12-22\tF\t59620\t59719.1375712848\n1992-12-22\tM\t89465\t59786.17920974683\n1992-12-29\tF\t59762\t59732.81399551554\n1992-12-29\tM\t89655\t59801.944375662264\n1993-01-05\tF\t59897\t59746.83952451709\n1993-01-05\tM\t89855\t59819.928484781034\n1993-01-12\tF\t60028\t59762.333444392614\n1993-01-12\tM\t90061\t59835.838853665846\n1993-01-19\tF\t60142\t59779.20278673805\n1993-01-19\tM\t90252\t59856.65514337632\n1993-01-26\tF\t60278\t59794.09768074588\n1993-01-26\tM\t90432\t59871.512738853504\n1993-02-02\tF\t60424\t59813.597709519396\n1993-02-02\tM\t90650\t59885.91527854385\n1993-02-09\tF\t60553\t59835.87288821363\n1993-02-09\tM\t90870\t59902.84516342027\n1993-02-16\tF\t60686\t59854.75930198069\n1993-02-16\tM\t91085\t59927.122402151836\n1993-02-23\tF\t60814\t59880.27398296445\n1993-02-23\tM\t91290\t59949.3563917187\n1993-03-02\tF\t60958\t59903.90396666557\n1993-03-02\tM\t91485\t59971.2058042302\n1993-03-09\tF\t61098\t59923.79868408131\n1993-03-09\tM\t91649\t59996.841940446706\n1993-03-16\tF\t61241\t59942.72137946801\n1993-03-16\tM\t91844\t60018.48104394408\n1993-03-23\tF\t61369\t59962.06964428294\n1993-03-23\tM\t92038\t60042.98734218475\n1993-03-30\tF\t61486\t59980.90497023713\n1993-03-30\tM\t92255\t60064.57087420736\n1993-04-06\tF\t61603\t60001.33196435239\n1993-04-06\tM\t92440\t60085.42560579836\n1993-04-13\tF\t61727\t60020.69209584137\n1993-04-13\tM\t92635\t60108.67907378421\n1993-04-20\tF\t61890\t60042.287784779444\n1993-04-20\tM\t92817\t60129.22712434144\n1993-04-27\tF\t62016\t60061.37954721362\n1993-04-27\tM\t93036\t60152.42722172062\n1993-05-04\tF\t62146\t60079.51485212242\n1993-05-04\tM\t93267\t60169.26272958281\n1993-05-11\tF\t62299\t60094.64933626543\n1993-05-11\tM\t93483\t60187.98510959212\n1993-05-18\tF\t62423\t60117.06750716883\n1993-05-18\tM\t93674\t60211.47856395585\n1993-05-25\tF\t62566\t60139.95697343605\n1993-05-25\tM\t93872\t60233.10450400545\n1993-06-01\tF\t62690\t60162.5139735205\n1993-06-01\tM\t94076\t60249.43901739019\n1993-06-08\tF\t62815\t60186.8418849001\n1993-06-08\tM\t94276\t60269.81622045908\n1993-06-15\tF\t62979\t60202.82654535639\n1993-06-15\tM\t94482\t60286.696227852924\n1993-06-22\tF\t63111\t60218.591291533965\n1993-06-22\tM\t94679\t60302.637047286094\n1993-06-29\tF\t63233\t60239.52213243085\n1993-06-29\tM\t94870\t60319.16071466217\n1993-07-06\tF\t63355\t60255.76017678163\n1993-07-06\tM\t95085\t60336.59739180733\n1993-07-13\tF\t63453\t60286.660993176054\n1993-07-13\tM\t95281\t60356.307805333694\n1993-07-20\tF\t63591\t60304.20639713167\n1993-07-20\tM\t95474\t60373.470557429246\n1993-07-27\tF\t63712\t60320.26163046208\n1993-07-27\tM\t95667\t60395.45074058975\n1993-08-03\tF\t63839\t60338.7695609267\n1993-08-03\tM\t95852\t60413.58849058966\n1993-08-10\tF\t63970\t60360.22979521651\n1993-08-10\tM\t96045\t60432.715383414026\n1993-08-17\tF\t64102\t60384.69383170572\n1993-08-17\tM\t96236\t60453.869643376696\n1993-08-24\tF\t64210\t60406.14303068058\n1993-08-24\tM\t96458\t60468.80339629683\n1993-08-31\tF\t64366\t60424.05788770469\n1993-08-31\tM\t96649\t60487.60711440367\n1993-09-07\tF\t64479\t60444.514880813906\n1993-09-07\tM\t96834\t60506.43909164137\n1993-09-14\tF\t64611\t60460.350838092585\n1993-09-14\tM\t97023\t60522.6693979778\n1993-09-21\tF\t64741\t60476.01042615962\n1993-09-21\tM\t97236\t60542.58523592085\n1993-09-28\tF\t64868\t60493.30010174508\n1993-09-28\tM\t97431\t60562.74852972873\n1993-10-05\tF\t65019\t60509.08025346437\n1993-10-05\tM\t97615\t60578.927623828306\n1993-10-12\tF\t65165\t60528.611724085014\n1993-10-12\tM\t97800\t60596.73\n1993-10-19\tF\t65292\t60544.061477669544\n1993-10-19\tM\t97979\t60609.42422355811\n1993-10-26\tF\t65429\t60564.411667609165\n1993-10-26\tM\t98153\t60628.92714435626\n1993-11-02\tF\t65576\t60581.23346956204\n1993-11-02\tM\t98335\t60646.77210555753\n1993-11-09\tF\t65689\t60600.69516966311\n1993-11-09\tM\t98517\t60666.2777388674\n1993-11-16\tF\t65826\t60615.75476255583\n1993-11-16\tM\t98718\t60682.329129439415\n1993-11-23\tF\t65959\t60630.86059521824\n1993-11-23\tM\t98917\t60702.01402185671\n1993-11-30\tF\t66095\t60649.180437249415\n1993-11-30\tM\t99114\t60718.2668038824\n1993-12-07\tF\t66219\t60665.182862924536\n1993-12-07\tM\t99321\t60732.45636874377\n1993-12-14\tF\t66348\t60681.009013082534\n1993-12-14\tM\t99518\t60748.45533471332\n1993-12-21\tF\t66486\t60694.358917666876\n1993-12-21\tM\t99720\t60768.354201764945\n1993-12-28\tF\t66637\t60706.52347794769\n1993-12-28\tM\t99930\t60787.68250775543\n1994-01-04\tF\t66759\t60729.061130334485\n1994-01-04\tM\t100115\t60800.908804874394\n1994-01-11\tF\t66891\t60744.69163265611\n1994-01-11\tM\t100289\t60822.14209933293\n1994-01-18\tF\t67034\t60753.09818897873\n1994-01-18\tM\t100467\t60838.739118317455\n1994-01-25\tF\t67183\t60765.00717443401\n1994-01-25\tM\t100665\t60854.15082700045\n1994-02-01\tF\t67325\t60784.048288154474\n1994-02-01\tM\t100871\t60869.693539272936\n1994-02-08\tF\t67472\t60803.41563907992\n1994-02-08\tM\t101051\t60892.811778211006\n1994-02-15\tF\t67606\t60828.452918380026\n1994-02-15\tM\t101237\t60911.612048954434\n1994-02-22\tF\t67753\t60845.19695068853\n1994-02-22\tM\t101453\t60928.88425182104\n1994-03-01\tF\t67895\t60867.26320053023\n1994-03-01\tM\t101651\t60948.4183529921\n1994-03-08\tF\t68034\t60883.4801863774\n1994-03-08\tM\t101825\t60968.12847532531\n1994-03-15\tF\t68164\t60903.51116425092\n1994-03-15\tM\t102024\t60987.32773661099\n1994-03-22\tF\t68291\t60926.40432853524\n1994-03-22\tM\t102226\t61012.94062175963\n1994-03-29\tF\t68415\t60940.880976394066\n1994-03-29\tM\t102425\t61031.86124481328\n1994-04-05\tF\t68532\t60956.82249168272\n1994-04-05\tM\t102646\t61042.14522728601\n1994-04-12\tF\t68634\t60978.53033481948\n1994-04-12\tM\t102828\t61063.48706577975\n1994-04-19\tF\t68760\t61009.044037230946\n1994-04-19\tM\t103024\t61081.293281177204\n1994-04-26\tF\t68888\t61027.73086749506\n1994-04-26\tM\t103222\t61100.41580283273\n1994-05-03\tF\t69023\t61046.935383857555\n1994-05-03\tM\t103406\t61120.686285128526\n1994-05-10\tF\t69153\t61068.28053735919\n1994-05-10\tM\t103596\t61140.09973358045\n1994-05-17\tF\t69272\t61093.864894907034\n1994-05-17\tM\t103768\t61162.68509559787\n1994-05-24\tF\t69420\t61108.93700662633\n1994-05-24\tM\t103966\t61178.66792028163\n1994-05-31\tF\t69563\t61125.057286201\n1994-05-31\tM\t104178\t61193.53299161051\n1994-06-07\tF\t69694\t61149.37757913163\n1994-06-07\tM\t104375\t61211.93660359282\n1994-06-14\tF\t69812\t61170.42889474589\n1994-06-14\tM\t104538\t61232.63874380608\n1994-06-21\tF\t69943\t61191.38610011009\n1994-06-21\tM\t104742\t61249.66254224666\n1994-06-28\tF\t70090\t61205.27341988871\n1994-06-28\tM\t104932\t61269.06731025807\n1994-07-05\tF\t70226\t61226.998618745194\n1994-07-05\tM\t105096\t61292.0905362716\n1994-07-12\tF\t70353\t61250.014924736686\n1994-07-12\tM\t105281\t61312.55697609255\n1994-07-19\tF\t70485\t61266.95003192168\n1994-07-19\tM\t105511\t61332.238752357574\n1994-07-26\tF\t70633\t61286.29501790948\n1994-07-26\tM\t105696\t61350.04826105056\n1994-08-02\tF\t70752\t61307.176419041156\n1994-08-02\tM\t105888\t61369.91398458749\n1994-08-09\tF\t70860\t61331.61836014677\n1994-08-09\tM\t106079\t61389.50022153301\n1994-08-16\tF\t70977\t61351.0828014709\n1994-08-16\tM\t106276\t61410.56903722383\n1994-08-23\tF\t71119\t61366.53399232273\n1994-08-23\tM\t106485\t61427.86091937832\n1994-08-30\tF\t71233\t61388.70398551233\n1994-08-30\tM\t106666\t61449.47417171358\n1994-09-06\tF\t71362\t61406.525657913175\n1994-09-06\tM\t106862\t61466.455774737515\n1994-09-13\tF\t71509\t61426.24370358976\n1994-09-13\tM\t107048\t61481.525362454224\n1994-09-20\tF\t71633\t61445.624209512374\n1994-09-20\tM\t107222\t61499.08595250975\n1994-09-27\tF\t71765\t61463.59204347523\n1994-09-27\tM\t107427\t61514.10993511873\n1994-10-04\tF\t71882\t61477.955134804266\n1994-10-04\tM\t107607\t61533.93551534751\n1994-10-11\tF\t72032\t61495.975219346954\n1994-10-11\tM\t107794\t61556.81673376997\n1994-10-18\tF\t72144\t61512.599301397204\n1994-10-18\tM\t107984\t61570.231673210845\n1994-10-25\tF\t72264\t61532.66971105945\n1994-10-25\tM\t108172\t61582.51122286729\n1994-11-01\tF\t72360\t61553.4335129906\n1994-11-01\tM\t108396\t61600.36030849847\n1994-11-08\tF\t72498\t61577.10052691109\n1994-11-08\tM\t108590\t61619.62899898701\n1994-11-15\tF\t72624\t61594.56785635603\n1994-11-15\tM\t108757\t61637.37085428984\n1994-11-22\tF\t72751\t61617.363197756735\n1994-11-22\tM\t108956\t61653.07287345351\n1994-11-29\tF\t72887\t61630.56236365881\n1994-11-29\tM\t109143\t61672.86388499491\n1994-12-06\tF\t73023\t61641.84009147803\n1994-12-06\tM\t109326\t61693.77600021953\n1994-12-13\tF\t73151\t61662.49068365436\n1994-12-13\tM\t109492\t61716.83474591751\n1994-12-20\tF\t73273\t61683.1666098017\n1994-12-20\tM\t109706\t61731.816728346676\n1994-12-27\tF\t73390\t61703.50333832947\n1994-12-27\tM\t109889\t61750.50239787422\n1995-01-03\tF\t73506\t61723.703384757704\n1995-01-03\tM\t110064\t61767.375363424915\n1995-01-10\tF\t73624\t61737.88951972183\n1995-01-10\tM\t110277\t61784.34599236468\n1995-01-17\tF\t73749\t61753.520468074144\n1995-01-17\tM\t110453\t61801.06294985197\n1995-01-24\tF\t73885\t61764.85684509711\n1995-01-24\tM\t110649\t61815.46196531374\n1995-01-31\tF\t74018\t61780.56225512713\n1995-01-31\tM\t110823\t61836.829331456465\n1995-02-07\tF\t74144\t61798.73060530859\n1995-02-07\tM\t111014\t61856.02168195003\n1995-02-14\tF\t74281\t61821.274255866236\n1995-02-14\tM\t111189\t61877.9285271025\n1995-02-21\tF\t74408\t61846.38055047844\n1995-02-21\tM\t111405\t61894.73160989184\n1995-02-28\tF\t74534\t61867.83355247269\n1995-02-28\tM\t111585\t61917.44535555854\n1995-03-07\tF\t74658\t61890.86059096145\n1995-03-07\tM\t111774\t61938.04032243635\n1995-03-14\tF\t74795\t61906.86071261448\n1995-03-14\tM\t111993\t61953.35226308787\n1995-03-21\tF\t74928\t61924.95786621824\n1995-03-21\tM\t112179\t61971.7892564562\n1995-03-28\tF\t75048\t61944.12212184202\n1995-03-28\tM\t112377\t61994.260836292124\n1995-04-04\tF\t75167\t61961.241369217874\n1995-04-04\tM\t112561\t62016.40868506854\n1995-04-11\tF\t75295\t61982.9886977887\n1995-04-11\tM\t112760\t62036.4709116708\n1995-04-18\tF\t75411\t62005.10294254154\n1995-04-18\tM\t112958\t62054.845013190745\n1995-04-25\tF\t75532\t62022.38212942859\n1995-04-25\tM\t113171\t62073.7921640703\n1995-05-02\tF\t75649\t62036.717022035984\n1995-05-02\tM\t113385\t62092.30812717732\n1995-05-09\tF\t75791\t62053.95411064638\n1995-05-09\tM\t113555\t62112.420782880545\n1995-05-16\tF\t75889\t62075.3239599942\n1995-05-16\tM\t113724\t62137.16941015089\n1995-05-23\tF\t76005\t62099.49791461088\n1995-05-23\tM\t113904\t62154.03100856862\n1995-05-30\tF\t76140\t62120.68808773312\n1995-05-30\tM\t114091\t62171.950390477774\n1995-06-06\tF\t76260\t62140.84984264359\n1995-06-06\tM\t114299\t62185.11167201813\n1995-06-13\tF\t76372\t62161.01689100717\n1995-06-13\tM\t114491\t62199.887571948886\n1995-06-20\tF\t76496\t62178.97886163982\n1995-06-20\tM\t114681\t62214.67122714312\n1995-06-27\tF\t76637\t62193.41712227775\n1995-06-27\tM\t114879\t62228.1969028282\n1995-07-04\tF\t76753\t62214.59148176618\n1995-07-04\tM\t115047\t62249.16891357445\n1995-07-11\tF\t76882\t62235.34551650581\n1995-07-11\tM\t115239\t62268.002776837704\n1995-07-18\tF\t77038\t62244.57745528181\n1995-07-18\tM\t115424\t62288.065385015245\n1995-07-25\tF\t77135\t62266.12679069165\n1995-07-25\tM\t115599\t62307.79872663258\n1995-08-01\tF\t77254\t62283.83233230642\n1995-08-01\tM\t115778\t62327.268816182695\n1995-08-08\tF\t77373\t62306.675687901465\n1995-08-08\tM\t115975\t62344.33167492994\n1995-08-15\tF\t77484\t62325.9411104228\n1995-08-15\tM\t116136\t62364.15846077013\n1995-08-22\tF\t77628\t62344.21971453599\n1995-08-22\tM\t116329\t62382.04292996587\n1995-08-29\tF\t77754\t62365.89883478663\n1995-08-29\tM\t116510\t62400.27437988156\n1995-09-05\tF\t77880\t62384.92763225475\n1995-09-05\tM\t116660\t62419.390296588375\n1995-09-12\tF\t78001\t62408.362969705515\n1995-09-12\tM\t116828\t62434.80557743007\n1995-09-19\tF\t78119\t62427.50010880836\n1995-09-19\tM\t116990\t62449.27742542097\n1995-09-26\tF\t78230\t62447.73106225234\n1995-09-26\tM\t117169\t62472.70729459157\n1995-10-03\tF\t78362\t62464.240677879585\n1995-10-03\tM\t117345\t62489.04646981124\n1995-10-10\tF\t78494\t62478.16927408464\n1995-10-10\tM\t117510\t62504.811581993024\n1995-10-17\tF\t78611\t62492.9205581916\n1995-10-17\tM\t117691\t62522.82171958774\n1995-10-24\tF\t78722\t62508.66852976297\n1995-10-24\tM\t117875\t62540.31938918346\n1995-10-31\tF\t78837\t62522.68348618034\n1995-10-31\tM\t118051\t62562.78612633523\n1995-11-07\tF\t78967\t62541.00949763825\n1995-11-07\tM\t118229\t62579.43677947035\n1995-11-14\tF\t79070\t62564.02786138864\n1995-11-14\tM\t118415\t62599.862247181525\n1995-11-21\tF\t79169\t62585.37677626344\n1995-11-21\tM\t118604\t62611.91265893225\n1995-11-28\tF\t79304\t62600.649651972155\n1995-11-28\tM\t118796\t62630.442110845484\n1995-12-05\tF\t79439\t62613.53535417112\n1995-12-05\tM\t119005\t62646.60847863535\n1995-12-12\tF\t79561\t62628.33546586896\n1995-12-12\tM\t119175\t62666.167434445146\n1995-12-19\tF\t79681\t62644.496944064456\n1995-12-19\tM\t119349\t62688.51637634166\n1995-12-26\tF\t79805\t62660.30681035023\n1995-12-26\tM\t119536\t62707.9197480257\n1996-01-02\tF\t79950\t62673.438586616634\n1996-01-02\tM\t119733\t62726.415841914924\n1996-01-09\tF\t80079\t62691.34515915533\n1996-01-09\tM\t119938\t62742.95247544564\n1996-01-16\tF\t80201\t62703.54013042231\n1996-01-16\tM\t120108\t62762.26198088387\n1996-01-23\tF\t80343\t62723.98172833974\n1996-01-23\tM\t120294\t62777.460638103315\n1996-01-30\tF\t80473\t62741.7093807861\n1996-01-30\tM\t120492\t62796.51406732397\n1996-02-06\tF\t80604\t62757.73574512431\n1996-02-06\tM\t120673\t62817.59405998028\n1996-02-13\tF\t80726\t62776.706092213164\n1996-02-13\tM\t120829\t62838.67977058487\n1996-02-20\tF\t80848\t62798.03497922027\n1996-02-20\tM\t121025\t62859.93060111547\n1996-02-27\tF\t80984\t62815.575459349995\n1996-02-27\tM\t121211\t62878.3969194215\n1996-03-05\tF\t81094\t62840.277517448885\n1996-03-05\tM\t121432\t62896.99819652151\n1996-03-12\tF\t81195\t62862.36922224275\n1996-03-12\tM\t121634\t62916.56680697831\n1996-03-19\tF\t81319\t62879.363236144076\n1996-03-19\tM\t121818\t62933.07207473444\n1996-03-26\tF\t81435\t62895.749947811135\n1996-03-26\tM\t121984\t62952.59248753935\n1996-04-02\tF\t81540\t62915.45107922492\n1996-04-02\tM\t122173\t62977.20100185802\n1996-04-09\tF\t81639\t62938.02933646909\n1996-04-09\tM\t122373\t62993.131360675965\n1996-04-16\tF\t81768\t62957.639614519125\n1996-04-16\tM\t122559\t63013.45969696228\n1996-04-23\tF\t81890\t62974.70346806692\n1996-04-23\tM\t122753\t63032.16301027266\n1996-04-30\tF\t82014\t62994.83743019484\n1996-04-30\tM\t122917\t63055.90162467356\n1996-05-07\tF\t82123\t63016.11454769066\n1996-05-07\tM\t123096\t63072.25852992786\n1996-05-14\tF\t82249\t63029.292040024804\n1996-05-14\tM\t123293\t63087.56896174154\n1996-05-21\tF\t82385\t63046.87670085574\n1996-05-21\tM\t123474\t63105.18634692324\n1996-05-28\tF\t82487\t63068.75385212215\n1996-05-28\tM\t123613\t63123.94044315728\n1996-06-04\tF\t82594\t63085.37424025958\n1996-06-04\tM\t123798\t63141.51469329069\n1996-06-11\tF\t82709\t63103.75509315794\n1996-06-11\tM\t123986\t63160.69036826739\n1996-06-18\tF\t82846\t63120.741568693724\n1996-06-18\tM\t124163\t63175.063706579254\n1996-06-25\tF\t82966\t63141.38944868983\n1996-06-25\tM\t124323\t63194.78411878735\n1996-07-02\tF\t83097\t63157.25282501173\n1996-07-02\tM\t124513\t63209.801530763856\n1996-07-09\tF\t83226\t63174.045742916875\n1996-07-09\tM\t124715\t63225.72321693461\n1996-07-16\tF\t83371\t63185.83704165717\n1996-07-16\tM\t124905\t63245.75621472319\n1996-07-23\tF\t83473\t63201.61023324908\n1996-07-23\tM\t125094\t63263.30815226949\n1996-07-30\tF\t83587\t63220.53559764078\n1996-07-30\tM\t125283\t63278.93684697844\n1996-08-06\tF\t83696\t63240.98680940547\n1996-08-06\tM\t125477\t63294.55615770221\n1996-08-13\tF\t83792\t63261.63565734199\n1996-08-13\tM\t125695\t63309.034201837785\n1996-08-20\tF\t83924\t63280.17353796292\n1996-08-20\tM\t125858\t63326.80285718826\n1996-08-27\tF\t84056\t63298.61362662986\n1996-08-27\tM\t126058\t63344.71187865903\n1996-09-03\tF\t84167\t63315.580690769544\n1996-09-03\tM\t126264\t63360.00132262561\n1996-09-10\tF\t84319\t63330.6543958064\n1996-09-10\tM\t126444\t63374.91300496663\n1996-09-17\tF\t84433\t63347.38648395769\n1996-09-17\tM\t126634\t63390.46729946144\n1996-09-24\tF\t84553\t63366.59152247703\n1996-09-24\tM\t126798\t63410.02840738813\n1996-10-01\tF\t84672\t63383.494945200306\n1996-10-01\tM\t126971\t63429.05342164746\n1996-10-08\tF\t84804\t63396.22978868921\n1996-10-08\tM\t127107\t63452.76469431267\n1996-10-15\tF\t84919\t63412.4651373662\n1996-10-15\tM\t127295\t63467.262704740955\n1996-10-22\tF\t85043\t63431.31033712357\n1996-10-22\tM\t127465\t63487.30839838387\n1996-10-29\tF\t85155\t63454.58022429687\n1996-10-29\tM\t127653\t63503.63295026361\n1996-11-05\tF\t85283\t63469.17411441905\n1996-11-05\tM\t127834\t63520.95487116104\n1996-11-12\tF\t85418\t63489.92893769463\n1996-11-12\tM\t128008\t63539.32492500469\n1996-11-19\tF\t85531\t63511.12609463235\n1996-11-19\tM\t128183\t63558.88132591685\n1996-11-26\tF\t85641\t63530.496047453904\n1996-11-26\tM\t128354\t63578.57230783614\n1996-12-03\tF\t85730\t63548.22540534235\n1996-12-03\tM\t128547\t63595.340715847124\n1996-12-10\tF\t85840\t63565.77198275862\n1996-12-10\tM\t128715\t63615.10184516179\n1996-12-17\tF\t85948\t63587.51567226695\n1996-12-17\tM\t128882\t63629.30602411508\n1996-12-24\tF\t86068\t63604.47318399405\n1996-12-24\tM\t129058\t63646.72075345968\n1996-12-31\tF\t86193\t63617.86634645505\n1996-12-31\tM\t129235\t63662.16864626456\n1997-01-07\tF\t86290\t63634.40728937304\n1997-01-07\tM\t129424\t63677.01457998517\n1997-01-14\tF\t86400\t63653.370092592595\n1997-01-14\tM\t129616\t63698.19013856314\n1997-01-21\tF\t86516\t63673.5040917287\n1997-01-21\tM\t129795\t63715.92532069802\n1997-01-28\tF\t86642\t63688.49395212484\n1997-01-28\tM\t129952\t63736.636411905936\n1997-02-04\tF\t86765\t63706.68464242494\n1997-02-04\tM\t130121\t63759.38029218958\n1997-02-11\tF\t86886\t63721.29297009875\n1997-02-11\tM\t130297\t63780.24375849022\n1997-02-18\tF\t87008\t63741.52848013976\n1997-02-18\tM\t130469\t63796.95101518368\n1997-02-25\tF\t87115\t63763.342501291394\n1997-02-25\tM\t130630\t63818.52452729082\n1997-03-04\tF\t87237\t63781.62951499937\n1997-03-04\tM\t130834\t63834.40201323815\n1997-03-11\tF\t87356\t63800.689901094374\n1997-03-11\tM\t130998\t63852.455335195955\n1997-03-18\tF\t87470\t63820.42736938379\n1997-03-18\tM\t131189\t63868.63845291907\n1997-03-25\tF\t87591\t63840.72653583131\n1997-03-25\tM\t131369\t63888.181991185134\n1997-04-01\tF\t87694\t63858.69515588295\n1997-04-01\tM\t131527\t63910.31851254875\n1997-04-08\tF\t87829\t63866.07310797117\n1997-04-08\tM\t131691\t63925.89881616815\n1997-04-15\tF\t87950\t63885.81437180216\n1997-04-15\tM\t131874\t63945.93744028391\n1997-04-22\tF\t88062\t63904.575753446436\n1997-04-22\tM\t132030\t63967.08823752178\n1997-04-29\tF\t88162\t63926.218257299064\n1997-04-29\tM\t132220\t63981.9167977613\n1997-05-06\tF\t88298\t63944.95666946024\n1997-05-06\tM\t132372\t64002.28164566524\n1997-05-13\tF\t88422\t63965.43752685983\n1997-05-13\tM\t132553\t64022.97302965606\n1997-05-20\tF\t88518\t63991.65388960437\n1997-05-20\tM\t132747\t64040.14767942025\n1997-05-27\tF\t88636\t64011.31443205921\n1997-05-27\tM\t132895\t64061.87353173558\n1997-06-03\tF\t88748\t64032.0825258034\n1997-06-03\tM\t133067\t64080.138125906495\n1997-06-10\tF\t88858\t64052.6041099282\n1997-06-10\tM\t133267\t64096.41225509691\n1997-06-17\tF\t88985\t64069.91354722706\n1997-06-17\tM\t133448\t64118.57121125832\n1997-06-24\tF\t89112\t64088.837653739116\n1997-06-24\tM\t133633\t64134.706689215986\n1997-07-01\tF\t89233\t64104.900485246486\n1997-07-01\tM\t133783\t64157.62274728478\n1997-07-08\tF\t89335\t64124.93554597862\n1997-07-08\tM\t133980\t64171.66412897447\n1997-07-15\tF\t89436\t64140.48992575696\n1997-07-15\tM\t134153\t64193.95476806333\n1997-07-22\tF\t89549\t64157.826742900535\n1997-07-22\tM\t134310\t64210.42609634428\n1997-07-29\tF\t89659\t64178.92751424843\n1997-07-29\tM\t134451\t64232.803110426845\n1997-08-05\tF\t89794\t64193.32643606477\n1997-08-05\tM\t134607\t64252.70433186981\n1997-08-12\tF\t89907\t64209.51480974785\n1997-08-12\tM\t134796\t64270.977202587615\n1997-08-19\tF\t90024\t64228.19472585088\n1997-08-19\tM\t134990\t64292.04158085784\n1997-08-26\tF\t90132\t64250.301879465675\n1997-08-26\tM\t135143\t64310.05173778886\n1997-09-02\tF\t90222\t64270.25704373656\n1997-09-02\tM\t135322\t64327.192311671424\n1997-09-09\tF\t90350\t64286.92203652463\n1997-09-09\tM\t135471\t64343.49925076216\n1997-09-16\tF\t90463\t64304.93035826802\n1997-09-16\tM\t135637\t64362.269948465386\n1997-09-23\tF\t90572\t64326.24938170737\n1997-09-23\tM\t135822\t64376.502503276344\n1997-09-30\tF\t90692\t64345.157786794865\n1997-09-30\tM\t135986\t64392.87614901534\n1997-10-07\tF\t90798\t64363.67436507412\n1997-10-07\tM\t136140\t64409.21960481857\n1997-10-14\tF\t90901\t64385.458960847514\n1997-10-14\tM\t136341\t64422.12594890752\n1997-10-21\tF\t91027\t64409.83178617333\n1997-10-21\tM\t136524\t64436.32879200727\n1997-10-28\tF\t91125\t64427.34274897119\n1997-10-28\tM\t136677\t64455.51743892535\n1997-11-04\tF\t91234\t64443.92491834184\n1997-11-04\tM\t136848\t64469.27205366538\n1997-11-11\tF\t91334\t64466.38709571463\n1997-11-11\tM\t137039\t64485.03406329585\n1997-11-18\tF\t91458\t64483.06936517308\n1997-11-18\tM\t137225\t64503.237310985605\n1997-11-25\tF\t91563\t64502.32459617968\n1997-11-25\tM\t137410\t64517.73540499236\n1997-12-02\tF\t91676\t64517.48177276496\n1997-12-02\tM\t137591\t64537.808192396304\n1997-12-09\tF\t91814\t64534.755026466555\n1997-12-09\tM\t137758\t64553.973228415045\n1997-12-16\tF\t91905\t64553.354267994124\n1997-12-16\tM\t137936\t64572.93507133743\n1997-12-23\tF\t92056\t64567.01707656209\n1997-12-23\tM\t138119\t64591.25850172677\n1997-12-30\tF\t92136\t64586.72971476947\n1997-12-30\tM\t138306\t64610.529839630966\n1998-01-06\tF\t92246\t64603.31529822431\n1998-01-06\tM\t138482\t64625.6916566774\n1998-01-13\tF\t92355\t64615.830057928644\n1998-01-13\tM\t138640\t64645.53392960185\n1998-01-20\tF\t92467\t64631.526620307784\n1998-01-20\tM\t138819\t64661.52276705638\n1998-01-27\tF\t92565\t64651.7565278453\n1998-01-27\tM\t138971\t64677.06835958581\n1998-02-03\tF\t92666\t64672.15940042734\n1998-02-03\tM\t139159\t64692.888760338894\n1998-02-10\tF\t92777\t64693.10673981698\n1998-02-10\tM\t139308\t64714.436493238005\n1998-02-17\tF\t92880\t64716.21804478898\n1998-02-17\tM\t139488\t64732.97669333563\n1998-02-24\tF\t92997\t64736.07908857275\n1998-02-24\tM\t139669\t64751.45972978972\n1998-03-03\tF\t93085\t64756.67564054359\n1998-03-03\tM\t139847\t64772.40176764607\n1998-03-10\tF\t93203\t64776.41339871034\n1998-03-10\tM\t140005\t64792.756358701474\n1998-03-17\tF\t93306\t64797.00103959016\n1998-03-17\tM\t140172\t64816.3144993294\n1998-03-24\tF\t93411\t64817.51105330207\n1998-03-24\tM\t140329\t64839.388707964856\n1998-03-31\tF\t93530\t64835.48318186678\n1998-03-31\tM\t140458\t64862.52174315454\n1998-04-07\tF\t93641\t64851.76357578411\n1998-04-07\tM\t140614\t64882.94387472087\n1998-04-14\tF\t93738\t64869.14135142632\n1998-04-14\tM\t140772\t64906.76797232404\n1998-04-21\tF\t93842\t64890.155697875154\n1998-04-21\tM\t140937\t64926.886899820485\n1998-04-28\tF\t93967\t64910.263730884246\n1998-04-28\tM\t141103\t64944.47410756681\n1998-05-05\tF\t94095\t64926.52060151974\n1998-05-05\tM\t141245\t64963.09955042657\n1998-05-12\tF\t94225\t64943.40523215707\n1998-05-12\tM\t141400\t64984.25755304102\n1998-05-19\tF\t94337\t64964.44838186502\n1998-05-19\tM\t141542\t65004.137690579475\n1998-05-26\tF\t94429\t64985.39186055132\n1998-05-26\tM\t141698\t65021.76663749665\n1998-06-02\tF\t94548\t64996.89583068917\n1998-06-02\tM\t141850\t65040.67154035954\n1998-06-09\tF\t94646\t65012.73565708007\n1998-06-09\tM\t142021\t65060.12052442948\n1998-06-16\tF\t94774\t65031.73074893958\n1998-06-16\tM\t142179\t65078.4031819045\n1998-06-23\tF\t94871\t65049.43215524238\n1998-06-23\tM\t142311\t65102.48693354695\n1998-06-30\tF\t94989\t65065.08471507227\n1998-06-30\tM\t142464\t65122.2724126797\n1998-07-07\tF\t95076\t65084.357124826456\n1998-07-07\tM\t142641\t65137.0601790509\n1998-07-14\tF\t95189\t65102.7139375348\n1998-07-14\tM\t142789\t65160.544775858085\n1998-07-21\tF\t95284\t65118.11258973175\n1998-07-21\tM\t142922\t65179.023187472885\n1998-07-28\tF\t95403\t65135.25797930883\n1998-07-28\tM\t143098\t65198.89092789557\n1998-08-04\tF\t95523\t65150.52865801953\n1998-08-04\tM\t143239\t65217.70606468909\n1998-08-11\tF\t95629\t65162.27521986009\n1998-08-11\tM\t143415\t65233.72415019349\n1998-08-18\tF\t95715\t65187.3235751972\n1998-08-18\tM\t143576\t65248.33257647518\n1998-08-25\tF\t95807\t65209.97833143716\n1998-08-25\tM\t143730\t65270.34891811034\n1998-09-01\tF\t95919\t65232.72755137147\n1998-09-01\tM\t143913\t65290.30069555912\n1998-09-08\tF\t96025\t65245.88752928925\n1998-09-08\tM\t144092\t65306.82391805235\n1998-09-15\tF\t96120\t65264.37480233042\n1998-09-15\tM\t144269\t65321.20664869099\n1998-09-22\tF\t96231\t65283.58549739689\n1998-09-22\tM\t144412\t65340.12523197518\n1998-09-29\tF\t96331\t65301.729515939835\n1998-09-29\tM\t144568\t65358.50051186985\n1998-10-06\tF\t96438\t65322.61576349572\n1998-10-06\tM\t144757\t65373.55066076252\n1998-10-13\tF\t96546\t65343.44190334141\n1998-10-13\tM\t144901\t65393.14765253518\n1998-10-20\tF\t96653\t65362.213495701115\n1998-10-20\tM\t145035\t65413.077264108666\n1998-10-27\tF\t96746\t65386.99958654621\n1998-10-27\tM\t145182\t65431.48579024948\n1998-11-03\tF\t96839\t65406.03703053522\n1998-11-03\tM\t145376\t65443.74110582214\n1998-11-10\tF\t96951\t65422.83431836701\n1998-11-10\tM\t145537\t65462.04761675725\n1998-11-17\tF\t97056\t65443.454047148036\n1998-11-17\tM\t145711\t65478.83637474178\n1998-11-24\tF\t97174\t65458.04990017906\n1998-11-24\tM\t145861\t65501.309623545705\n1998-12-01\tF\t97269\t65477.34472442402\n1998-12-01\tM\t146006\t65524.02238949084\n1998-12-08\tF\t97394\t65492.6970860628\n1998-12-08\tM\t146148\t65542.3532446561\n1998-12-15\tF\t97471\t65510.881513475804\n1998-12-15\tM\t146286\t65564.50380760976\n1998-12-22\tF\t97586\t65526.00085053184\n1998-12-22\tM\t146453\t65581.96204925813\n1998-12-29\tF\t97686\t65546.72176156256\n1998-12-29\tM\t146619\t65599.39733595237\n1999-01-05\tF\t97820\t65562.3748415457\n1999-01-05\tM\t146756\t65617.8964880482\n1999-01-12\tF\t97910\t65579.78225921765\n1999-01-12\tM\t146888\t65636.7284733947\n1999-01-19\tF\t98007\t65599.0864223984\n1999-01-19\tM\t147054\t65651.35725651801\n1999-01-26\tF\t98097\t65620.49442898355\n1999-01-26\tM\t147213\t65669.75612887449\n1999-02-02\tF\t98191\t65642.45372793841\n1999-02-02\tM\t147367\t65689.10354421275\n1999-02-09\tF\t98286\t65661.46518324074\n1999-02-09\tM\t147517\t65708.66254058854\n1999-02-16\tF\t98401\t65680.49564536946\n1999-02-16\tM\t147621\t65734.01685397064\n1999-02-23\tF\t98490\t65701.11345314245\n1999-02-23\tM\t147767\t65753.43250522783\n1999-03-02\tF\t98638\t65716.59476063991\n1999-03-02\tM\t147952\t65776.39201227426\n1999-03-09\tF\t98721\t65733.13972710974\n1999-03-09\tM\t148095\t65795.40952766805\n1999-03-16\tF\t98831\t65751.2896965527\n1999-03-16\tM\t148228\t65818.87519901773\n1999-03-23\tF\t98899\t65772.87134349185\n1999-03-23\tM\t148368\t65837.45575191415\n1999-03-30\tF\t98998\t65792.77206610235\n1999-03-30\tM\t148497\t65859.66876098506\n1999-04-06\tF\t99063\t65816.21298567578\n1999-04-06\tM\t148666\t65876.0823187548\n1999-04-13\tF\t99173\t65833.36346586268\n1999-04-13\tM\t148797\t65900.51542033778\n1999-04-20\tF\t99264\t65854.4728501773\n1999-04-20\tM\t148949\t65922.57438452088\n1999-04-27\tF\t99380\t65873.20805997183\n1999-04-27\tM\t149117\t65939.46503081472\n1999-05-04\tF\t99487\t65892.80000402062\n1999-05-04\tM\t149279\t65957.61153946636\n1999-05-11\tF\t99584\t65913.13019159704\n1999-05-11\tM\t149437\t65976.76759437087\n1999-05-18\tF\t99657\t65940.0393549876\n1999-05-18\tM\t149564\t65995.01918242358\n1999-05-25\tF\t99746\t65966.81747639003\n1999-05-25\tM\t149727\t66012.34906863826\n1999-06-01\tF\t99845\t65986.91652060694\n1999-06-01\tM\t149895\t66028.08670736181\n1999-06-08\tF\t99932\t66006.94714405797\n1999-06-08\tM\t150056\t66044.94756624194\n1999-06-15\tF\t100033\t66025.68617356272\n1999-06-15\tM\t150204\t66061.23195787062\n1999-06-22\tF\t100133\t66046.55360370707\n1999-06-22\tM\t150354\t66078.83604027827\n1999-06-29\tF\t100224\t66065.62714519477\n1999-06-29\tM\t150516\t66097.32425788621\n1999-07-06\tF\t100322\t66083.79552839855\n1999-07-06\tM\t150694\t66116.92556438876\n1999-07-13\tF\t100431\t66098.97971741793\n1999-07-13\tM\t150845\t66141.38301567835\n1999-07-20\tF\t100531\t66121.94219693428\n1999-07-20\tM\t150973\t66159.6547395892\n1999-07-27\tF\t100653\t66138.24442391185\n1999-07-27\tM\t151138\t66177.92996466804\n1999-08-03\tF\t100767\t66158.9566623994\n1999-08-03\tM\t151264\t66196.28324650941\n1999-08-10\tF\t100862\t66175.31738414864\n1999-08-10\tM\t151418\t66219.61664399212\n1999-08-17\tF\t100983\t66191.08423199944\n1999-08-17\tM\t151560\t66239.80029031407\n1999-08-24\tF\t101062\t66215.70192555065\n1999-08-24\tM\t151702\t66259.61854161449\n1999-08-31\tF\t101166\t66238.25409722634\n1999-08-31\tM\t151872\t66276.19272150232\n1999-09-07\tF\t101279\t66254.17346142833\n1999-09-07\tM\t152024\t66295.19599536915\n1999-09-14\tF\t101373\t66271.98346699812\n1999-09-14\tM\t152183\t66316.41009836842\n1999-09-21\tF\t101469\t66287.51937044812\n1999-09-21\tM\t152319\t66334.70559811973\n1999-09-28\tF\t101567\t66305.22674687645\n1999-09-28\tM\t152478\t66350.91457784074\n1999-10-05\tF\t101676\t66325.87068728117\n1999-10-05\tM\t152623\t66368.50002293232\n1999-10-12\tF\t101761\t66345.8532443667\n1999-10-12\tM\t152778\t66387.39340742776\n1999-10-19\tF\t101836\t66363.82230252563\n1999-10-19\tM\t152937\t66404.84355649712\n1999-10-26\tF\t101925\t66383.48549423595\n1999-10-26\tM\t153081\t66423.04594952999\n1999-11-02\tF\t102000\t66405.38998039215\n1999-11-02\tM\t153221\t66439.46379412744\n1999-11-09\tF\t102110\t66426.13489374204\n1999-11-09\tM\t153337\t66463.74897774184\n1999-11-16\tF\t102198\t66449.27476075853\n1999-11-16\tM\t153471\t66482.55226720357\n1999-11-23\tF\t102320\t66463.65384089132\n1999-11-23\tM\t153607\t66503.6629841088\n1999-11-30\tF\t102424\t66480.77216277434\n1999-11-30\tM\t153752\t66524.91522061502\n1999-12-07\tF\t102535\t66502.11828156239\n1999-12-07\tM\t153902\t66544.51652350197\n1999-12-14\tF\t102648\t66519.53024900632\n1999-12-14\tM\t154055\t66561.01158677095\n1999-12-21\tF\t102729\t66538.79833347935\n1999-12-21\tM\t154205\t66579.81045361694\n1999-12-28\tF\t102815\t66560.26177114234\n1999-12-28\tM\t154328\t66599.22395158364\n2000-01-04\tF\t102924\t66575.85987719093\n2000-01-04\tM\t154493\t66614.29824004971\n2000-01-11\tF\t103034\t66593.08241939553\n2000-01-11\tM\t154637\t66632.06014084598\n2000-01-18\tF\t103143\t66609.6419534045\n2000-01-18\tM\t154781\t66650.18246425595\n2000-01-25\tF\t103214\t66630.43232507218\n2000-01-25\tM\t154901\t66667.32581455252\n2000-02-01\tF\t103287\t66649.81645318384\n2000-02-01\tM\t155032\t66689.4449726508\n2000-02-08\tF\t103220\t66690.3554737454\n2000-02-08\tM\t154960\t66728.50370418173\n2000-02-15\tF\t103146\t66730.49559847207\n2000-02-15\tM\t154862\t66770.5249189601\n2000-02-22\tF\t103081\t66769.06370718173\n2000-02-22\tM\t154765\t66811.83610635479\n2000-02-29\tF\t103024\t66814.21081495573\n2000-02-29\tM\t154675\t66851.94938419266\n2000-03-07\tF\t102965\t66853.53263730394\n2000-03-07\tM\t154586\t66892.48499217264\n2000-03-14\tF\t102911\t66894.00285683745\n2000-03-14\tM\t154496\t66933.10184082435\n2000-03-21\tF\t102851\t66934.05073358548\n2000-03-21\tM\t154407\t66971.14674205185\n2000-03-28\tF\t102788\t66971.74729540413\n2000-03-28\tM\t154306\t67012.22269386803\n2000-04-04\tF\t102732\t67012.55688587781\n2000-04-04\tM\t154211\t67052.58181971454\n2000-04-11\tF\t102678\t67051.22614386723\n2000-04-11\tM\t154133\t67094.8114939695\n2000-04-18\tF\t102616\t67092.3760037421\n2000-04-18\tM\t154038\t67136.39682416027\n2000-04-25\tF\t102563\t67131.26167331298\n2000-04-25\tM\t153951\t67178.9125306104\n2000-05-02\tF\t102488\t67172.62642455702\n2000-05-02\tM\t153850\t67219.36811829705\n2000-05-09\tF\t102429\t67213.73968309756\n2000-05-09\tM\t153774\t67260.01693394202\n2000-05-16\tF\t102385\t67253.12569224008\n2000-05-16\tM\t153674\t67302.33658263597\n2000-05-23\tF\t102336\t67296.40901540025\n2000-05-23\tM\t153585\t67345.15423381189\n2000-05-30\tF\t102277\t67334.14684630954\n2000-05-30\tM\t153494\t67384.83796109294\n2000-06-06\tF\t102215\t67373.6000684831\n2000-06-06\tM\t153409\t67427.38673089584\n2000-06-13\tF\t102144\t67414.4918350564\n2000-06-13\tM\t153313\t67466.42227991103\n2000-06-20\tF\t102085\t67459.36499975511\n2000-06-20\tM\t153240\t67506.89573218481\n2000-06-27\tF\t102031\t67500.1560800149\n2000-06-27\tM\t153167\t67546.82617012803\n2000-07-04\tF\t101980\t67538.42806432633\n2000-07-04\tM\t153074\t67590.5688490534\n2000-07-11\tF\t101913\t67580.52971652291\n2000-07-11\tM\t152994\t67632.5944546845\n2000-07-18\tF\t101861\t67620.8743876459\n2000-07-18\tM\t152895\t67676.39990189346\n2000-07-25\tF\t101804\t67661.61850221995\n2000-07-25\tM\t152802\t67718.49337050562\n2000-08-01\tF\t101757\t67701.38345273543\n2000-08-01\tM\t152733\t67757.93616310817\n2000-08-08\tF\t101677\t67744.30192668941\n2000-08-08\tM\t152647\t67800.59982836217\n2000-08-15\tF\t101624\t67781.85154097457\n2000-08-15\tM\t152571\t67840.4615752666\n2000-08-22\tF\t101558\t67823.61733196794\n2000-08-22\tM\t152491\t67881.56165937662\n2000-08-29\tF\t101486\t67867.95854600634\n2000-08-29\tM\t152414\t67924.20574881573\n2000-09-05\tF\t101427\t67908.75719482978\n2000-09-05\tM\t152324\t67964.135553163\n2000-09-12\tF\t101363\t67948.5658770952\n2000-09-12\tM\t152243\t68005.81518362093\n2000-09-19\tF\t101301\t67991.07676133503\n2000-09-19\tM\t152153\t68046.97381583012\n2000-09-26\tF\t101239\t68032.56308339672\n2000-09-26\tM\t152060\t68086.06379060897\n2000-10-03\tF\t101188\t68073.73873384195\n2000-10-03\tM\t151961\t68130.15083475366\n2000-10-10\tF\t101141\t68115.67925964743\n2000-10-10\tM\t151873\t68172.14545047507\n2000-10-17\tF\t101092\t68154.565890476\n2000-10-17\tM\t151806\t68211.1499479599\n2000-10-24\tF\t101029\t68196.87913371409\n2000-10-24\tM\t151731\t68251.7660069465\n2000-10-31\tF\t100978\t68233.92380518529\n2000-10-31\tM\t151654\t68291.5229008137\n2000-11-07\tF\t100928\t68274.98995323399\n2000-11-07\tM\t151586\t68331.65269220113\n2000-11-14\tF\t100857\t68319.26976808748\n2000-11-14\tM\t151497\t68371.89519924487\n2000-11-21\tF\t100802\t68361.64367770481\n2000-11-21\tM\t151423\t68413.51758979811\n2000-11-28\tF\t100732\t68401.13624270342\n2000-11-28\tM\t151339\t68455.1037868626\n2000-12-05\tF\t100672\t68444.79506714876\n2000-12-05\tM\t151238\t68498.4015260715\n2000-12-12\tF\t100611\t68485.93714404985\n2000-12-12\tM\t151147\t68540.08671028866\n2000-12-19\tF\t100566\t68524.54571127419\n2000-12-19\tM\t151068\t68583.12103820796\n2000-12-26\tF\t100505\t68564.295676832\n2000-12-26\tM\t150986\t68628.22608056376\n2001-01-02\tF\t100434\t68606.08115777526\n2001-01-02\tM\t150908\t68667.93500675909\n2001-01-09\tF\t100378\t68644.45785929187\n2001-01-09\tM\t150822\t68710.70105820106\n2001-01-16\tF\t100325\t68684.46797906802\n2001-01-16\tM\t150739\t68750.63395007265\n2001-01-23\tF\t100271\t68725.38481714553\n2001-01-23\tM\t150648\t68790.79033906855\n2001-01-30\tF\t100223\t68765.05153507678\n2001-01-30\tM\t150578\t68831.23071099364\n2001-02-06\tF\t100175\t68804.71078612428\n2001-02-06\tM\t150491\t68869.98025131071\n2001-02-13\tF\t100123\t68842.71984459115\n2001-02-13\tM\t150412\t68910.28569529027\n2001-02-20\tF\t100059\t68885.87682267462\n2001-02-20\tM\t150321\t68952.61244270594\n2001-02-27\tF\t100010\t68929.27319268073\n2001-02-27\tM\t150214\t68996.43159758745\n2001-03-06\tF\t99955\t68970.87599419738\n2001-03-06\tM\t150135\t69037.19969360909\n2001-03-13\tF\t99903\t69011.66870864738\n2001-03-13\tM\t150044\t69077.46624990003\n2001-03-20\tF\t99847\t69052.59074383807\n2001-03-20\tM\t149963\t69116.69201736429\n2001-03-27\tF\t99783\t69089.86292254191\n2001-03-27\tM\t149888\t69159.41423596285\n2001-04-03\tF\t99725\t69131.9533617448\n2001-04-03\tM\t149810\t69199.88491422469\n2001-04-10\tF\t99673\t69172.85289897966\n2001-04-10\tM\t149731\t69238.84585690338\n2001-04-17\tF\t99620\t69214.54307367999\n2001-04-17\tM\t149631\t69281.02534902527\n2001-04-24\tF\t99564\t69255.6770218151\n2001-04-24\tM\t149542\t69323.67382407618\n2001-05-01\tF\t99501\t69295.8148360318\n2001-05-01\tM\t149449\t69364.68201861504\n2001-05-08\tF\t99449\t69332.97409727599\n2001-05-08\tM\t149362\t69404.95133300305\n2001-05-15\tF\t99400\t69371.61138832998\n2001-05-15\tM\t149284\t69446.97609254843\n2001-05-22\tF\t99348\t69413.4891391875\n2001-05-22\tM\t149197\t69489.43943913082\n2001-05-29\tF\t99289\t69453.14969432667\n2001-05-29\tM\t149097\t69531.9140492431\n2001-06-05\tF\t99234\t69493.67186649737\n2001-06-05\tM\t149029\t69571.05555965618\n2001-06-12\tF\t99190\t69535.67649964715\n2001-06-12\tM\t148952\t69611.83714888018\n2001-06-19\tF\t99133\t69576.29898217546\n2001-06-19\tM\t148862\t69654.27999758166\n2001-06-26\tF\t99078\t69617.02261854296\n2001-06-26\tM\t148767\t69694.56790148353\n2001-07-03\tF\t99008\t69654.92730890433\n2001-07-03\tM\t148690\t69737.09370502387\n2001-07-10\tF\t98950\t69696.59260232441\n2001-07-10\tM\t148608\t69779.16842296511\n2001-07-17\tF\t98892\t69736.8598875541\n2001-07-17\tM\t148532\t69819.3954636038\n2001-07-24\tF\t98843\t69776.46748884594\n2001-07-24\tM\t148441\t69861.15831205664\n2001-07-31\tF\t98788\t69818.53549014051\n2001-07-31\tM\t148364\t69901.70652584184\n2001-08-07\tF\t98741\t69861.9114045837\n2001-08-07\tM\t148288\t69943.2078455438\n2001-08-14\tF\t98687\t69900.78836118232\n2001-08-14\tM\t148200\t69980.99831309041\n2001-08-21\tF\t98627\t69945.77762681618\n2001-08-21\tM\t148104\t70022.3532922811\n2001-08-28\tF\t98574\t69989.37486558322\n2001-08-28\tM\t148027\t70063.72374634357\n2001-09-04\tF\t98518\t70029.54642806391\n2001-09-04\tM\t147943\t70104.13891836721\n2001-09-11\tF\t98466\t70068.59675420958\n2001-09-11\tM\t147850\t70144.8386269868\n2001-09-18\tF\t98407\t70108.95157864786\n2001-09-18\tM\t147781\t70185.65743904831\n2001-09-25\tF\t98354\t70150.84050470749\n2001-09-25\tM\t147687\t70228.17938613419\n2001-10-02\tF\t98301\t70189.61189611499\n2001-10-02\tM\t147593\t70270.60826055436\n2001-10-09\tF\t98234\t70232.6165686015\n2001-10-09\tM\t147508\t70310.97666567237\n2001-10-16\tF\t98191\t70273.31314478924\n2001-10-16\tM\t147424\t70350.39948041024\n2001-10-23\tF\t98139\t70312.28558473186\n2001-10-23\tM\t147331\t70390.24575954823\n2001-10-30\tF\t98089\t70349.86944509578\n2001-10-30\tM\t147255\t70430.72092628434\n2001-11-06\tF\t98026\t70389.87969518291\n2001-11-06\tM\t147173\t70471.73588905574\n2001-11-13\tF\t97978\t70432.17246728858\n2001-11-13\tM\t147088\t70511.61658326988\n2001-11-20\tF\t97931\t70472.41174908864\n2001-11-20\tM\t147012\t70553.57243626371\n2001-11-27\tF\t97874\t70512.01496822445\n2001-11-27\tM\t146926\t70594.93722690333\n2001-12-04\tF\t97823\t70554.7006736657\n2001-12-04\tM\t146851\t70636.87997357866\n2001-12-11\tF\t97767\t70593.07719373613\n2001-12-11\tM\t146769\t70676.87620682841\n2001-12-18\tF\t97704\t70633.5218005404\n2001-12-18\tM\t146673\t70719.8180033135\n2001-12-25\tF\t97652\t70672.86732478597\n2001-12-25\tM\t146594\t70761.83776280066\n2002-01-01\tF\t97602\t70714.16799860659\n2002-01-01\tM\t146507\t70803.08798214419\n2002-01-08\tF\t97546\t70754.5556045353\n2002-01-08\tM\t146413\t70844.99271922575\n2002-01-15\tF\t97488\t70795.12503077302\n2002-01-15\tM\t146341\t70884.20692765526\n2002-01-22\tF\t97444\t70837.67772258939\n2002-01-22\tM\t146267\t70926.08100255013\n2002-01-29\tF\t97398\t70877.76478983142\n2002-01-29\tM\t146188\t70967.23315867239\n2002-02-05\tF\t97351\t70917.76760382533\n2002-02-05\tM\t146099\t71009.8829629224\n2002-02-12\tF\t97290\t70960.27425223558\n2002-02-12\tM\t146022\t71049.94908986318\n2002-02-19\tF\t97239\t71001.20117442589\n2002-02-19\tM\t145941\t71091.50871927697\n2002-02-26\tF\t97197\t71045.18245419097\n2002-02-26\tM\t145844\t71133.96102685061\n2002-03-05\tF\t97129\t71087.78876545625\n2002-03-05\tM\t145768\t71173.66042615664\n2002-03-12\tF\t97069\t71126.78240220874\n2002-03-12\tM\t145680\t71214.1041598023\n2002-03-19\tF\t97013\t71171.118252193\n2002-03-19\tM\t145610\t71254.9515623927\n2002-03-26\tF\t96962\t71209.84403168251\n2002-03-26\tM\t145542\t71294.37389207238\n2002-04-02\tF\t96907\t71250.09577223523\n2002-04-02\tM\t145464\t71337.04569515481\n2002-04-09\tF\t96855\t71287.05412214134\n2002-04-09\tM\t145392\t71373.29007098053\n2002-04-16\tF\t96799\t71326.9317141706\n2002-04-16\tM\t145307\t71413.14007583943\n2002-04-23\tF\t96732\t71370.3969317289\n2002-04-23\tM\t145241\t71455.03665631605\n2002-04-30\tF\t96684\t71411.66783542262\n2002-04-30\tM\t145168\t71496.78535214372\n2002-05-07\tF\t96640\t71450.41164114239\n2002-05-07\tM\t145084\t71539.30339665298\n2002-05-14\tF\t96584\t71493.87027872111\n2002-05-14\tM\t145008\t71577.36884861525\n2002-05-21\tF\t96519\t71539.32043431864\n2002-05-21\tM\t144938\t71620.26647256069\n2002-05-28\tF\t96465\t71583.41226351526\n2002-05-28\tM\t144845\t71662.65337429666\n2002-06-04\tF\t96418\t71623.55851604472\n2002-06-04\tM\t144761\t71701.96524616437\n2002-06-11\tF\t96358\t71666.23165694597\n2002-06-11\tM\t144698\t71742.94760812174\n2002-06-18\tF\t96312\t71708.08719578038\n2002-06-18\tM\t144621\t71783.9650742285\n2002-06-25\tF\t96257\t71750.85220815109\n2002-06-25\tM\t144552\t71824.46357020311\n2002-07-02\tF\t96193\t71790.54942667346\n2002-07-02\tM\t144459\t71866.47854408517\n2002-07-09\tF\t96144\t71830.75161216508\n2002-07-09\tM\t144387\t71906.25338846295\n2002-07-16\tF\t96100\t71870.92132154007\n2002-07-16\tM\t144296\t71951.09064007318\n2002-07-23\tF\t96066\t71910.47833780943\n2002-07-23\tM\t144216\t71991.13603206302\n2002-07-30\tF\t96026\t71952.44180742715\n2002-07-30\tM\t144130\t72033.7016998543\n"
+            "data": "day\tgender\tavg_length_employment\tcount(1)\tsum(datediff(CAST(value AS DATE), CAST(hireDate AS DATE)))\n1985-01-01\tF\t0.0\t4\t0\n1985-01-01\tM\t0.0\t5\t0\n1985-01-29\tF\t25.4\t5\t127\n1985-01-29\tM\t28.0\t5\t140\n1985-02-26\tF\t12.014409221902017\t1041\t12507\n1985-02-26\tM\t12.122293739028672\t1709\t20717\n1985-03-26\tF\t25.54469763365469\t2282\t58293\n1985-03-26\tM\t26.23353124116483\t3537\t92788\n1985-04-23\tF\t39.924473911790145\t3469\t138498\n1985-04-23\tM\t40.45607476635514\t5350\t216440\n1985-05-21\tF\t53.738181818181815\t4675\t251226\n1985-05-21\tM\t54.45407665505226\t7175\t390708\n1985-06-18\tF\t68.15514881970579\t5846\t398435\n1985-06-18\tM\t68.27033917091553\t9022\t615935\n1985-07-16\tF\t82.40842255531763\t7005\t577271\n1985-07-16\tM\t82.68074856401705\t10794\t892456\n1985-08-13\tF\t96.13476990504017\t8214\t789651\n1985-08-13\tM\t96.76286122578597\t12596\t1218825\n1985-09-10\tF\t110.34786780383796\t9380\t1035063\n1985-09-10\tM\t111.31643625192012\t14322\t1594274\n1985-10-08\tF\t124.41870380898237\t10554\t1313115\n1985-10-08\tM\t125.20159940487261\t16131\t2019627\n1985-11-05\tF\t138.73009227614492\t11704\t1623697\n1985-11-05\tM\t139.72896934372022\t17843\t2493184\n1985-12-03\tF\t152.0969935852848\t12939\t1967983\n1985-12-03\tM\t154.5226037929267\t19510\t3014736\n1985-12-31\tF\t167.2690413305732\t14009\t2343272\n1985-12-31\tM\t168.86732962578944\t21218\t3583027\n1986-01-28\tF\t181.67565780774825\t15126\t2748026\n1986-01-28\tM\t183.35529247302432\t22891\t4197186\n1986-02-25\tF\t196.37573216597818\t16219\t3185018\n1986-02-25\tM\t197.67302529895062\t24586\t4859989\n1986-03-25\tF\t211.11499103890847\t17297\t3651656\n1986-03-25\tM\t211.63049507960028\t26319\t5569903\n1986-04-22\tF\t225.4590555887627\t18403\t4149123\n1986-04-22\tM\t225.71010097406074\t28027\t6325977\n1986-05-20\tF\t239.9762454466164\t19491\t4677377\n1986-05-20\tM\t239.95596151258243\t29724\t7132451\n1986-06-17\tF\t254.0758781292451\t20612\t5237012\n1986-06-17\tM\t254.88060416400563\t31316\t7981841\n1986-07-15\tF\t267.4376520262518\t21789\t5827199\n1986-07-15\tM\t269.74185509360564\t32904\t8875586\n1986-08-12\tF\t281.6487135805705\t22893\t6447784\n1986-08-12\tM\t283.91142609198727\t34570\t9814818\n1986-09-09\tF\t296.213466271745\t23971\t7100533\n1986-09-09\tM\t298.3804233681534\t36186\t10797194\n1986-10-07\tF\t311.1337997201679\t25015\t7783012\n1986-10-07\tM\t312.80576053320635\t37809\t11826873\n1986-11-04\tF\t325.76077949976985\t26068\t8491932\n1986-11-04\tM\t327.57228104923695\t39381\t12900124\n1986-12-02\tF\t339.95933551880364\t27149\t9229556\n1986-12-02\tM\t341.8132634402048\t41015\t14019471\n1986-12-30\tF\t354.01911910494266\t28244\t9998916\n1986-12-30\tM\t355.72312054743156\t42672\t15179417\n1987-01-27\tF\t369.0461722488038\t29260\t10798291\n1987-01-27\tM\t370.9374009508716\t44170\t16384305\n1987-02-24\tF\t383.47596899224806\t30315\t11625074\n1987-02-24\tM\t385.6762042262764\t45714\t17630802\n1987-03-24\tF\t398.1399457821719\t31355\t12483678\n1987-03-24\tM\t400.0175861340097\t47310\t18924832\n1987-04-21\tF\t412.7055898702903\t32380\t13363407\n1987-04-21\tM\t414.52564050094134\t48868\t20257039\n1987-05-19\tF\t427.1225497531049\t33415\t14272300\n1987-05-19\tM\t429.1452265693199\t50404\t21630636\n1987-06-16\tF\t441.48637906524704\t34469\t15217594\n1987-06-16\tM\t444.2007862635139\t51891\t23050023\n1987-07-14\tF\t456.0336046871919\t35501\t16189649\n1987-07-14\tM\t459.5116898213248\t53337\t24508975\n1987-08-11\tF\t470.8840222423097\t36507\t17190563\n1987-08-11\tM\t474.48874580475706\t54824\t26013371\n1987-09-08\tF\t485.8080821552414\t37490\t18212945\n1987-09-08\tM\t489.49964469710426\t56290\t27553935\n1987-10-06\tF\t501.2881527933179\t38431\t19265005\n1987-10-06\tM\t504.1582198536155\t57793\t29136816\n1987-11-03\tF\t515.7285449889714\t39443\t20341881\n1987-11-03\tM\t519.0096196037398\t59254\t30753396\n1987-12-01\tF\t530.5473910784532\t40419\t21444195\n1987-12-01\tM\t533.4568945653248\t60758\t32411774\n1987-12-29\tF\t545.7581580855692\t41370\t22578015\n1987-12-29\tM\t547.5857784911717\t62300\t34114594\n1988-01-26\tF\t560.5976851305066\t42335\t23732903\n1988-01-26\tM\t562.506330504087\t63739\t35853591\n1988-02-23\tF\t574.7891495398243\t43353\t24918834\n1988-02-23\tM\t576.9250436861952\t65238\t37637436\n1988-03-22\tF\t589.0701212640311\t44366\t26134685\n1988-03-22\tM\t592.4794504091899\t66595\t39456169\n1988-04-19\tF\t604.0310417861713\t45326\t27378311\n1988-04-19\tM\t607.4984488715725\t68015\t41319007\n1988-05-17\tF\t618.897882454624\t46280\t28642594\n1988-05-17\tM\t622.9779305771781\t69372\t43217225\n1988-06-14\tF\t633.4116527037319\t47268\t29940102\n1988-06-14\tM\t638.2800904657573\t70745\t45155125\n1988-07-12\tF\t648.6969596347411\t48185\t31257463\n1988-07-12\tM\t653.5534245815479\t72111\t47128391\n1988-08-09\tF\t663.5721234075461\t49138\t32606607\n1988-08-09\tM\t668.3585893617311\t73527\t49142402\n1988-09-06\tF\t678.2424085128471\t50089\t33972484\n1988-09-06\tM\t683.0929919137467\t74942\t51192355\n1988-10-04\tF\t693.5371354605895\t50989\t35362765\n1988-10-04\tM\t698.4685037821681\t76279\t53278479\n1988-11-01\tF\t709.1848873978097\t51864\t36781165\n1988-11-01\tM\t713.643934417784\t77643\t55409456\n1988-11-29\tF\t723.7460476740443\t52817\t38226095\n1988-11-29\tM\t728.8423291677746\t78981\t57564696\n1988-12-27\tF\t738.422031659815\t53759\t39696830\n1988-12-27\tM\t744.1964803905695\t80293\t59753768\n1989-01-24\tF\t753.9377825776573\t54631\t41188375\n1989-01-24\tM\t759.320257754692\t81628\t61981794\n1989-02-21\tF\t769.5590864847327\t55478\t42693599\n1989-02-21\tM\t774.7047197568976\t82928\t64244713\n1989-03-21\tF\t785.040888762689\t56348\t44235484\n1989-03-21\tM\t790.1279606786261\t84229\t66551688\n1989-04-18\tF\t800.3076788647722\t57222\t45795206\n1989-04-18\tM\t805.7874065494367\t85473\t68873067\n1989-05-16\tF\t815.9783005545414\t58066\t47380596\n1989-05-16\tM\t821.4850969133026\t86727\t71244938\n1989-06-13\tF\t831.3639125564343\t58918\t48982299\n1989-06-13\tM\t837.0619082798204\t87985\t73648892\n1989-07-11\tF\t846.7657078794572\t59763\t50605259\n1989-07-11\tM\t852.3019037054466\t89247\t76065388\n1989-08-08\tF\t861.4003791312948\t60665\t52256854\n1989-08-08\tM\t868.2791057647657\t90446\t78532372\n1989-09-05\tF\t877.2103259808706\t61476\t53927382\n1989-09-05\tM\t884.060768416573\t91643\t81017981\n1989-10-03\tF\t893.4202197731581\t62246\t55611835\n1989-10-03\tM\t899.9903483637461\t92834\t83549704\n1989-10-31\tF\t909.1570893984081\t63066\t57336901\n1989-10-31\tM\t915.9784613420977\t94017\t86117547\n1989-11-28\tF\t924.4384271139763\t63908\t59079011\n1989-11-28\tM\t931.7597667944744\t95195\t88698871\n1989-12-26\tF\t940.4613054297594\t64699\t60846906\n1989-12-26\tM\t947.1610945717457\t96403\t91309171\n1990-01-23\tF\t956.5786081883848\t65483\t62639637\n1990-01-23\tM\t963.0322597173688\t97583\t93975577\n1990-02-20\tF\t972.655673619706\t66254\t64442329\n1990-02-20\tM\t979.5767523861633\t98694\t96678348\n1990-03-20\tF\t988.8333631831886\t67002\t66253813\n1990-03-20\tM\t994.7311053058284\t99909\t99382590\n1990-04-17\tF\t1004.751147178163\t67775\t68097009\n1990-04-17\tM\t1011.0557947986892\t101013\t102129779\n1990-05-15\tF\t1020.9027996730309\t68508\t69940009\n1990-05-15\tM\t1026.7315416536173\t102176\t104907322\n1990-06-12\tF\t1037.494653797249\t69208\t71802930\n1990-06-12\tM\t1042.5747901925292\t103309\t107707359\n1990-07-10\tF\t1053.7399857040743\t69950\t73709112\n1990-07-10\tM\t1058.8973641866523\t104408\t110557356\n1990-08-07\tF\t1069.9775306336135\t70674\t75619592\n1990-08-07\tM\t1075.0118492397528\t105492\t113405150\n1990-09-04\tF\t1086.3826294039363\t71385\t77551424\n1990-09-04\tM\t1090.689865403555\t106615\t116283900\n1990-10-02\tF\t1102.6418545948795\t72102\t79502683\n1990-10-02\tM\t1106.8581193406083\t107675\t119180948\n1990-10-30\tF\t1118.6750236843188\t72833\t81476458\n1990-10-30\tM\t1123.1380217193405\t108751\t122142383\n1990-11-27\tF\t1134.6322943711175\t73567\t83471494\n1990-11-27\tM\t1139.2268062827225\t109825\t125115584\n1990-12-25\tF\t1150.8704603907734\t74263\t85467093\n1990-12-25\tM\t1155.8178734460423\t110846\t128117788\n1991-01-22\tF\t1168.4037953046127\t74882\t87492413\n1991-01-22\tM\t1171.6767507102907\t111926\t131141092\n1991-02-19\tF\t1185.0900824586713\t75553\t89537111\n1991-02-19\tM\t1187.928812329046\t112969\t134199130\n1991-03-19\tF\t1201.7626945180675\t76214\t91591142\n1991-03-19\tM\t1204.4293523084211\t113974\t137273631\n1991-04-16\tF\t1218.4061613717379\t76866\t93654008\n1991-04-16\tM\t1220.6891795522934\t114986\t140362166\n1991-05-14\tF\t1235.9115703332732\t77474\t95751013\n1991-05-14\tM\t1237.295721454809\t115974\t143494134\n1991-06-11\tF\t1252.9294164340768\t78106\t97861305\n1991-06-11\tM\t1253.8177636809753\t116969\t146657810\n1991-07-09\tF\t1269.2593001701327\t78762\t99969401\n1991-07-09\tM\t1270.8587263490879\t117913\t149850765\n1991-08-06\tF\t1286.9426079723753\t79349\t102117609\n1991-08-06\tM\t1287.5167387244924\t118886\t153067715\n1991-09-03\tF\t1303.1343065328517\t80011\t104265079\n1991-09-03\tM\t1304.4134636246808\t119834\t156313083\n1991-10-01\tF\t1320.1767698072008\t80602\t106408888\n1991-10-01\tM\t1321.3026456340826\t120765\t159567114\n1991-10-29\tF\t1338.0948872736233\t81170\t108613162\n1991-10-29\tM\t1338.5148615769053\t121656\t162838364\n1991-11-26\tF\t1355.002237902486\t81773\t110802598\n1991-11-26\tM\t1355.5247303405624\t122562\t166135822\n1991-12-24\tF\t1371.9799099285012\t82379\t113022333\n1991-12-24\tM\t1372.648867576062\t123452\t169456248\n1992-01-21\tF\t1389.080294610461\t82957\t115233934\n1992-01-21\tM\t1389.588092442786\t124358\t172806396\n1992-02-18\tF\t1406.145991692503\t83539\t117468030\n1992-02-18\tM\t1406.973912487819\t125194\t176144692\n1992-03-17\tF\t1422.8337293854854\t84164\t119751378\n1992-03-17\tM\t1424.2431525326901\t126032\t179500213\n1992-04-14\tF\t1440.388199051014\t84722\t122032569\n1992-04-14\tM\t1441.5350001182303\t126871\t182888987\n1992-05-12\tF\t1457.3302616769836\t85296\t124304442\n1992-05-12\tM\t1458.2244014682517\t127771\t186318790\n1992-06-09\tF\t1475.1324189206512\t85811\t126582588\n1992-06-09\tM\t1475.7785822607614\t128585\t189762989\n1992-07-07\tF\t1492.6360562336429\t86354\t128895094\n1992-07-07\tM\t1492.5013518315386\t129454\t193210270\n1992-08-04\tF\t1509.6193028873806\t86930\t131231206\n1992-08-04\tM\t1509.6927622994858\t130290\t196697870\n1992-09-01\tF\t1526.9507424639057\t87479\t133576124\n1992-09-01\tM\t1526.9743576053877\t131111\t200203135\n1992-09-29\tF\t1544.7007410438262\t87984\t135908950\n1992-09-29\tM\t1544.1161510881348\t131923\t203704435\n1992-10-27\tF\t1562.2487826371864\t88511\t138276202\n1992-10-27\tM\t1561.162540868753\t132742\t207231838\n1992-11-24\tF\t1579.69904766183\t89044\t140662722\n1992-11-24\tM\t1578.5040181547195\t133519\t210760278\n1992-12-22\tF\t1597.823056989031\t89526\t143046707\n1992-12-22\tM\t1595.7651717592764\t134345\t214383072\n1993-01-19\tF\t1614.776566212885\t90058\t145423548\n1993-01-19\tM\t1613.312921394051\t135117\t217986002\n1993-02-16\tF\t1632.18497620441\t90563\t147815568\n1993-02-16\tM\t1630.8160313827086\t135871\t221580605\n1993-03-16\tF\t1649.2030407816017\t91095\t150234151\n1993-03-16\tM\t1648.762723778144\t136575\t225179769\n1993-04-13\tF\t1667.580675114704\t91540\t152650335\n1993-04-13\tM\t1666.5736945597553\t137310\t228837234\n1993-05-11\tF\t1685.0676255553985\t92051\t155112160\n1993-05-11\tM\t1684.4480275312444\t138025\t232495939\n1993-06-08\tF\t1702.7595080354924\t92527\t157551229\n1993-06-08\tM\t1702.6094317854051\t138680\t236117876\n1993-07-06\tF\t1720.7948122338366\t92988\t160013268\n1993-07-06\tM\t1720.6053345388789\t139356\t239776677\n1993-08-03\tF\t1739.4223402319033\t93401\t162463786\n1993-08-03\tM\t1738.7063301081796\t140045\t243497128\n1993-08-31\tF\t1757.9340132357172\t93837\t164959254\n1993-08-31\tM\t1756.5404904182978\t140737\t247210239\n1993-09-28\tF\t1776.5146873176682\t94265\t167463157\n1993-09-28\tM\t1775.1714528281864\t141345\t250911609\n1993-10-26\tF\t1794.5524715471188\t94718\t169976421\n1993-10-26\tM\t1793.4082211846562\t141999\t254662174\n1993-11-23\tF\t1812.4138499847652\t95177\t172500113\n1993-11-23\tM\t1811.676327486364\t142638\t258413888\n1993-12-21\tF\t1830.6516403732687\t95588\t174988329\n1993-12-21\tM\t1829.5114169271997\t143296\t262161668\n1994-01-18\tF\t1848.775331222398\t96008\t177497222\n1994-01-18\tM\t1848.0963390735103\t143898\t265937367\n1994-02-15\tF\t1866.8833336789498\t96446\t180053430\n1994-02-15\tM\t1866.8341603859117\t144489\t269737001\n1994-03-15\tF\t1885.2962293761746\t96854\t182598481\n1994-03-15\tM\t1885.8699209971185\t145058\t273560519\n1994-04-12\tF\t1904.0486728395063\t97200\t185073531\n1994-04-12\tM\t1904.2643224428991\t145663\t277380854\n1994-05-10\tF\t1922.8305341790572\t97589\t187647109\n1994-05-10\tM\t1922.944645055396\t146220\t281172966\n1994-06-07\tF\t1941.9878215598203\t97960\t190237127\n1994-06-07\tM\t1941.776976015263\t146760\t284975189\n1994-07-05\tF\t1960.4670694003742\t98328\t192768806\n1994-07-05\tM\t1960.740320576794\t147297\t288811167\n1994-08-02\tF\t1980.517599351176\t98640\t195358256\n1994-08-02\tM\t1979.6654085497835\t147840\t292673734\n1994-08-30\tF\t1999.3256394197745\t98996\t197925241\n1994-08-30\tM\t1998.9138442454966\t148336\t296510884\n1994-09-27\tF\t2017.2921990382101\t99398\t200514810\n1994-09-27\tM\t2017.9729480995823\t148862\t300399489\n1994-10-25\tF\t2036.2829110306725\t99731\t203080531\n1994-10-25\tM\t2037.0796354700253\t149343\t304223584\n1994-11-22\tF\t2055.813964180059\t100056\t205696522\n1994-11-22\tM\t2056.3291310731447\t149840\t308120357\n1994-12-20\tF\t2075.030235106595\t100380\t208291535\n1994-12-20\tM\t2075.6342927095393\t150306\t311980288\n1995-01-17\tF\t2093.8076915438696\t100708\t210863185\n1995-01-17\tM\t2095.139476267544\t150764\t315871608\n1995-02-14\tF\t2113.7327571698693\t101013\t213514487\n1995-02-14\tM\t2114.5594381546925\t151216\t319755220\n1995-03-14\tF\t2133.163932970156\t101328\t216149235\n1995-03-14\tM\t2134.241837219116\t151664\t323687654\n1995-04-11\tF\t2153.0501230436066\t101590\t218728362\n1995-04-11\tM\t2153.4035048510505\t152132\t327601582\n1995-05-09\tF\t2172.9113194580796\t101860\t221332747\n1995-05-09\tM\t2173.6636488196305\t152537\t331564132\n1995-06-06\tF\t2193.0478107157896\t102111\t223934305\n1995-06-06\tM\t2193.5889441781696\t152933\t335472138\n1995-07-04\tF\t2213.534194380398\t102356\t226568506\n1995-07-04\tM\t2213.707959867966\t153294\t339348148\n1995-08-01\tF\t2233.3326284606164\t102619\t229182361\n1995-08-01\tM\t2233.617500455504\t153676\t343253403\n1995-08-29\tF\t2253.9039706768817\t102854\t231823039\n1995-08-29\tM\t2253.5595448290187\t154052\t347165355\n1995-09-26\tF\t2273.803685563261\t103105\t234440529\n1995-09-26\tM\t2274.059852700173\t154379\t351067086\n1995-10-24\tF\t2294.626710671493\t103322\t237085421\n1995-10-24\tM\t2294.686111003374\t154698\t354983352\n1995-11-21\tF\t2315.3809408809893\t103520\t239688235\n1995-11-21\tM\t2315.047850038058\t155026\t358892608\n1995-12-19\tF\t2335.646517904477\t103745\t242311648\n1995-12-19\tM\t2335.330954281007\t155384\t362873065\n1996-01-16\tF\t2355.612004885038\t103991\t244962448\n1996-01-16\tM\t2355.348060054198\t155726\t366788932\n1996-02-13\tF\t2375.9253804379114\t104222\t247623695\n1996-02-13\tM\t2376.1218371061605\t156028\t370741538\n1996-03-12\tF\t2396.7375171211556\t104403\t250226587\n1996-03-12\tM\t2396.6248041190956\t156345\t374700305\n1996-04-09\tF\t2418.487655797136\t104543\t252835955\n1996-04-09\tM\t2417.4390044567035\t156618\t378614462\n1996-05-07\tF\t2440.0764352501837\t104703\t255483323\n1996-05-07\tM\t2438.9949951545445\t156848\t382551487\n1996-06-04\tF\t2461.400610337593\t104860\t258102468\n1996-06-04\tM\t2460.296014515821\t157070\t386438695\n1996-07-02\tF\t2482.469589223666\t105045\t260771018\n1996-07-02\tM\t2481.2500889792805\t157340\t390399889\n1996-07-30\tF\t2503.8857735056145\t105177\t263351194\n1996-07-30\tM\t2502.756697746155\t157553\t394316826\n1996-08-27\tF\t2525.738177985415\t105312\t265990539\n1996-08-27\tM\t2523.390455613916\t157831\t398269239\n1996-09-24\tF\t2546.635549908499\t105463\t268575825\n1996-09-24\tM\t2544.074140133834\t158106\t402233386\n1996-10-22\tF\t2568.011901493131\t105617\t271225713\n1996-10-22\tM\t2566.4482638779186\t158255\t406153270\n1996-11-19\tF\t2590.3070549623085\t105727\t273865394\n1996-11-19\tM\t2588.010778337309\t158466\t410111716\n1996-12-17\tF\t2612.6317087692437\t105813\t276450399\n1996-12-17\tM\t2609.746706254649\t158634\t413994559\n1997-01-14\tF\t2634.2272813095933\t105926\t279033159\n1997-01-14\tM\t2631.544944492371\t158807\t417907758\n1997-02-11\tF\t2656.3764630431297\t106029\t281652940\n1997-02-11\tM\t2653.512803255694\t158983\t421863426\n1997-03-11\tF\t2678.8402352364615\t106106\t284241022\n1997-03-11\tM\t2675.9007227249876\t159120\t425789323\n1997-04-08\tF\t2701.487029990204\t106168\t286811475\n1997-04-08\tM\t2698.225828937453\t159240\t429665481\n1997-05-06\tF\t2724.2606002410002\t106224\t289381858\n1997-05-06\tM\t2720.8194968277176\t159349\t433559866\n1997-06-03\tF\t2746.19611476952\t106300\t291920647\n1997-06-03\tM\t2744.039152582778\t159402\t437405329\n1997-07-01\tF\t2768.5162357807653\t106370\t294487072\n1997-07-01\tM\t2765.707660102536\t159554\t441279720\n1997-07-29\tF\t2791.307536866641\t106397\t296986748\n1997-07-29\tM\t2788.8095802005014\t159600\t445094009\n1997-08-26\tF\t2814.3878302702296\t106428\t299529668\n1997-08-26\tM\t2812.1340306266243\t159665\t448999380\n1997-09-23\tF\t2837.7252017398005\t106449\t302073010\n1997-09-23\tM\t2835.0217956183355\t159711\t452784166\n1997-10-21\tF\t2861.5563509286135\t106449\t304609812\n1997-10-21\tM\t2858.0616529680938\t159749\t456572491\n1997-11-18\tF\t2885.374196639982\t106428\t307084605\n1997-11-18\tM\t2881.539278025334\t159784\t460423872\n1997-12-16\tF\t2909.558292529346\t106403\t309585731\n1997-12-16\tM\t2905.367881841224\t159785\t464234207\n1998-01-13\tF\t2933.120819119043\t106407\t312104587\n1998-01-13\tM\t2928.9243308865402\t159801\t468045037\n1998-02-10\tF\t2956.85503773248\t106407\t314630074\n1998-02-10\tM\t2953.014182799131\t159771\t471806029\n1998-03-10\tF\t2981.3119335915467\t106372\t317128113\n1998-03-10\tM\t2977.04072089442\t159746\t475570347\n1998-04-07\tF\t3005.296285848613\t106350\t319613260\n1998-04-07\tM\t3001.7145067044107\t159671\t479286757\n1998-05-05\tF\t3029.323348788218\t106331\t322110981\n1998-05-05\tM\t3026.060612514643\t159637\t483071238\n1998-06-02\tF\t3053.6587102965527\t106288\t324567277\n1998-06-02\tM\t3050.3996728667403\t159568\t486746175\n1998-06-30\tF\t3077.9872077261944\t106236\t326993049\n1998-06-30\tM\t3074.953953514618\t159491\t490427481\n1998-07-28\tF\t3103.2043350069234\t106159\t329433069\n1998-07-28\tM\t3099.537272983909\t159405\t494081739\n1998-08-25\tF\t3127.830266928065\t106096\t331850280\n1998-08-25\tM\t3123.970023160498\t159323\t497720276\n1998-09-22\tF\t3152.7685008771764\t106022\t334262822\n1998-09-22\tM\t3149.340203271439\t159196\t501362363\n1998-10-20\tF\t3177.900916374893\t105961\t336733559\n1998-10-20\tM\t3174.5132406831226\t159093\t505042835\n1998-11-17\tF\t3203.20400895497\t105863\t339100786\n1998-11-17\tM\t3199.965930250113\t158968\t508692184\n1998-12-15\tF\t3228.5872282094915\t105780\t341519957\n1998-12-15\tM\t3225.772052803285\t158778\t512181635\n1999-01-12\tF\t3253.9697497279653\t105685\t343895793\n1999-01-12\tM\t3251.433827840791\t158609\t515706668\n1999-02-09\tF\t3279.7325565975184\t105570\t346241366\n1999-02-09\tM\t3277.4361418103094\t158437\t519267150\n1999-03-09\tF\t3305.9014263495314\t105444\t348587470\n1999-03-09\tM\t3303.4953931902633\t158244\t522758325\n1999-04-06\tF\t3332.8084605229415\t105289\t350908070\n1999-04-06\tM\t3330.114724120476\t158040\t526291331\n1999-05-04\tF\t3359.22905314809\t105159\t353253168\n1999-05-04\tM\t3356.6629333063047\t157856\t529869384\n1999-06-01\tF\t3386.0591137227266\t105001\t355539593\n1999-06-01\tM\t3383.4882186496807\t157622\t533312180\n1999-06-29\tF\t3413.284270059418\t104851\t357886269\n1999-06-29\tM\t3409.988493404834\t157388\t536691269\n1999-07-27\tF\t3440.7060391527416\t104667\t360128379\n1999-07-27\tM\t3437.6609805930916\t157109\t540087479\n1999-08-24\tF\t3468.3299007551036\t104489\t362402323\n1999-08-24\tM\t3464.8272455968063\t156818\t543347279\n1999-09-21\tF\t3495.3706356054067\t104310\t364602111\n1999-09-21\tM\t3492.3022573969033\t156552\t546726903\n1999-10-19\tF\t3523.04685563891\t104107\t366773839\n1999-10-19\tM\t3519.9595525893124\t156277\t550088719\n1999-11-16\tF\t3551.2475719277304\t103889\t368935559\n1999-11-16\tM\t3548.411456930712\t155958\t553403154\n1999-12-14\tF\t3579.4555941358026\t103680\t371117956\n1999-12-14\tM\t3576.661590263587\t155622\t556607230\n2000-01-11\tF\t3607.805603610743\t103469\t373296038\n2000-01-11\tM\t3605.3157393157717\t155299\t559901929\n2000-02-08\tF\t3636.7434121294323\t103220\t375384655\n2000-02-08\tM\t3634.002755549819\t154960\t563125067\n2000-03-07\tF\t3665.6557665226046\t102965\t377434246\n2000-03-07\tM\t3663.376470055503\t154586\t566306715\n2000-04-04\tF\t3694.6136744149826\t102732\t379555052\n2000-04-04\tM\t3692.130379804294\t154211\t569367118\n2000-05-02\tF\t3723.2772714854423\t102488\t381591241\n2000-05-02\tM\t3721.1141241468963\t153850\t572493408\n2000-05-30\tF\t3751.644172199028\t102277\t383706911\n2000-05-30\tM\t3750.0872281652705\t153494\t575615889\n2000-06-27\tF\t3780.5662886769705\t102031\t385734959\n2000-06-27\tM\t3779.1177995260077\t153167\t578836136\n2000-07-25\tF\t3809.0262661585007\t101804\t387774110\n2000-07-25\tM\t3808.2826271907434\t152802\t581913202\n2000-08-22\tF\t3837.8618523405344\t101558\t389765574\n2000-08-22\tM\t3837.079204674374\t152491\t585120045\n2000-09-19\tF\t3866.8798531110256\t101301\t391718796\n2000-09-19\tM\t3865.639474739243\t152153\t588168643\n2000-10-17\tF\t3895.5602124797215\t101092\t393809973\n2000-10-17\tM\t3894.388581478993\t151806\t591191553\n2000-11-14\tF\t3924.4144580941334\t100857\t395804669\n2000-11-14\tM\t3922.9611477455\t151497\t594316845\n2000-12-12\tF\t3953.0826450388126\t100611\t397723598\n2000-12-12\tM\t3951.5280687013305\t151147\t597261613\n2001-01-09\tF\t3982.0163382414476\t100378\t399706836\n2001-01-09\tM\t3980.273474692021\t150822\t600312806\n2001-02-06\tF\t4010.7218667332168\t100175\t401774063\n2001-02-06\tM\t4009.016931245058\t150491\t603320967\n2001-03-06\tF\t4039.029703366515\t99955\t403721214\n2001-03-06\tM\t4037.8538382122756\t150135\t606223186\n2001-04-03\tF\t4067.321845073953\t99725\t405613671\n2001-04-03\tM\t4066.552706761898\t149810\t609210261\n2001-05-01\tF\t4095.909096390991\t99501\t407547051\n2001-05-01\tM\t4095.3839704514585\t149449\t612051039\n2001-05-29\tF\t4124.8336170169905\t99289\t409550605\n2001-05-29\tM\t4124.222378719894\t149097\t614909184\n2001-06-26\tF\t4153.671269101113\t99078\t411537442\n2001-06-26\tM\t4153.107396129518\t148767\t617845328\n2001-07-24\tF\t4182.38158493773\t98843\t413399143\n2001-07-24\tM\t4182.113742160185\t148441\t620797146\n2001-08-21\tF\t4211.125888448397\t98627\t415330713\n2001-08-21\tM\t4211.019337762653\t148104\t623668808\n2001-09-18\tF\t4239.772617801579\t98407\t417223304\n2001-09-18\tM\t4239.890967039065\t147781\t626575327\n2001-10-16\tF\t4268.551710441894\t98191\t419133361\n2001-10-16\tM\t4268.588133546777\t147424\t629292337\n2001-11-13\tF\t4297.438057523117\t97978\t421054386\n2001-11-13\tM\t4297.387815457413\t147088\t632094179\n2001-12-11\tF\t4326.331891128909\t97767\t422972490\n2001-12-11\tM\t4325.898002984281\t146769\t634907724\n2002-01-08\tF\t4355.244858835831\t97546\t424836715\n2002-01-08\tM\t4354.88694992931\t146413\t637612063\n2002-02-05\tF\t4384.66646464854\t97351\t426851665\n2002-02-05\tM\t4383.884954722483\t146099\t640481208\n2002-03-05\tF\t4413.503299735404\t97129\t428679162\n2002-03-05\tM\t4412.40882772625\t145768\t643188010\n2002-04-02\tF\t4442.290309265584\t96907\t430489027\n2002-04-02\tM\t4441.079291096079\t145464\t646017158\n2002-04-30\tF\t4470.986802366472\t96684\t432272888\n2002-04-30\tM\t4469.782052518462\t145168\t648869321\n2002-05-28\tF\t4499.736049344322\t96465\t434067038\n2002-05-28\tM\t4498.621747385136\t144845\t651602867\n2002-06-25\tF\t4528.837113145018\t96257\t435932274\n2002-06-25\tM\t4527.294212463335\t144552\t654429433\n2002-07-23\tF\t4557.666989361481\t96066\t437836837\n2002-07-23\tM\t4556.238926332723\t144216\t657082553\n"
           }
         ]
       },
       "apps": [],
-      "jobName": "paragraph_1497409603659_1187352833",
-      "id": "20170613-230643_1017913076",
-      "dateCreated": "Jun 13, 2017 11:06:43 PM",
-      "dateStarted": "Jun 13, 2017 11:28:11 PM",
-      "dateFinished": "Jun 13, 2017 11:35:51 PM",
+      "jobName": "paragraph_1498541814177_-354294658",
+      "id": "20170627-013654_1956348003",
+      "dateCreated": "Jun 27, 2017 1:36:54 AM",
+      "dateStarted": "Sep 2, 2017 12:53:00 PM",
+      "dateFinished": "Sep 2, 2017 12:55:43 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect days.value, avg(dateDiff(date(days.value), date(emps.hireDate))) as avg_length_employment, count(emps.*) from (\n    select \u00271999-12-31\u0027 as hireDate from dual\n    union\n    select \u00272001-12-31\u0027 as hireDate from dual\n    union\n    select \u00272002-07-22\u0027 as hireDate from dual\n) as emps\ncross join days\nwhere emps.hireDate \u003c\u003d days.value\ngroup by days.value\norder by days.value",
+      "user": "anonymous",
+      "dateUpdated": "Sep 2, 2017 12:58:37 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sql"
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "value\tavg_length_employment\tcount(hireDate)\n2000-01-11\t11.0\t1\n2000-02-08\t39.0\t1\n2000-03-07\t67.0\t1\n2000-04-04\t95.0\t1\n2000-05-02\t123.0\t1\n2000-05-30\t151.0\t1\n2000-06-27\t179.0\t1\n2000-07-25\t207.0\t1\n2000-08-22\t235.0\t1\n2000-09-19\t263.0\t1\n2000-10-17\t291.0\t1\n2000-11-14\t319.0\t1\n2000-12-12\t347.0\t1\n2001-01-09\t375.0\t1\n2001-02-06\t403.0\t1\n2001-03-06\t431.0\t1\n2001-04-03\t459.0\t1\n2001-05-01\t487.0\t1\n2001-05-29\t515.0\t1\n2001-06-26\t543.0\t1\n2001-07-24\t571.0\t1\n2001-08-21\t599.0\t1\n2001-09-18\t627.0\t1\n2001-10-16\t655.0\t1\n2001-11-13\t683.0\t1\n2001-12-11\t711.0\t1\n2002-01-08\t373.5\t2\n2002-02-05\t401.5\t2\n2002-03-05\t429.5\t2\n2002-04-02\t457.5\t2\n2002-04-30\t485.5\t2\n2002-05-28\t513.5\t2\n2002-06-25\t541.5\t2\n2002-07-23\t380.0\t3\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1498707770481_1494009924",
+      "id": "20170628-234250_852114979",
+      "dateCreated": "Jun 28, 2017 11:42:50 PM",
+      "dateStarted": "Sep 2, 2017 12:58:37 PM",
+      "dateFinished": "Sep 2, 2017 12:58:45 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "input as of date",
-      "text": "val sqlFormat \u003d new SimpleDateFormat(\"yyyy-MM-dd\")\nval humanFormat \u003d new SimpleDateFormat(\"MM/dd/yyyy\")\n\nval todayInputString \u003d z.input(\"as of date:\", s\"\"\"${humanFormat.format(new java.util.Date())}\"\"\").toString\n\nval today \u003d s\"\u0027${sqlFormat.format(humanFormat.parse(todayInputString))}\u0027\"",
+      "text": "val sqlFormat \u003d new SimpleDateFormat(\"yyyy-MM-dd\")\nval humanFormat \u003d new SimpleDateFormat(\"MM/dd/yyyy\")\n\nval todayInputString \u003d z.input(\"as of date:\", s\"\"\"${humanFormat.format(new java.util.Date())}\"\"\").toString\n\nval today \u003d s\"\u0027${sqlFormat.format(humanFormat.parse(todayInputString))}\u0027\"\n\nrunAll(\"20170608-230812_1699114189\",\n       \"20170605-231043_2067437126\")",
       "user": "anonymous",
-      "dateUpdated": "Jun 14, 2017 11:05:31 PM",
+      "dateUpdated": "Sep 2, 2017 12:59:31 PM",
       "config": {
         "editorSetting": {
           "language": "scala",
@@ -356,7 +568,7 @@
             "name": "as of date:",
             "displayName": "as of date:",
             "type": "input",
-            "defaultValue": "06/13/2017",
+            "defaultValue": "09/02/2017",
             "hidden": false
           }
         }
@@ -374,8 +586,8 @@
       "jobName": "paragraph_1497320242792_-1282566702",
       "id": "20170612-221722_294438278",
       "dateCreated": "Jun 12, 2017 10:17:22 PM",
-      "dateStarted": "Jun 13, 2017 11:28:15 PM",
-      "dateFinished": "Jun 13, 2017 11:35:52 PM",
+      "dateStarted": "Sep 2, 2017 12:59:31 PM",
+      "dateFinished": "Sep 2, 2017 12:59:34 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -383,7 +595,7 @@
       "title": "load views",
       "text": "val allDataFrames \u003d tableDataFrames + (\"employees_vw\" -\u003e sqlContext.sql(s\"\"\"\n    select emp.id, emp.firstName, emp.lastName, emp.dob, emp.gender, emp.hireDate,\n        title.title, ed.name as department, nvl(md.name, \u0027N/A\u0027) as manages, \n        salary.salary from employee emp\n    join employee_title title on\n        title.employeeId \u003d emp.id\n        and title.activeFrom \u003c\u003d $today\n        and title.activeTo \u003e $today\n    join department_employee on\n        department_employee.employeeId \u003d emp.id\n        and department_employee.activeFrom \u003c\u003d $today\n        and department_employee.activeTo \u003e $today\n    join department ed on\n        ed.id \u003d department_employee.departmentId\n    left join department_manager mgr on\n        mgr.employeeId \u003d emp.id\n        and mgr.activeFrom \u003c\u003d $today\n        and mgr.activeTo \u003e $today\n    left join department md on\n        md.id \u003d mgr.departmentId\n    join employee_salary salary on\n        salary.employeeId \u003d emp.id\n        and salary.activeFrom \u003c\u003d $today\n        and salary.activeTo \u003e $today\n\"\"\"))\n\nallDataFrames(\"employees_vw\").registerTempTable(\"employees_vw\")",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:00 PM",
+      "dateUpdated": "Sep 2, 2017 12:41:43 PM",
       "config": {
         "editorSetting": {
           "language": "scala"
@@ -413,8 +625,8 @@
       "jobName": "paragraph_1496977692112_1906268467",
       "id": "20170608-230812_1699114189",
       "dateCreated": "Jun 8, 2017 11:08:12 PM",
-      "dateStarted": "Jun 13, 2017 11:35:51 PM",
-      "dateFinished": "Jun 13, 2017 11:35:53 PM",
+      "dateStarted": "Sep 2, 2017 12:59:33 PM",
+      "dateFinished": "Sep 2, 2017 12:59:35 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -422,7 +634,7 @@
       "title": "counts",
       "text": "println(\ns\"\"\"%table\ntable\\tcount\n${allDataFrames.map { case (tableName, dataFrame) \u003d\u003e {\n    s\"$tableName\\t${dataFrame.count}\"\n}}.mkString(\"\\n\")}\"\"\")",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:00 PM",
+      "dateUpdated": "Sep 2, 2017 12:41:44 PM",
       "config": {
         "colWidth": 4.0,
         "editorMode": "ace/mode/scala",
@@ -461,48 +673,8 @@
       "jobName": "paragraph_1496885062050_1041252306",
       "id": "20170605-231043_2067437126",
       "dateCreated": "Jun 7, 2017 9:24:22 PM",
-      "dateStarted": "Jun 13, 2017 11:35:52 PM",
-      "dateFinished": "Jun 13, 2017 11:36:41 PM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "table schemas",
-      "text": "println(s\"\"\"%table\ntable\\tschema\n${allDataFrames.map { case (tableName, dataFrame) \u003d\u003e {\n    val s \u003d dataFrame.schema.fields.map{ (x) \u003d\u003e s\" ${x.name}:${x.dataType}\" }.mkString(\",\")\n    s\"$tableName\\t$s\"\n}}.mkString(\"\\n\")}\"\"\")",
-      "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:00 PM",
-      "config": {
-        "colWidth": 12.0,
-        "editorMode": "ace/mode/scala",
-        "results": {},
-        "enabled": true,
-        "editorSetting": {
-          "language": "scala",
-          "editOnDblClick": false
-        },
-        "editorHide": true,
-        "title": true,
-        "tableHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TABLE",
-            "data": "table\tschema\nemployees_vw\t id:StringType, firstName:StringType, lastName:StringType, dob:StringType, gender:StringType, hireDate:StringType, title:StringType, department:StringType, manages:StringType, salary:StringType\nemployee_title\t employeeId:StringType, title:StringType, activeFrom:StringType, activeTo:StringType\ndepartment_employee\t employeeId:StringType, departmentId:StringType, activeFrom:StringType, activeTo:StringType\nemployee\t id:StringType, dob:StringType, firstName:StringType, lastName:StringType, gender:StringType, hireDate:StringType\ndepartment\t id:StringType, name:StringType\ndepartment_manager\t employeeId:StringType, departmentId:StringType, activeFrom:StringType, activeTo:StringType\nemployee_salary\t employeeId:StringType, salary:StringType, activeFrom:StringType, activeTo:StringType\r\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1497064111105_1372648063",
-      "id": "20170609-230831_1575803286",
-      "dateCreated": "Jun 9, 2017 11:08:31 PM",
-      "dateStarted": "Jun 13, 2017 11:35:53 PM",
-      "dateFinished": "Jun 13, 2017 11:36:42 PM",
+      "dateStarted": "Sep 2, 2017 12:59:34 PM",
+      "dateFinished": "Sep 2, 2017 12:59:52 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -510,7 +682,7 @@
       "title": "Managers",
       "text": "%sql\nselect * from employees_vw\nwhere manages !\u003d \u0027N/A\u0027\norder by manages asc",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:00 PM",
+      "dateUpdated": "Sep 2, 2017 12:59:58 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -586,15 +758,15 @@
       "jobName": "paragraph_1496897642197_583237040",
       "id": "20170608-005402_1801177216",
       "dateCreated": "Jun 8, 2017 12:54:02 AM",
-      "dateStarted": "Jun 13, 2017 11:36:41 PM",
-      "dateFinished": "Jun 13, 2017 11:36:59 PM",
+      "dateStarted": "Sep 2, 2017 12:59:58 PM",
+      "dateFinished": "Sep 2, 2017 1:00:12 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%md # Gender Equality",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:00 PM",
+      "dateUpdated": "Sep 2, 2017 12:41:49 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -624,8 +796,8 @@
       "jobName": "paragraph_1497245865300_1044931361",
       "id": "20170612-013745_742018995",
       "dateCreated": "Jun 12, 2017 1:37:45 AM",
-      "dateStarted": "Jun 13, 2017 11:28:00 PM",
-      "dateFinished": "Jun 13, 2017 11:28:03 PM",
+      "dateStarted": "Sep 2, 2017 12:41:49 PM",
+      "dateFinished": "Sep 2, 2017 12:42:06 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -633,7 +805,7 @@
       "title": "Employed by Gender",
       "text": "%spark.sql\nselect count(*), gender from employees_vw group by gender",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:00 PM",
+      "dateUpdated": "Sep 2, 2017 1:00:28 PM",
       "config": {
         "colWidth": 2.0,
         "enabled": true,
@@ -690,8 +862,8 @@
       "jobName": "paragraph_1497246028430_-1166009843",
       "id": "20170612-014028_1859128063",
       "dateCreated": "Jun 12, 2017 1:40:28 AM",
-      "dateStarted": "Jun 13, 2017 11:36:42 PM",
-      "dateFinished": "Jun 13, 2017 11:37:19 PM",
+      "dateStarted": "Sep 2, 2017 1:00:28 PM",
+      "dateFinished": "Sep 2, 2017 1:00:49 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -699,7 +871,7 @@
       "title": "Average Salary by Gender",
       "text": "%spark.sql\nselect gender, avg(salary) from employees_vw group by gender",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:00 PM",
+      "dateUpdated": "Sep 2, 2017 1:00:31 PM",
       "config": {
         "colWidth": 2.0,
         "enabled": true,
@@ -737,8 +909,8 @@
       "jobName": "paragraph_1497074134592_-1893094988",
       "id": "20170610-015534_589943787",
       "dateCreated": "Jun 10, 2017 1:55:34 AM",
-      "dateStarted": "Jun 13, 2017 11:36:59 PM",
-      "dateFinished": "Jun 13, 2017 11:37:40 PM",
+      "dateStarted": "Sep 2, 2017 1:00:31 PM",
+      "dateFinished": "Sep 2, 2017 1:01:07 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -746,7 +918,7 @@
       "title": "Average Salary by Department and Gender",
       "text": "%spark.sql\nselect department, gender, avg(salary) from employees_vw group by department, gender",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:03 PM",
+      "dateUpdated": "Sep 2, 2017 1:03:21 PM",
       "config": {
         "colWidth": 4.0,
         "enabled": true,
@@ -808,8 +980,8 @@
       "jobName": "paragraph_1497245762730_-297411579",
       "id": "20170612-013602_1957876808",
       "dateCreated": "Jun 12, 2017 1:36:02 AM",
-      "dateStarted": "Jun 13, 2017 11:37:19 PM",
-      "dateFinished": "Jun 13, 2017 11:38:12 PM",
+      "dateStarted": "Sep 2, 2017 1:03:21 PM",
+      "dateFinished": "Sep 2, 2017 1:03:50 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -817,7 +989,7 @@
       "title": "Employed by Department and Gender",
       "text": "%spark.sql\nselect count(*), department, gender from employees_vw \ngroup by department, gender\norder by department, gender",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:38:56 PM",
+      "dateUpdated": "Sep 2, 2017 1:00:34 PM",
       "config": {
         "colWidth": 4.0,
         "enabled": true,
@@ -879,15 +1051,15 @@
       "jobName": "paragraph_1497246505001_-1551854982",
       "id": "20170612-014825_832963224",
       "dateCreated": "Jun 12, 2017 1:48:25 AM",
-      "dateStarted": "Jun 13, 2017 11:39:07 PM",
-      "dateFinished": "Jun 13, 2017 11:39:34 PM",
+      "dateStarted": "Sep 2, 2017 1:01:07 PM",
+      "dateFinished": "Sep 2, 2017 1:01:34 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%md # Department Salaries\n",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:03 PM",
+      "dateUpdated": "Sep 2, 2017 12:42:07 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -917,8 +1089,8 @@
       "jobName": "paragraph_1497245953616_1294936068",
       "id": "20170612-013913_1949931094",
       "dateCreated": "Jun 12, 2017 1:39:13 AM",
-      "dateStarted": "Jun 13, 2017 11:28:03 PM",
-      "dateFinished": "Jun 13, 2017 11:28:04 PM",
+      "dateStarted": "Sep 2, 2017 12:42:07 PM",
+      "dateFinished": "Sep 2, 2017 12:42:07 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -926,7 +1098,7 @@
       "title": "Average Salary by Department",
       "text": "%spark.sql\nselect department, avg(salary) from employees_vw group by department",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:03 PM",
+      "dateUpdated": "Sep 2, 2017 1:05:42 PM",
       "config": {
         "colWidth": 3.0,
         "enabled": true,
@@ -964,8 +1136,8 @@
       "jobName": "paragraph_1497154234557_2108310100",
       "id": "20170611-001034_870179864",
       "dateCreated": "Jun 11, 2017 12:10:34 AM",
-      "dateStarted": "Jun 13, 2017 11:38:13 PM",
-      "dateFinished": "Jun 13, 2017 11:38:39 PM",
+      "dateStarted": "Sep 2, 2017 1:05:43 PM",
+      "dateFinished": "Sep 2, 2017 1:06:07 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -973,7 +1145,7 @@
       "title": "Min Salary by Department",
       "text": "%spark.sql\nselect department, min(salary) from employees_vw group by department",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:39:58 PM",
+      "dateUpdated": "Sep 2, 2017 1:03:29 PM",
       "config": {
         "colWidth": 3.0,
         "enabled": true,
@@ -1011,8 +1183,8 @@
       "jobName": "paragraph_1497246081212_45087750",
       "id": "20170612-014121_1102173452",
       "dateCreated": "Jun 12, 2017 1:41:21 AM",
-      "dateStarted": "Jun 13, 2017 11:39:58 PM",
-      "dateFinished": "Jun 13, 2017 11:40:24 PM",
+      "dateStarted": "Sep 2, 2017 1:03:51 PM",
+      "dateFinished": "Sep 2, 2017 1:04:12 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -1020,7 +1192,7 @@
       "title": "Max Salary by Department",
       "text": "%spark.sql\nselect department, max(salary) from employees_vw group by department",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:04 PM",
+      "dateUpdated": "Sep 2, 2017 1:03:31 PM",
       "config": {
         "colWidth": 3.0,
         "enabled": true,
@@ -1058,8 +1230,8 @@
       "jobName": "paragraph_1497246095929_-987963047",
       "id": "20170612-014135_1505259063",
       "dateCreated": "Jun 12, 2017 1:41:35 AM",
-      "dateStarted": "Jun 13, 2017 11:38:40 PM",
-      "dateFinished": "Jun 13, 2017 11:39:07 PM",
+      "dateStarted": "Sep 2, 2017 1:03:51 PM",
+      "dateFinished": "Sep 2, 2017 1:04:35 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -1067,7 +1239,7 @@
       "title": "Employed by Department",
       "text": "%spark.sql\nselect count(*), department from employees_vw group by department",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:39:13 PM",
+      "dateUpdated": "Sep 2, 2017 1:03:33 PM",
       "config": {
         "colWidth": 3.0,
         "enabled": true,
@@ -1124,15 +1296,15 @@
       "jobName": "paragraph_1497246458431_-267375974",
       "id": "20170612-014738_22038174",
       "dateCreated": "Jun 12, 2017 1:47:38 AM",
-      "dateStarted": "Jun 13, 2017 11:39:34 PM",
-      "dateFinished": "Jun 13, 2017 11:39:57 PM",
+      "dateStarted": "Sep 2, 2017 1:04:13 PM",
+      "dateFinished": "Sep 2, 2017 1:04:57 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%spark.sql\n",
       "user": "anonymous",
-      "dateUpdated": "Jun 13, 2017 11:28:04 PM",
+      "dateUpdated": "Jun 28, 2017 12:29:10 AM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
@@ -1159,7 +1331,6 @@
   "angularObjects": {
     "2CJ35QZEB:shared_process": [],
     "2CH95Q7QW:shared_process": [],
-    "2CH4ZU47J:shared_process": [],
     "2CFFENP36:shared_process": [],
     "2CH3PVAF3:shared_process": [],
     "2CFAN26BN:shared_process": [],
@@ -1167,7 +1338,24 @@
     "2CHG5Y3YE:shared_process": [],
     "2CEX6GUY8:shared_process": [],
     "2CJ7GNZHS:shared_process": [],
-    "2CJD9B1P1:shared_process": [],
+    "2CJD9B1P1:shared_process": [
+      {
+        "name": "tmpFolder",
+        "object": "/tmp/tables",
+        "noteId": "2CMV7AFW1",
+        "paragraphId": "20170612-223907_315450278"
+      },
+      {
+        "name": "start",
+        "object": "Jan 1, 1985 12:00:00 AM",
+        "noteId": "2CMV7AFW1"
+      },
+      {
+        "name": "end",
+        "object": "Aug 1, 2002 12:00:00 AM",
+        "noteId": "2CMV7AFW1"
+      }
+    ],
     "2CH57V76H:shared_process": [],
     "2CG7T335V:shared_process": [],
     "2CF8MFK53:shared_process": [],
